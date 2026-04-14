@@ -1,209 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Portfolio Manager</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Admin Panel</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-</head>
-<body class="bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100 text-slate-800 min-h-screen font-['Outfit']">
-
-    <!-- Login Overlay -->
-    <div id="login-overlay" class="fixed inset-0 z-[100] bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center px-4">
-        <div class="absolute inset-0 bg-gradient-to-br from-blue-600/20 via-transparent to-blue-600/20 -z-10"></div>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: Arial, sans-serif; background: #f0f0f0; }
         
-        <div class="w-full max-w-md">
-            <div class="text-center mb-8">
-                <div class="w-16 h-16 bg-gradient-to-br from-blue-600 to-blue-700 rounded-2xl flex items-center justify-center mx-auto mb-4">
-                    <i class="fas fa-cogs text-2xl text-white"></i>
-                </div>
-                <h2 class="text-2xl font-bold text-white">Admin Access</h2>
-                <p class="text-slate-400 mt-2">Manage your portfolio</p>
-            </div>
-            
-            <div class="bg-white/10 backdrop-blur-xl p-8 rounded-2xl border border-white/20">
-                <input type="password" id="admin-pass" placeholder="Enter Admin Password" class="w-full p-4 bg-white/5 border border-white/20 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/30 text-white placeholder-slate-400 transition-all text-center">
-                <button id="login-btn" class="w-full mt-4 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-bold transition-all">
-                    Unlock Dashboard
-                </button>
-                <p id="login-error" class="text-red-400 mt-4 hidden text-center text-sm">Incorrect password. Please try again.</p>
-            </div>
+        /* Login Page */
+        #login-page { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #1a1a2e, #16213e); display: flex; align-items: center; justify-content: center; z-index: 9999; }
+        #login-box { background: rgba(255,255,255,0.15); padding: 50px; border-radius: 20px; text-align: center; width: 320px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+        #login-box h2 { color: white; margin-bottom: 5px; }
+        #login-box p { color: #aaa; margin-bottom: 25px; }
+        #password { width: 100%; padding: 15px; border-radius: 10px; border: none; text-align: center; font-size: 16px; outline: none; }
+        #login-btn { width: 100%; padding: 15px; background: #3b82f6; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 15px; }
+        #login-btn:hover { background: #2563eb; }
+        #error-msg { color: #ff6b6b; display: none; margin-top: 15px; }
+        
+        /* Admin Dashboard */
+        #admin-page { display: none; }
+        .header { background: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        .header h1 { color: #333; font-size: 20px; }
+        .logout-btn { padding: 8px 20px; background: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        .content { padding: 30px; max-width: 900px; margin: 0 auto; }
+        .card { background: white; padding: 25px; border-radius: 15px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        .card h3 { margin: 0 0 20px 0; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; font-size: 14px; }
+        .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #3b82f6; }
+        .save-btn { display: block; width: 100%; padding: 18px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 18px; font-weight: bold; }
+        .save-btn:hover { transform: scale(1.02); }
+        
+        /* Media Section */
+        .media-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .media-item { background: #f8fafc; padding: 20px; border-radius: 12px; text-align: center; }
+        .media-item h4 { margin-bottom: 15px; color: #333; }
+        .media-item img { max-width: 100%; height: 100px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; border: 2px solid #eee; }
+        .media-item input[type="file"] { margin-top: 10px; width: 100%; }
+        .upload-btn { display: block; width: 100%; padding: 10px; background: #3b82f6; color: white; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; }
+        
+        /* Documents List */
+        .docs-list { margin-top: 20px; }
+        .doc-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f8fafc; border-radius: 8px; margin-bottom: 8px; }
+        .doc-item span { color: #333; }
+        .delete-btn { padding: 5px 10px; background: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer; }
+        
+        .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+    </style>
+</head>
+<body>
+
+    <!-- Login Page -->
+    <div id="login-page">
+        <div id="login-box">
+            <h2><i class="fas fa-cog"></i> Admin</h2>
+            <p>Enter password to continue</p>
+            <input type="password" id="password" placeholder="Password">
+            <button id="login-btn" onclick="checkLogin()">Login</button>
+            <div id="error-msg">Incorrect password!</div>
         </div>
     </div>
 
-    <!-- Main Admin Content -->
-    <div id="admin-content" class="hidden">
-        <!-- Admin Header -->
-        <header class="bg-white shadow-md sticky top-0 z-50">
-            <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
-                <div class="flex items-center gap-3">
-                    <div class="w-10 h-10 bg-gradient-to-br from-blue-600 to-blue-700 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-cogs text-white"></i>
+    <!-- Admin Dashboard -->
+    <div id="admin-page">
+        <div class="header">
+            <h1><i class="fas fa-cog"></i> Admin Panel</h1>
+            <button class="logout-btn" onclick="doLogout()">Logout</button>
+        </div>
+        
+        <div class="content">
+            <!-- Profile -->
+            <div class="card">
+                <h3><i class="fas fa-user"></i> Profile Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="input-full-name">
                     </div>
-                    <span class="font-bold text-xl text-slate-800">ADMIN<span class="text-blue-600">PANEL</span></span>
-                </div>
-                <button id="logout-btn" class="px-4 py-2 bg-slate-100 hover:bg-red-500 text-slate-600 hover:text-white border border-slate-200 hover:border-red-500 rounded-lg transition-all flex items-center gap-2">
-                    <i class="fas fa-sign-out-alt"></i> Logout
-                </button>
-            </div>
-        </header>
-
-        <!-- Admin Dashboard -->
-        <main class="max-w-6xl mx-auto px-6 py-12">
-            
-            <!-- Profile Editor -->
-            <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8 mb-8">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-user-edit text-blue-600"></i>
-                    </div>
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-800">Profile Information</h2>
-                        <p class="text-sm text-slate-500">Update your personal and professional details</p>
+                    <div class="form-group">
+                        <label>Professional Title</label>
+                        <input type="text" id="input-title">
                     </div>
                 </div>
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                    <div class="flex flex-col gap-2">
-                        <label class="text-sm font-medium text-slate-600">Full Name</label>
-                        <input type="text" id="input-full-name" class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all">
-                    </div>
-                    <div class="flex flex-col gap-2">
-                        <label class="text-sm font-medium text-slate-600">Professional Title</label>
-                        <input type="text" id="input-title" class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all">
-                    </div>
-                    <div class="flex flex-col gap-2 md:col-span-2">
-                        <label class="text-sm font-medium text-slate-600">Short Introduction</label>
-                        <textarea id="input-intro" rows="2" class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"></textarea>
-                    </div>
-                    <div class="flex flex-col gap-2 md:col-span-2">
-                        <label class="text-sm font-medium text-slate-600">About Me (Full Bio)</label>
-                        <textarea id="input-about" rows="4" class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all"></textarea>
-                    </div>
-                    <div class="flex flex-col gap-2 md:col-span-2">
-                        <label class="text-sm font-medium text-slate-600">Contact Information</label>
-                        <input type="text" id="input-contact" class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all">
-                    </div>
+                <div class="form-group">
+                    <label>Short Introduction</label>
+                    <textarea id="input-intro" rows="2"></textarea>
                 </div>
-
-                <!-- Stats Section -->
-                <div class="mt-8 pt-8 border-t border-slate-200">
-                    <h3 class="font-bold text-lg text-slate-800 mb-4">Statistics</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="flex flex-col gap-2">
-                            <label class="text-sm font-medium text-slate-600">Years Experience</label>
-                            <input type="text" id="input-stat-years" placeholder="e.g. 10+" class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500">
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-sm font-medium text-slate-600">Projects Completed</label>
-                            <input type="text" id="input-stat-projects" placeholder="e.g. 50+" class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500">
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-sm font-medium text-slate-600">Success Rate</label>
-                            <input type="text" id="input-stat-success" placeholder="e.g. 100%" class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500">
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label>About Me</label>
+                    <textarea id="input-about" rows="4"></textarea>
                 </div>
-
-                <!-- Features Section -->
-                <div class="mt-8 pt-8 border-t border-slate-200">
-                    <h3 class="font-bold text-lg text-slate-800 mb-4">About Section - Feature Cards</h3>
-                    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        <div class="flex flex-col gap-2">
-                            <label class="text-sm font-medium text-slate-600">Feature 1 Title</label>
-                            <input type="text" id="input-feature1-title" placeholder="e.g. Professional Growth" class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500">
-                            <label class="text-sm font-medium text-slate-600 mt-2">Feature 1 Description</label>
-                            <textarea id="input-feature1-desc" rows="2" placeholder="Description..." class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500"></textarea>
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-sm font-medium text-slate-600">Feature 2 Title</label>
-                            <input type="text" id="input-feature2-title" placeholder="e.g. Team Collaboration" class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500">
-                            <label class="text-sm font-medium text-slate-600 mt-2">Feature 2 Description</label>
-                            <textarea id="input-feature2-desc" rows="2" placeholder="Description..." class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500"></textarea>
-                        </div>
-                        <div class="flex flex-col gap-2">
-                            <label class="text-sm font-medium text-slate-600">Feature 3 Title</label>
-                            <input type="text" id="input-feature3-title" placeholder="e.g. Innovation" class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500">
-                            <label class="text-sm font-medium text-slate-600 mt-2">Feature 3 Description</label>
-                            <textarea id="input-feature3-desc" rows="2" placeholder="Description..." class="p-4 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:border-blue-500"></textarea>
-                        </div>
-                    </div>
+                <div class="form-group">
+                    <label>Contact Information</label>
+                    <input type="text" id="input-contact">
                 </div>
-                
-                <button id="save-profile-btn" class="mt-8 px-8 py-4 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-xl font-bold transition-all flex items-center gap-2 shadow-lg shadow-blue-600/30">
-                    <i class="fas fa-save"></i> Save Changes
-                </button>
             </div>
 
-            <!-- Media & Documents -->
-            <div class="bg-white rounded-2xl shadow-lg border border-slate-200 p-8">
-                <div class="flex items-center gap-3 mb-6">
-                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <i class="fas fa-cloud-upload-alt text-blue-600"></i>
+            <!-- Stats -->
+            <div class="card">
+                <h3><i class="fas fa-chart-line"></i> Statistics</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Years Experience</label>
+                        <input type="text" id="input-stat-years">
                     </div>
-                    <div>
-                        <h2 class="text-xl font-bold text-slate-800">Media & Documents</h2>
-                        <p class="text-sm text-slate-500">Upload your banner, profile photo and portfolio documents</p>
+                    <div class="form-group">
+                        <label>Projects Completed</label>
+                        <input type="text" id="input-stat-projects">
                     </div>
-                </div>
-                
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <!-- Banner Image -->
-                    <div class="p-6 border border-slate-200 rounded-2xl bg-slate-50">
-                        <h3 class="font-bold mb-4 flex items-center gap-2 text-slate-700">
-                            <i class="fas fa-image text-blue-500"></i> Banner Image
-                        </h3>
-                        <img id="current-banner" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600" class="w-full h-32 object-cover rounded-xl mb-4 border border-slate-200">
-                        <label class="cursor-pointer px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-all block text-center">
-                            <i class="fas fa-upload mr-2"></i> Upload Banner
-                            <input type="file" id="banner-upload" accept="image/*" class="hidden">
-                        </label>
-                    </div>
-
-                    <!-- Profile Photo -->
-                    <div class="p-6 border border-slate-200 rounded-2xl bg-slate-50">
-                        <h3 class="font-bold mb-4 flex items-center gap-2 text-slate-700">
-                            <i class="fas fa-camera text-blue-500"></i> Profile Photo
-                        </h3>
-                        <div class="flex justify-center mb-4">
-                            <img id="current-photo" src="https://via.placeholder.com/120" class="w-24 h-24 rounded-2xl object-cover border-2 border-blue-300 shadow-md">
-                        </div>
-                        <label class="cursor-pointer px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-medium transition-all block text-center">
-                            <i class="fas fa-upload mr-2"></i> Upload Photo
-                            <input type="file" id="photo-upload" accept="image/*" class="hidden">
-                        </label>
-                    </div>
-
-                    <!-- Document Upload -->
-                    <div class="p-6 border border-slate-200 rounded-2xl bg-slate-50">
-                        <h3 class="font-bold mb-4 flex items-center gap-2 text-slate-700">
-                            <i class="fas fa-file-pdf text-blue-500"></i> Upload Document
-                        </h3>
-                        <div class="flex flex-col gap-4">
-                            <input type="text" id="doc-name" placeholder="Document Name" class="p-4 bg-white border border-slate-200 rounded-xl outline-none focus:border-blue-500">
-                            <input type="file" id="doc-upload" accept="application/pdf,image/*" class="p-4 bg-white border border-slate-200 rounded-xl text-sm">
-                            <button id="upload-doc-btn" class="py-4 bg-blue-600 hover:bg-blue-700 text-white rounded-xl font-bold transition-all">
-                                <i class="fas fa-cloud-upload-alt mr-2"></i> Upload Document
-                            </button>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Uploaded Documents List -->
-                <div class="mt-8">
-                    <h3 class="font-bold mb-4 flex items-center gap-2 text-slate-700">
-                        <i class="fas fa-list text-blue-500"></i> Uploaded Documents
-                    </h3>
-                    <div id="docs-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                        <!-- Files will be listed here -->
+                    <div class="form-group">
+                        <label>Success Rate</label>
+                        <input type="text" id="input-stat-success">
                     </div>
                 </div>
             </div>
-        </main>
+
+            <!-- Features -->
+            <div class="card">
+                <h3><i class="fas fa-star"></i> Feature Cards</h3>
+                <div class="three-col">
+                    <div class="form-group">
+                        <label>Feature 1 Title</label>
+                        <input type="text" id="input-feature1-title">
+                        <label style="margin-top:10px;">Description</label>
+                        <textarea id="input-feature1-desc" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Feature 2 Title</label>
+                        <input type="text" id="input-feature2-title">
+                        <label style="margin-top:10px;">Description</label>
+                        <textarea id="input-feature2-desc" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Feature 3 Title</label>
+                        <input type="text" id="input-feature3-title">
+                        <label style="margin-top:10px;">Description</label>
+                        <textarea id="input-feature3-desc" rows="2"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <button class="save-btn" onclick="saveProfile()">💾 Save Changes</button>
+
+            <!-- Media -->
+            <div class="card">
+                <h3><i class="fas fa-image"></i> Media & Documents</h3>
+                <div class="media-grid">
+                    <div class="media-item">
+                        <h4>Banner</h4>
+                        <img id="current-banner" src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400">
+                        <input type="file" id="banner-upload" accept="image/*">
+                        <button class="upload-btn" onclick="uploadBanner()">Upload</button>
+                    </div>
+                    <div class="media-item">
+                        <h4>Profile Photo</h4>
+                        <img id="current-photo" src="https://via.placeholder.com/120">
+                        <input type="file" id="photo-upload" accept="image/*">
+                        <button class="upload-btn" onclick="uploadPhoto()">Upload</button>
+                    </div>
+                    <div class="media-item">
+                        <h4>Documents</h4>
+                        <input type="text" id="doc-name" placeholder="Document name" style="width:100%;padding:8px;margin-bottom:5px;border:1px solid #ddd;border-radius:5px;">
+                        <input type="file" id="doc-upload" style="margin-bottom:5px;">
+                        <button class="upload-btn" onclick="uploadDoc()">Upload</button>
+                    </div>
+                </div>
+                <h4 style="margin-top:20px;">Uploaded Documents:</h4>
+                <div id="docs-list"></div>
+            </div>
+        </div>
     </div>
 
     <script src="admin.js"></script>

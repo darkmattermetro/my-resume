@@ -4,66 +4,53 @@ const ADMIN_PASSWORD = 'admin123';
 
 let supabase;
 
-document.addEventListener('DOMContentLoaded', function() {
-    console.log('Admin page loading...');
-    
-    // Initialize Supabase
+// Initialize
+window.onload = function() {
     try {
         supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-        console.log('Supabase initialized');
     } catch(e) {
         console.log('Supabase init error:', e);
     }
     
-    // Setup login
-    const loginBtn = document.getElementById('login-btn');
-    const passInput = document.getElementById('admin-pass');
-    const overlay = document.getElementById('login-overlay');
-    const content = document.getElementById('admin-content');
-    const errorMsg = document.getElementById('login-error');
-    
-    loginBtn.onclick = function() {
-        console.log('Login clicked, password:', passInput.value);
-        if (passInput.value === ADMIN_PASSWORD) {
-            console.log('Password correct, showing admin');
-            overlay.style.display = 'none';
-            content.classList.remove('hidden');
-            localStorage.setItem('resume_admin', 'true');
-            loadProfileData();
-            loadDocsData();
-        } else {
-            console.log('Password wrong');
-            errorMsg.classList.remove('hidden');
-            passInput.value = '';
-        }
-    };
-    
     // Check if already logged in
-    if (localStorage.getItem('resume_admin') === 'true') {
-        overlay.style.display = 'none';
-        content.classList.remove('hidden');
-        loadProfileData();
-        loadDocsData();
+    if (localStorage.getItem('admin_logged_in') === 'true') {
+        showAdminPage();
     }
-    
-    // Logout
-    document.getElementById('logout-btn').onclick = function() {
-        localStorage.removeItem('resume_admin');
-        location.reload();
-    };
-    
-    // Save button
-    document.getElementById('save-profile-btn').onclick = saveProfile;
-    
-    // Upload buttons
-    document.getElementById('banner-upload').addEventListener('change', uploadBanner);
-    document.getElementById('photo-upload').addEventListener('change', uploadPhoto);
-    document.getElementById('upload-doc-btn').addEventListener('click', uploadDoc);
-});
+};
 
-async function loadProfileData() {
+// Login function
+function checkLogin() {
+    const password = document.getElementById('password').value;
+    const errorMsg = document.getElementById('error-msg');
+    
+    if (password === ADMIN_PASSWORD) {
+        localStorage.setItem('admin_logged_in', 'true');
+        showAdminPage();
+    } else {
+        errorMsg.style.display = 'block';
+    }
+}
+
+// Show admin page
+function showAdminPage() {
+    document.getElementById('login-page').style.display = 'none';
+    document.getElementById('admin-page').style.display = 'block';
+    loadProfile();
+    loadDocs();
+}
+
+// Logout
+function doLogout() {
+    localStorage.removeItem('admin_logged_in');
+    location.reload();
+}
+
+// Load profile data
+async function loadProfile() {
     if (!supabase) return;
+    
     const { data } = await supabase.from('profile').select('*').maybeSingle();
+    
     if (data) {
         document.getElementById('input-full-name').value = data.full_name || '';
         document.getElementById('input-title').value = data.professional_title || '';
@@ -79,15 +66,16 @@ async function loadProfileData() {
         document.getElementById('input-feature2-desc').value = data.feature2_desc || '';
         document.getElementById('input-feature3-title').value = data.feature3_title || '';
         document.getElementById('input-feature3-desc').value = data.feature3_desc || '';
+        
         if (data.profile_photo_url) document.getElementById('current-photo').src = data.profile_photo_url;
         if (data.banner_url) document.getElementById('current-banner').src = data.banner_url;
     }
 }
 
+// Save profile
 async function saveProfile() {
-    const btn = document.getElementById('save-profile-btn');
+    const btn = document.querySelector('.save-btn');
     btn.innerText = 'Saving...';
-    btn.disabled = true;
     
     const data = {
         full_name: document.getElementById('input-full-name').value,
@@ -108,6 +96,7 @@ async function saveProfile() {
     
     const existing = await supabase.from('profile').select('id').maybeSingle();
     let result;
+    
     if (existing && existing.id) {
         result = await supabase.from('profile').update(data).eq('id', existing.id);
     } else {
@@ -117,27 +106,28 @@ async function saveProfile() {
     if (result.error) {
         alert('Error: ' + result.error.message);
     } else {
-        alert('Saved! Check your website.');
+        alert('Saved successfully!');
     }
     
-    btn.innerText = 'Save Changes';
-    btn.disabled = false;
+    btn.innerText = '💾 Save Changes';
 }
 
-async function uploadBanner(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const btn = e.target.nextElementSibling;
+// Upload banner
+async function uploadBanner() {
+    const file = document.getElementById('banner-upload').files[0];
+    if (!file) return alert('Select a file');
+    
+    const btn = event.target;
     btn.innerText = 'Uploading...';
     
     try {
-        const fileName = 'banner_' + Date.now() + '.' + file.name.split('.').pop();
+        const fileName = 'banner_' + Date.now();
         const upload = await supabase.storage.from('resume-assets').upload(fileName, file);
         if (upload.error) throw upload.error;
         
         const url = supabase.storage.from('resume-assets').getPublicUrl(fileName).data.publicUrl;
-        const existing = await supabase.from('profile').select('id').maybeSingle();
         
+        const existing = await supabase.from('profile').select('id').maybeSingle();
         if (existing && existing.id) {
             await supabase.from('profile').update({ banner_url: url }).eq('id', existing.id);
         } else {
@@ -145,27 +135,30 @@ async function uploadBanner(e) {
         }
         
         document.getElementById('current-banner').src = url;
+        btn.innerText = 'Upload';
         alert('Banner uploaded!');
     } catch (err) {
         alert('Error: ' + err.message);
+        btn.innerText = 'Upload';
     }
-    btn.innerText = 'Upload Banner';
 }
 
-async function uploadPhoto(e) {
-    const file = e.target.files[0];
-    if (!file) return;
-    const btn = e.target.nextElementSibling;
+// Upload photo
+async function uploadPhoto() {
+    const file = document.getElementById('photo-upload').files[0];
+    if (!file) return alert('Select a file');
+    
+    const btn = event.target;
     btn.innerText = 'Uploading...';
     
     try {
-        const fileName = 'photo_' + Date.now() + '.' + file.name.split('.').pop();
+        const fileName = 'photo_' + Date.now();
         const upload = await supabase.storage.from('resume-assets').upload(fileName, file);
         if (upload.error) throw upload.error;
         
         const url = supabase.storage.from('resume-assets').getPublicUrl(fileName).data.publicUrl;
-        const existing = await supabase.from('profile').select('id').maybeSingle();
         
+        const existing = await supabase.from('profile').select('id').maybeSingle();
         if (existing && existing.id) {
             await supabase.from('profile').update({ profile_photo_url: url }).eq('id', existing.id);
         } else {
@@ -173,67 +166,67 @@ async function uploadPhoto(e) {
         }
         
         document.getElementById('current-photo').src = url;
+        btn.innerText = 'Upload';
         alert('Photo uploaded!');
     } catch (err) {
         alert('Error: ' + err.message);
+        btn.innerText = 'Upload';
     }
-    btn.innerText = 'Upload Photo';
 }
 
+// Upload document
 async function uploadDoc() {
     const name = document.getElementById('doc-name').value;
     const file = document.getElementById('doc-upload').files[0];
-    const btn = document.getElementById('upload-doc-btn');
     
-    if (!name || !file) {
-        alert('Enter name and select file');
-        return;
-    }
+    if (!name || !file) return alert('Enter name and select file');
     
+    const btn = event.target;
     btn.innerText = 'Uploading...';
-    btn.disabled = true;
     
     try {
-        const fileName = Date.now() + '.' + file.name.split('.').pop();
+        const fileName = Date.now() + '_' + file.name;
         const upload = await supabase.storage.from('resume-assets').upload(fileName, file);
         if (upload.error) throw upload.error;
         
         const url = supabase.storage.from('resume-assets').getPublicUrl(fileName).data.publicUrl;
+        
         await supabase.from('documents').insert([{ name: name, url: url }]);
         
-        alert('Document uploaded!');
         document.getElementById('doc-name').value = '';
         document.getElementById('doc-upload').value = '';
-        loadDocsData();
+        loadDocs();
+        
+        btn.innerText = 'Upload';
+        alert('Document uploaded!');
     } catch (err) {
         alert('Error: ' + err.message);
+        btn.innerText = 'Upload';
     }
-    
-    btn.innerText = 'Upload Document';
-    btn.disabled = false;
 }
 
-async function loadDocsData() {
+// Load documents
+async function loadDocs() {
     if (!supabase) return;
+    
     const { data } = await supabase.from('documents').select('*').order('created_at', { ascending: false });
     const list = document.getElementById('docs-list');
     
     if (!data || data.length === 0) {
-        list.innerHTML = '<p class="text-slate-500 text-center py-4">No documents</p>';
+        list.innerHTML = '<p style="color:#999;">No documents uploaded</p>';
         return;
     }
     
     list.innerHTML = data.map(doc => 
-        '<div class="flex justify-between items-center p-4 bg-slate-50 rounded-xl">' +
-        '<span class="text-sm">' + doc.name + '</span>' +
-        '<button onclick="deleteDoc(' + doc.id + ', \'' + doc.url + '\')" class="text-red-500 p-2">Delete</button>' +
-        '</div>'
+        '<div class="doc-item"><span>' + doc.name + '</span><button class="delete-btn" onclick="deleteDoc(' + doc.id + ', \'' + doc.url + '\')">Delete</button></div>'
     ).join('');
 }
 
-window.deleteDoc = async function(id, url) {
-    if (!confirm('Delete?')) return;
+// Delete document
+async function deleteDoc(id, url) {
+    if (!confirm('Delete this document?')) return;
+    
     await supabase.storage.from('resume-assets').remove([url.split('/').pop()]);
     await supabase.from('documents').delete().eq('id', id);
-    loadDocsData();
-};
+    loadDocs();
+}
