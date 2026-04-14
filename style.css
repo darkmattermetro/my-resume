@@ -11,18 +11,10 @@ html {
 }
 
 body {
-    background-color: #0a0a0f;
-    color: #f8fafc;
+    background: linear-gradient(135deg, #f8fafc 0%, #eff6ff 100%);
+    color: #1e293b;
     font-family: 'Outfit', sans-serif;
     line-height: 1.6;
-}
-
-/* Glassmorphism Effect */
-.glass-panel {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
 /* Custom Scrollbar */
@@ -31,16 +23,16 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: #0a0a0f;
+    background: #f1f5f9;
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #1e293b;
+    background: #cbd5e1;
     border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #334155;
+    background: #94a3b8;
 }
 
 /* Animation Classes */
@@ -61,6 +53,8 @@ body {
     cursor: pointer;
     position: relative;
     overflow: hidden;
+    background: white;
+    border: 1px solid #e2e8f0;
 }
 
 .doc-card::before {
@@ -69,16 +63,16 @@ body {
     top: 0;
     left: 0;
     right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #dc2626, #b91c1c);
+    height: 4px;
+    background: linear-gradient(90deg, #2563eb, #3b82f6);
     transform: scaleX(0);
     transition: transform 0.3s ease;
 }
 
 .doc-card:hover {
     transform: translateY(-8px) scale(1.02);
-    background: rgba(255, 255, 255, 0.06);
-    border-color: rgba(220, 38, 38, 0.5);
+    box-shadow: 0 20px 40px -10px rgba(37, 99, 235, 0.15);
+    border-color: #3b82f6;
 }
 
 .doc-card:hover::before {
@@ -87,7 +81,7 @@ body {
 
 /* Focus States */
 input:focus, textarea:focus {
-    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.3);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
 }
 
 /* Button Hover Effects */
@@ -109,26 +103,13 @@ button:active {
     visibility: hidden;
 }
 
-/* Gradient Text */
-.gradient-text {
-    background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-}
-
-/* Glow Effects */
-.glow-red {
-    box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
-}
-
 /* Loading Animation */
 @keyframes pulse-glow {
     0%, 100% {
-        box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+        box-shadow: 0 0 20px rgba(37, 99, 235, 0.2);
     }
     50% {
-        box-shadow: 0 0 40px rgba(220, 38, 38, 0.6);
+        box-shadow: 0 0 40px rgba(37, 99, 235, 0.4);
     }
 }
 

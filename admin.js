@@ -55,6 +55,9 @@ async function loadCurrentProfile() {
         if (data.profile_photo_url) {
             document.getElementById('current-photo').src = data.profile_photo_url;
         }
+        if (data.banner_url) {
+            document.getElementById('current-banner').src = data.banner_url;
+        }
     }
 }
 
@@ -89,6 +92,53 @@ document.getElementById('save-profile-btn').onclick = async () => {
     }
 };
 
+// Banner Upload
+document.getElementById('banner-upload').onchange = async (e) => {
+    const file = e.target.files[0];
+    if (!file) return;
+
+    const btn = e.target.nextElementSibling;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+
+    const fileName = `banner_${Date.now()}.${file.name.split('.').pop()}`;
+    const { data, error } = await supabaseClient.storage
+        .from('resume-assets')
+        .upload(fileName, file);
+
+    if (error) {
+        alert('Upload failed: ' + error.message);
+        btn.innerHTML = '<i class="fas fa-upload mr-2"></i> Upload Banner';
+        return;
+    }
+
+    const { data: publicUrlData } = supabaseClient.storage
+        .from('resume-assets')
+        .getPublicUrl(fileName);
+
+    const publicUrl = publicUrlData.publicUrl;
+
+    const { data: existingProfile } = await supabaseClient
+        .from('profile')
+        .select('id')
+        .single();
+
+    if (existingProfile) {
+        await supabaseClient
+            .from('profile')
+            .update({ banner_url: publicUrl })
+            .eq('id', existingProfile.id);
+    } else {
+        await supabaseClient
+            .from('profile')
+            .insert([{ banner_url: publicUrl }]);
+    }
+
+    document.getElementById('current-banner').src = publicUrl;
+    alert('Banner updated!');
+    btn.innerHTML = '<i class="fas fa-upload mr-2"></i> Upload Banner';
+};
+
+// Photo Upload
 document.getElementById('photo-upload').onchange = async (e) => {
     const file = e.target.files[0];
     if (!file) return;
@@ -103,7 +153,7 @@ document.getElementById('photo-upload').onchange = async (e) => {
 
     if (error) {
         alert('Upload failed: ' + error.message);
-        btn.innerHTML = '<i class="fas fa-upload mr-2"></i> Upload New';
+        btn.innerHTML = '<i class="fas fa-upload mr-2"></i> Upload Photo';
         return;
     }
 
@@ -131,9 +181,10 @@ document.getElementById('photo-upload').onchange = async (e) => {
 
     document.getElementById('current-photo').src = publicUrl;
     alert('Photo updated!');
-    btn.innerHTML = '<i class="fas fa-upload mr-2"></i> Upload New';
+    btn.innerHTML = '<i class="fas fa-upload mr-2"></i> Upload Photo';
 };
 
+// Document Upload
 document.getElementById('upload-doc-btn').onclick = async () => {
     const nameInput = document.getElementById('doc-name');
     const fileInput = document.getElementById('doc-upload');
@@ -202,12 +253,12 @@ async function loadDocuments() {
     }
 
     list.innerHTML = data.map(doc => `
-        <div class="flex justify-between items-center p-4 bg-white/[0.02] border border-white/10 rounded-xl">
+        <div class="flex justify-between items-center p-4 bg-slate-50 border border-slate-200 rounded-xl">
             <div class="flex items-center gap-3">
-                <i class="fas ${doc.url.toLowerCase().includes('.pdf') ? 'fa-file-pdf' : 'fa-file-image'} text-red-500"></i>
-                <span class="text-sm font-medium">${doc.name}</span>
+                <i class="fas ${doc.url.toLowerCase().includes('.pdf') ? 'fa-file-pdf' : 'fa-file-image'} text-blue-500"></i>
+                <span class="text-sm font-medium text-slate-700">${doc.name}</span>
             </div>
-            <button onclick="deleteDoc('${doc.id}', '${doc.url}')" class="text-red-400 hover:text-red-300 p-2 hover:bg-red-600/20 rounded-lg transition-all">
+            <button onclick="deleteDoc('${doc.id}', '${doc.url}')" class="text-red-500 hover:text-red-700 p-2 hover:bg-red-50 rounded-lg transition-all">
                 <i class="fas fa-trash"></i>
             </button>
         </div>
