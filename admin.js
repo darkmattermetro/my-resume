@@ -52,6 +52,20 @@ async function loadCurrentProfile() {
         document.getElementById('input-intro').value = data.introduction || '';
         document.getElementById('input-about').value = data.about_me || '';
         document.getElementById('input-contact').value = data.contact_info || '';
+        
+        // Stats
+        document.getElementById('input-stat-years').value = data.stat_years || '';
+        document.getElementById('input-stat-projects').value = data.stat_projects || '';
+        document.getElementById('input-stat-success').value = data.stat_success || '';
+        
+        // Features
+        document.getElementById('input-feature1-title').value = data.feature1_title || '';
+        document.getElementById('input-feature1-desc').value = data.feature1_desc || '';
+        document.getElementById('input-feature2-title').value = data.feature2_title || '';
+        document.getElementById('input-feature2-desc').value = data.feature2_desc || '';
+        document.getElementById('input-feature3-title').value = data.feature3_title || '';
+        document.getElementById('input-feature3-desc').value = data.feature3_desc || '';
+        
         if (data.profile_photo_url) {
             document.getElementById('current-photo').src = data.profile_photo_url;
         }
@@ -71,7 +85,16 @@ document.getElementById('save-profile-btn').onclick = async () => {
         professional_title: document.getElementById('input-title').value,
         introduction: document.getElementById('input-intro').value,
         about_me: document.getElementById('input-about').value,
-        contact_info: document.getElementById('input-contact').value
+        contact_info: document.getElementById('input-contact').value,
+        stat_years: document.getElementById('input-stat-years').value,
+        stat_projects: document.getElementById('input-stat-projects').value,
+        stat_success: document.getElementById('input-stat-success').value,
+        feature1_title: document.getElementById('input-feature1-title').value,
+        feature1_desc: document.getElementById('input-feature1-desc').value,
+        feature2_title: document.getElementById('input-feature2-title').value,
+        feature2_desc: document.getElementById('input-feature2-desc').value,
+        feature3_title: document.getElementById('input-feature3-title').value,
+        feature3_desc: document.getElementById('input-feature3-desc').value
     };
 
     const { error } = await supabaseClient

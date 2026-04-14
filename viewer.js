@@ -50,6 +50,23 @@ async function fetchProfile() {
     document.getElementById('about-me').innerText = data.about_me || 'Your bio and experience details will appear here...';
     document.getElementById('contact-info').innerText = data.contact_info || 'email@example.com | +1 234 567 890';
     
+    // Stats
+    if (data.stat_years) document.getElementById('stat-years').innerText = data.stat_years;
+    if (data.stat_projects) document.getElementById('stat-projects').innerText = data.stat_projects;
+    if (data.stat_success) document.getElementById('stat-success').innerText = data.stat_success;
+    
+    // Feature 1
+    if (data.feature1_title) document.getElementById('feature1-title').innerText = data.feature1_title;
+    if (data.feature1_desc) document.getElementById('feature1-desc').innerText = data.feature1_desc;
+    
+    // Feature 2
+    if (data.feature2_title) document.getElementById('feature2-title').innerText = data.feature2_title;
+    if (data.feature2_desc) document.getElementById('feature2-desc').innerText = data.feature2_desc;
+    
+    // Feature 3
+    if (data.feature3_title) document.getElementById('feature3-title').innerText = data.feature3_title;
+    if (data.feature3_desc) document.getElementById('feature3-desc').innerText = data.feature3_desc;
+    
     if (data.profile_photo_url) {
         document.getElementById('profile-img').src = data.profile_photo_url;
     }
