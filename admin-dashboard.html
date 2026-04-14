@@ -214,18 +214,26 @@
             };
             
             try {
-                var existing = await supabaseClient.from('profile').select('id').maybeSingle();
+                var existingResult = await supabaseClient.from('profile').select('id').limit(1);
+                console.log('Existing check:', existingResult);
+                
                 var result;
-                if (existing && existing.id) {
-                    result = await supabaseClient.from('profile').update(data).eq('id', existing.id);
+                if (existingResult.data && existingResult.data.length > 0) {
+                    var existingId = existingResult.data[0].id;
+                    console.log('Updating record ID:', existingId);
+                    result = await supabaseClient.from('profile').update(data).eq('id', existingId);
                 } else {
+                    console.log('Inserting new record');
                     result = await supabaseClient.from('profile').insert([data]);
                 }
+                
+                console.log('Save result:', result);
                 
                 if (result.error) alert('Error: ' + result.error.message);
                 else alert('Saved successfully!');
             } catch (err) {
                 alert('Error: ' + err.message);
+                console.error(err);
             }
         }
 
