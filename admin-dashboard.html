@@ -39,7 +39,6 @@
     </div>
     
     <div class="content">
-        <!-- Profile -->
         <div class="card">
             <h3>Profile Information</h3>
             <div class="form-row">
@@ -66,7 +65,6 @@
             </div>
         </div>
 
-        <!-- Stats -->
         <div class="card">
             <h3>Statistics</h3>
             <div class="form-row">
@@ -85,7 +83,6 @@
             </div>
         </div>
 
-        <!-- Features -->
         <div class="card">
             <h3>Feature Cards</h3>
             <div class="three-col">
@@ -112,7 +109,6 @@
 
         <button class="save-btn" onclick="saveProfile()">Save Changes</button>
 
-        <!-- Media -->
         <div class="card">
             <h3>Media & Documents</h3>
             <div class="media-grid">
@@ -141,21 +137,20 @@
     </div>
 
     <script>
-        // Check login
+        const SUPABASE_URL = 'https://jrkuaysvvhjyxyrxmhul.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impya3VheXN2dmhqeXh5cnhtaHVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNDE0OTAsImV4cCI6MjA5MTcxNzQ5MH0.atCCNpZxriK2Xruo-kigPJCPrE-b2TeeB_E2C1IYxDI';
+
         if (localStorage.getItem('admin_logged_in') !== 'true') {
             window.location.href = 'login.html';
         }
 
-        let supabase;
+        let supabaseClient = null;
         try {
-            supabase = window.supabase.createClient(
-                'https://jrkuaysvvhjyxyrxmhul.supabase.co',
-                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impya3VheXN2dmhqeXh5cnhtaHVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNDE0OTAsImV4cCI6MjA5MTcxNzQ5MH0.atCCNpZxriK2Xruo-kigPJCPrE-b2TeeB_E2C1IYxDI'
-            );
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
             console.log('Supabase connected');
         } catch(e) {
             console.log('Supabase error:', e);
-            alert('Failed to connect to database. Check console for details.');
+            alert('Failed to connect to database.');
         }
 
         function doLogout() {
@@ -164,30 +159,37 @@
         }
 
         async function loadProfile() {
-            if (!supabase) return;
-            var result = await supabase.from('profile').select('*').maybeSingle();
-            if (result.data) {
-                var d = result.data;
-                document.getElementById('input-full-name').value = d.full_name || '';
-                document.getElementById('input-title').value = d.professional_title || '';
-                document.getElementById('input-intro').value = d.introduction || '';
-                document.getElementById('input-about').value = d.about_me || '';
-                document.getElementById('input-contact').value = d.contact_info || '';
-                document.getElementById('input-stat-years').value = d.stat_years || '';
-                document.getElementById('input-stat-projects').value = d.stat_projects || '';
-                document.getElementById('input-stat-success').value = d.stat_success || '';
-                document.getElementById('input-feature1-title').value = d.feature1_title || '';
-                document.getElementById('input-feature1-desc').value = d.feature1_desc || '';
-                document.getElementById('input-feature2-title').value = d.feature2_title || '';
-                document.getElementById('input-feature2-desc').value = d.feature2_desc || '';
-                document.getElementById('input-feature3-title').value = d.feature3_title || '';
-                document.getElementById('input-feature3-desc').value = d.feature3_desc || '';
-                if (d.profile_photo_url) document.getElementById('current-photo').src = d.profile_photo_url;
-                if (d.banner_url) document.getElementById('current-banner').src = d.banner_url;
+            if (!supabaseClient) return;
+            try {
+                var result = await supabaseClient.from('profile').select('*').maybeSingle();
+                console.log('Load result:', result);
+                if (result.data) {
+                    var d = result.data;
+                    document.getElementById('input-full-name').value = d.full_name || '';
+                    document.getElementById('input-title').value = d.professional_title || '';
+                    document.getElementById('input-intro').value = d.introduction || '';
+                    document.getElementById('input-about').value = d.about_me || '';
+                    document.getElementById('input-contact').value = d.contact_info || '';
+                    document.getElementById('input-stat-years').value = d.stat_years || '';
+                    document.getElementById('input-stat-projects').value = d.stat_projects || '';
+                    document.getElementById('input-stat-success').value = d.stat_success || '';
+                    document.getElementById('input-feature1-title').value = d.feature1_title || '';
+                    document.getElementById('input-feature1-desc').value = d.feature1_desc || '';
+                    document.getElementById('input-feature2-title').value = d.feature2_title || '';
+                    document.getElementById('input-feature2-desc').value = d.feature2_desc || '';
+                    document.getElementById('input-feature3-title').value = d.feature3_title || '';
+                    document.getElementById('input-feature3-desc').value = d.feature3_desc || '';
+                    if (d.profile_photo_url) document.getElementById('current-photo').src = d.profile_photo_url;
+                    if (d.banner_url) document.getElementById('current-banner').src = d.banner_url;
+                }
+            } catch (err) {
+                console.error('Load error:', err);
             }
         }
 
         async function saveProfile() {
+            if (!supabaseClient) return alert('Database not connected');
+            
             var data = {
                 full_name: document.getElementById('input-full-name').value,
                 professional_title: document.getElementById('input-title').value,
@@ -205,93 +207,120 @@
                 feature3_desc: document.getElementById('input-feature3-desc').value
             };
             
-            var existing = await supabase.from('profile').select('id').maybeSingle();
-            var result;
-            if (existing && existing.id) {
-                result = await supabase.from('profile').update(data).eq('id', existing.id);
-            } else {
-                result = await supabase.from('profile').insert([data]);
+            try {
+                var existing = await supabaseClient.from('profile').select('id').maybeSingle();
+                var result;
+                if (existing && existing.id) {
+                    result = await supabaseClient.from('profile').update(data).eq('id', existing.id);
+                } else {
+                    result = await supabaseClient.from('profile').insert([data]);
+                }
+                
+                if (result.error) alert('Error: ' + result.error.message);
+                else alert('Saved successfully!');
+            } catch (err) {
+                alert('Error: ' + err.message);
             }
-            
-            if (result.error) alert('Error: ' + result.error.message);
-            else alert('Saved!');
         }
 
         async function uploadBanner() {
+            if (!supabaseClient) return alert('Database not connected');
             var file = document.getElementById('banner-upload').files[0];
             if (!file) return alert('Select file');
             
-            var result = await supabase.storage.from('resume-assets').upload('banner_' + Date.now(), file);
-            if (result.error) return alert('Error: ' + result.error.message);
-            
-            var url = supabase.storage.from('resume-assets').getPublicUrl(result.data.path).data.publicUrl;
-            var existing = await supabase.from('profile').select('id').maybeSingle();
-            if (existing && existing.id) {
-                await supabase.from('profile').update({banner_url: url}).eq('id', existing.id);
-            } else {
-                await supabase.from('profile').insert([{banner_url: url}]);
+            try {
+                var result = await supabaseClient.storage.from('resume-assets').upload('banner_' + Date.now(), file);
+                if (result.error) return alert('Error: ' + result.error.message);
+                
+                var url = supabaseClient.storage.from('resume-assets').getPublicUrl(result.data.path).data.publicUrl;
+                var existing = await supabaseClient.from('profile').select('id').maybeSingle();
+                if (existing && existing.id) {
+                    await supabaseClient.from('profile').update({banner_url: url}).eq('id', existing.id);
+                } else {
+                    await supabaseClient.from('profile').insert([{banner_url: url}]);
+                }
+                
+                document.getElementById('current-banner').src = url;
+                alert('Uploaded!');
+            } catch (err) {
+                alert('Error: ' + err.message);
             }
-            
-            document.getElementById('current-banner').src = url;
-            alert('Uploaded!');
         }
 
         async function uploadPhoto() {
+            if (!supabaseClient) return alert('Database not connected');
             var file = document.getElementById('photo-upload').files[0];
             if (!file) return alert('Select file');
             
-            var result = await supabase.storage.from('resume-assets').upload('photo_' + Date.now(), file);
-            if (result.error) return alert('Error: ' + result.error.message);
-            
-            var url = supabase.storage.from('resume-assets').getPublicUrl(result.data.path).data.publicUrl;
-            var existing = await supabase.from('profile').select('id').maybeSingle();
-            if (existing && existing.id) {
-                await supabase.from('profile').update({profile_photo_url: url}).eq('id', existing.id);
-            } else {
-                await supabase.from('profile').insert([{profile_photo_url: url}]);
+            try {
+                var result = await supabaseClient.storage.from('resume-assets').upload('photo_' + Date.now(), file);
+                if (result.error) return alert('Error: ' + result.error.message);
+                
+                var url = supabaseClient.storage.from('resume-assets').getPublicUrl(result.data.path).data.publicUrl;
+                var existing = await supabaseClient.from('profile').select('id').maybeSingle();
+                if (existing && existing.id) {
+                    await supabaseClient.from('profile').update({profile_photo_url: url}).eq('id', existing.id);
+                } else {
+                    await supabaseClient.from('profile').insert([{profile_photo_url: url}]);
+                }
+                
+                document.getElementById('current-photo').src = url;
+                alert('Uploaded!');
+            } catch (err) {
+                alert('Error: ' + err.message);
             }
-            
-            document.getElementById('current-photo').src = url;
-            alert('Uploaded!');
         }
 
         async function uploadDoc() {
+            if (!supabaseClient) return alert('Database not connected');
             var name = document.getElementById('doc-name').value;
             var file = document.getElementById('doc-upload').files[0];
             if (!name || !file) return alert('Enter name and select file');
             
-            var result = await supabase.storage.from('resume-assets').upload(Date.now() + '_' + file.name, file);
-            if (result.error) return alert('Error: ' + result.error.message);
-            
-            var url = supabase.storage.from('resume-assets').getPublicUrl(result.data.path).data.publicUrl;
-            await supabase.from('documents').insert([{name: name, url: url}]);
-            
-            document.getElementById('doc-name').value = '';
-            document.getElementById('doc-upload').value = '';
-            loadDocs();
-            alert('Uploaded!');
+            try {
+                var result = await supabaseClient.storage.from('resume-assets').upload(Date.now() + '_' + file.name, file);
+                if (result.error) return alert('Error: ' + result.error.message);
+                
+                var url = supabaseClient.storage.from('resume-assets').getPublicUrl(result.data.path).data.publicUrl;
+                await supabaseClient.from('documents').insert([{name: name, url: url}]);
+                
+                document.getElementById('doc-name').value = '';
+                document.getElementById('doc-upload').value = '';
+                loadDocs();
+                alert('Uploaded!');
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
         }
 
         async function loadDocs() {
-            var result = await supabase.from('documents').select('*').order('created_at', { ascending: false });
-            var list = document.getElementById('docs-list');
-            if (!result.data || result.data.length === 0) {
-                list.innerHTML = '<p style="color:#999;">No documents</p>';
-                return;
+            if (!supabaseClient) return;
+            try {
+                var result = await supabaseClient.from('documents').select('*').order('created_at', { ascending: false });
+                var list = document.getElementById('docs-list');
+                if (!result.data || result.data.length === 0) {
+                    list.innerHTML = '<p style="color:#999;">No documents</p>';
+                    return;
+                }
+                list.innerHTML = result.data.map(function(d) {
+                    return '<div class="doc-item"><span>' + d.name + '</span><button class="delete-btn" onclick="deleteDoc(' + d.id + ')">Delete</button></div>';
+                }).join('');
+            } catch (err) {
+                console.error(err);
             }
-            list.innerHTML = result.data.map(function(d) {
-                return '<div class="doc-item"><span>' + d.name + '</span><button class="delete-btn" onclick="deleteDoc(' + d.id + ')">Delete</button></div>';
-            }).join('');
         }
 
         async function deleteDoc(id) {
             if (!confirm('Delete?')) return;
-            await supabase.from('documents').delete().eq('id', id);
-            loadDocs();
+            try {
+                await supabaseClient.from('documents').delete().eq('id', id);
+                loadDocs();
+            } catch (err) {
+                alert('Error: ' + err.message);
+            }
         }
 
-        // Load data on page load
-        if (supabase) {
+        if (supabaseClient) {
             loadProfile();
             loadDocs();
         }

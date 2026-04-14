@@ -1,13 +1,11 @@
 const SUPABASE_URL = 'https://jrkuaysvvhjyxyrxmhul.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impya3VheXN2dmhqeXh5cnhtaHVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNDE0OTAsImV4cCI6MjA5MTcxNzQ5MH0.atCCNpZxriK2Xruo-kigPJCPrE-b2TeeB_E2C1IYxDI';
 
-let supabase;
-
 document.addEventListener('DOMContentLoaded', async function() {
     try {
-        supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+        window.supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
     } catch(e) {
-        console.log('Supabase init error');
+        console.log('Supabase init error:', e);
     }
     
     await loadProfileData();
@@ -15,9 +13,12 @@ document.addEventListener('DOMContentLoaded', async function() {
 });
 
 async function loadProfileData() {
-    if (!supabase) return;
+    if (!window.supabaseClient) {
+        console.log('Supabase not connected');
+        return;
+    }
     
-    const { data } = await supabase.from('profile').select('*').maybeSingle();
+    const { data } = await window.supabaseClient.from('profile').select('*').maybeSingle();
     console.log('Profile data:', data);
     
     if (!data) {
@@ -47,9 +48,9 @@ async function loadProfileData() {
 }
 
 async function loadDocsData() {
-    if (!supabase) return;
+    if (!window.supabaseClient) return;
     
-    const { data } = await supabase.from('documents').select('*').order('created_at', { ascending: false });
+    const { data } = await window.supabaseClient.from('documents').select('*').order('created_at', { ascending: false });
     const grid = document.getElementById('docs-grid');
     
     if (!data || data.length === 0) {
@@ -67,7 +68,6 @@ async function loadDocsData() {
     }).join('');
 }
 
-// Modal
 const modal = document.getElementById('viewer-modal');
 const modalContent = document.getElementById('modal-content');
 const modalTitle = document.getElementById('modal-title');
