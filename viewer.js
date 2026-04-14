@@ -18,40 +18,44 @@ async function loadProfileData() {
         return;
     }
     
-    const { data } = await window.supabaseClient.from('profile').select('*').limit(1).maybeSingle();
-    console.log('Profile data:', data);
-    
-    if (!data) {
-        const { data: allData } = await window.supabaseClient.from('profile').select('*').limit(1);
-        if (allData && allData.length > 0) {
-            data = allData[0];
+    try {
+        const { data, error } = await window.supabaseClient.from('profile').select('*').limit(1);
+        console.log('Profile response:', data, error);
+        
+        if (error) {
+            console.log('Error fetching profile:', error);
+            return;
         }
+        
+        if (!data || data.length === 0) {
+            console.log('No profile - showing defaults');
+            return;
+        }
+        
+        var profileData = data[0];
+        
+        if (profileData.full_name) document.getElementById('full-name').innerText = profileData.full_name;
+        if (profileData.professional_title) document.getElementById('professional-title').innerText = profileData.professional_title;
+        if (profileData.introduction) document.getElementById('introduction').innerText = profileData.introduction;
+        if (profileData.about_me) document.getElementById('about-me').innerText = profileData.about_me;
+        if (profileData.contact_info) document.getElementById('contact-info').innerText = profileData.contact_info;
+        
+        if (profileData.stat_years) document.getElementById('stat-years').innerText = profileData.stat_years;
+        if (profileData.stat_projects) document.getElementById('stat-projects').innerText = profileData.stat_projects;
+        if (profileData.stat_success) document.getElementById('stat-success').innerText = profileData.stat_success;
+        
+        if (profileData.feature1_title) document.getElementById('feature1-title').innerText = profileData.feature1_title;
+        if (profileData.feature1_desc) document.getElementById('feature1-desc').innerText = profileData.feature1_desc;
+        if (profileData.feature2_title) document.getElementById('feature2-title').innerText = profileData.feature2_title;
+        if (profileData.feature2_desc) document.getElementById('feature2-desc').innerText = profileData.feature2_desc;
+        if (profileData.feature3_title) document.getElementById('feature3-title').innerText = profileData.feature3_title;
+        if (profileData.feature3_desc) document.getElementById('feature3-desc').innerText = profileData.feature3_desc;
+        
+        if (profileData.profile_photo_url) document.getElementById('profile-img').src = profileData.profile_photo_url;
+        if (profileData.banner_url) document.getElementById('banner-img').src = profileData.banner_url;
+        } catch (err) {
+        console.log('Profile load error:', err);
     }
-    
-    if (!data) {
-        console.log('No profile - showing defaults');
-        return;
-    }
-    
-    if (data.full_name) document.getElementById('full-name').innerText = data.full_name;
-    if (data.professional_title) document.getElementById('professional-title').innerText = data.professional_title;
-    if (data.introduction) document.getElementById('introduction').innerText = data.introduction;
-    if (data.about_me) document.getElementById('about-me').innerText = data.about_me;
-    if (data.contact_info) document.getElementById('contact-info').innerText = data.contact_info;
-    
-    if (data.stat_years) document.getElementById('stat-years').innerText = data.stat_years;
-    if (data.stat_projects) document.getElementById('stat-projects').innerText = data.stat_projects;
-    if (data.stat_success) document.getElementById('stat-success').innerText = data.stat_success;
-    
-    if (data.feature1_title) document.getElementById('feature1-title').innerText = data.feature1_title;
-    if (data.feature1_desc) document.getElementById('feature1-desc').innerText = data.feature1_desc;
-    if (data.feature2_title) document.getElementById('feature2-title').innerText = data.feature2_title;
-    if (data.feature2_desc) document.getElementById('feature2-desc').innerText = data.feature2_desc;
-    if (data.feature3_title) document.getElementById('feature3-title').innerText = data.feature3_title;
-    if (data.feature3_desc) document.getElementById('feature3-desc').innerText = data.feature3_desc;
-    
-    if (data.profile_photo_url) document.getElementById('profile-img').src = data.profile_photo_url;
-    if (data.banner_url) document.getElementById('banner-img').src = data.banner_url;
 }
 
 async function loadDocsData() {
