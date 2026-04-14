@@ -19,7 +19,7 @@ async function loadProfileData() {
     }
     
     try {
-        const { data, error } = await window.supabaseClient.from('profile').select('*').limit(1);
+        const { data, error } = await window.supabaseClient.from('profile').select('*').order('id', { ascending: false }).limit(5);
         console.log('Profile response:', data, error);
         
         if (error) {
@@ -32,28 +32,58 @@ async function loadProfileData() {
             return;
         }
         
-        var profileData = data[0];
+        // Find first record with ANY data
+        var profileData = null;
+        for (var i = 0; i < data.length; i++) {
+            if (data[i].full_name || data[i].professional_title || data[i].introduction || data[i].about_me) {
+                profileData = data[i];
+                break;
+            }
+        }
         
-        if (profileData.full_name) document.getElementById('full-name').innerText = profileData.full_name;
-        if (profileData.professional_title) document.getElementById('professional-title').innerText = profileData.professional_title;
-        if (profileData.introduction) document.getElementById('introduction').innerText = profileData.introduction;
-        if (profileData.about_me) document.getElementById('about-me').innerText = profileData.about_me;
-        if (profileData.contact_info) document.getElementById('contact-info').innerText = profileData.contact_info;
+        // If none have data, use the most recent
+        if (!profileData) profileData = data[0];
         
-        if (profileData.stat_years) document.getElementById('stat-years').innerText = profileData.stat_years;
-        if (profileData.stat_projects) document.getElementById('stat-projects').innerText = profileData.stat_projects;
-        if (profileData.stat_success) document.getElementById('stat-success').innerText = profileData.stat_success;
+        console.log('Using profile ID:', profileData.id, 'name:', profileData.full_name);
         
-        if (profileData.feature1_title) document.getElementById('feature1-title').innerText = profileData.feature1_title;
-        if (profileData.feature1_desc) document.getElementById('feature1-desc').innerText = profileData.feature1_desc;
-        if (profileData.feature2_title) document.getElementById('feature2-title').innerText = profileData.feature2_title;
-        if (profileData.feature2_desc) document.getElementById('feature2-desc').innerText = profileData.feature2_desc;
-        if (profileData.feature3_title) document.getElementById('feature3-title').innerText = profileData.feature3_title;
-        if (profileData.feature3_desc) document.getElementById('feature3-desc').innerText = profileData.feature3_desc;
+        // Update ALL fields (even empty)
+        var fullNameEl = document.getElementById('full-name');
+        var titleEl = document.getElementById('professional-title');
+        var introEl = document.getElementById('introduction');
+        var aboutEl = document.getElementById('about-me');
+        var contactEl = document.getElementById('contact-info');
+        
+        if (fullNameEl) fullNameEl.innerText = profileData.full_name || 'Your Name';
+        if (titleEl) titleEl.innerText = profileData.professional_title || 'Your Title';
+        if (introEl) introEl.innerText = profileData.introduction || 'Your introduction goes here...';
+        if (aboutEl) aboutEl.innerText = profileData.about_me || 'Your bio goes here...';
+        if (contactEl) contactEl.innerText = profileData.contact_info || 'Your contact info goes here...';
+        
+        var statYears = document.getElementById('stat-years');
+        var statProjects = document.getElementById('stat-projects');
+        var statSuccess = document.getElementById('stat-success');
+        
+        if (statYears) statYears.innerText = profileData.stat_years || '10+';
+        if (statProjects) statProjects.innerText = profileData.stat_projects || '50+';
+        if (statSuccess) statSuccess.innerText = profileData.stat_success || '100%';
+        
+        var f1Title = document.getElementById('feature1-title');
+        var f1Desc = document.getElementById('feature1-desc');
+        var f2Title = document.getElementById('feature2-title');
+        var f2Desc = document.getElementById('feature2-desc');
+        var f3Title = document.getElementById('feature3-title');
+        var f3Desc = document.getElementById('feature3-desc');
+        
+        if (f1Title) f1Title.innerText = profileData.feature1_title || 'Professional Growth';
+        if (f1Desc) f1Desc.innerText = profileData.feature1_desc || 'Your description here...';
+        if (f2Title) f2Title.innerText = profileData.feature2_title || 'Team Collaboration';
+        if (f2Desc) f2Desc.innerText = profileData.feature2_desc || 'Your description here...';
+        if (f3Title) f3Title.innerText = profileData.feature3_title || 'Innovation';
+        if (f3Desc) f3Desc.innerText = profileData.feature3_desc || 'Your description here...';
         
         if (profileData.profile_photo_url) document.getElementById('profile-img').src = profileData.profile_photo_url;
         if (profileData.banner_url) document.getElementById('banner-img').src = profileData.banner_url;
-        } catch (err) {
+    } catch (err) {
         console.log('Profile load error:', err);
     }
 }
