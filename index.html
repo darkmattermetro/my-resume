@@ -3,92 +3,215 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Portfolio | Cinematic Resume</title>
+    <title>Metro Professional Portfolio</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body class="bg-slate-950 text-white overflow-x-hidden">
+<body class="bg-[#0a0a0f] text-white overflow-x-hidden font-['Outfit']">
 
-    <!-- Background Ambient Glows -->
-    <div class="fixed top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-900/20 blur-[120px] rounded-full -z-10"></div>
-    <div class="fixed bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-900/20 blur-[120px] rounded-full -z-10"></div>
+    <!-- Animated Background -->
+    <div class="fixed inset-0 -z-20 overflow-hidden">
+        <div class="absolute top-[-20%] left-[-10%] w-[60%] h-[60%] bg-gradient-to-br from-red-600/30 via-red-500/20 to-transparent blur-[100px] rounded-full"></div>
+        <div class="absolute bottom-[-20%] right-[-10%] w-[60%] h-[60%] bg-gradient-to-tl from-red-700/30 via-red-600/20 to-transparent blur-[100px] rounded-full"></div>
+        <div class="absolute top-[40%] left-[30%] w-[30%] h-[30%] bg-red-500/10 blur-[80px] rounded-full"></div>
+        
+        <!-- Metro Lines Pattern -->
+        <svg class="absolute inset-0 w-full h-full opacity-[0.03]" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <pattern id="grid" width="60" height="60" patternUnits="userSpaceOnUse">
+                    <path d="M 60 0 L 0 0 0 60" fill="none" stroke="white" stroke-width="0.5"/>
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#grid)" />
+        </svg>
+    </div>
+
+    <!-- Header Navigation -->
+    <header class="fixed top-0 left-0 right-0 z-50 backdrop-blur-xl bg-[#0a0a0f]/80 border-b border-white/5">
+        <div class="max-w-6xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-red-600 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-subway text-white"></i>
+                </div>
+                <span class="font-bold text-xl tracking-tight">METRO<span class="text-red-500">PORTFOLIO</span></span>
+            </div>
+            <nav class="hidden md:flex gap-8 text-sm font-medium">
+                <a href="#home" class="hover:text-red-500 transition-colors">Home</a>
+                <a href="#about" class="hover:text-red-500 transition-colors">About</a>
+                <a href="#documents" class="hover:text-red-500 transition-colors">Documents</a>
+                <a href="#contact" class="hover:text-red-500 transition-colors">Contact</a>
+            </nav>
+        </div>
+    </header>
 
     <!-- Hero Section -->
-    <section class="min-h-screen flex flex-col items-center justify-center relative px-4 text-center">
-        <!-- Removed opacity-0 to ensure it's visible if JS fails -->
-        <div id="hero-content" class="translate-y-10 transition-all duration-700">
-            <div class="relative inline-block mb-8">
-                <img id="profile-img" src="https://via.placeholder.com/150" alt="Profile" class="w-40 h-40 rounded-full border-4 border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.5)] object-cover">
-                <div class="absolute -bottom-2 -right-2 bg-blue-600 p-2 rounded-full border-2 border-slate-950">
-                    <i class="fas fa-check-circle text-xs"></i>
-                </div>
+    <section id="home" class="min-h-screen flex items-center justify-center relative px-6 pt-20">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-8">
+                <span class="w-2 h-2 bg-red-500 rounded-full animate-pulse"></span>
+                <span class="text-sm text-slate-400">Metro Systems Professional</span>
             </div>
-            <h1 id="full-name" class="text-5xl md:text-7xl font-extrabold mb-4 tracking-tight bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                Loading...
+            
+            <div class="relative inline-block mb-8 group">
+                <div class="absolute inset-0 bg-gradient-to-r from-red-500 to-red-700 rounded-full blur-xl opacity-50 group-hover:opacity-70 transition-opacity duration-500"></div>
+                <img id="profile-img" src="https://via.placeholder.com/200" alt="Profile" class="relative w-48 h-48 rounded-full border-4 border-red-500/50 shadow-2xl object-cover">
+            </div>
+            
+            <h1 id="full-name" class="text-5xl md:text-7xl font-extrabold mb-6 leading-tight">
+                <span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-slate-400">
+                    Loading...
+                </span>
             </h1>
-            <p id="professional-title" class="text-xl md:text-2xl text-slate-400 font-light mb-8">
-                Please wait while we fetch data...
+            
+            <p id="professional-title" class="text-xl md:text-2xl text-red-400 font-medium mb-8 tracking-wide">
+                Metro Systems Specialist
             </p>
-            <a href="#about" class="px-8 py-3 bg-blue-600 hover:bg-blue-500 transition-all rounded-full font-medium shadow-lg shadow-blue-600/30">
-                Explore My Work <i class="fas fa-arrow-down ml-2"></i>
-            </a>
+            
+            <p id="introduction" class="text-lg text-slate-400 max-w-2xl mx-auto mb-10 leading-relaxed">
+                Fetching introduction...
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#documents" class="px-8 py-4 bg-red-600 hover:bg-red-500 transition-all rounded-xl font-bold shadow-lg shadow-red-600/30 flex items-center justify-center gap-2">
+                    <i class="fas fa-folder-open"></i> View Documents
+                </a>
+                <a href="#contact" class="px-8 py-4 bg-white/5 hover:bg-white/10 border border-white/10 transition-all rounded-xl font-medium flex items-center justify-center gap-2">
+                    <i class="fas fa-envelope"></i> Contact Me
+                </a>
+            </div>
+        </div>
+        
+        <!-- Scroll Indicator -->
+        <div class="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
+            <i class="fas fa-chevron-down text-slate-500"></i>
         </div>
     </section>
 
     <!-- About Section -->
-    <section id="about" class="py-24 px-4 max-w-5xl mx-auto">
-        <div class="glass-panel p-8 md:p-12 rounded-3xl border border-white/10 reveal">
-            <h2 class="text-3xl font-bold mb-6 flex items-center gap-3">
-                <i class="fas fa-user text-blue-500"></i> About Me
-            </h2>
-            <p id="introduction" class="text-lg text-slate-300 leading-relaxed mb-6">
-                Fetching introduction...
-            </p>
-            <p id="about-me" class="text-lg text-slate-300 leading-relaxed">
-                Fetching details...
-            </p>
+    <section id="about" class="py-32 px-6">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-12 items-center">
+                <div>
+                    <span class="text-red-500 font-medium tracking-wider uppercase text-sm">About Me</span>
+                    <h2 class="text-4xl font-bold mt-2 mb-6">Building the Future of Metro Transit</h2>
+                    <p id="about-me" class="text-slate-400 text-lg leading-relaxed mb-8">
+                        Fetching details...
+                    </p>
+                    
+                    <!-- Stats -->
+                    <div class="grid grid-cols-3 gap-6">
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-red-500">10+</div>
+                            <div class="text-sm text-slate-500">Years Experience</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-red-500">50+</div>
+                            <div class="text-sm text-slate-500">Projects</div>
+                        </div>
+                        <div class="text-center">
+                            <div class="text-3xl font-bold text-red-500">100%</div>
+                            <div class="text-sm text-slate-500">Success Rate</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Feature Cards -->
+                <div class="grid gap-6">
+                    <div class="glass-panel p-6 rounded-2xl border border-white/10 hover:border-red-500/50 transition-all group">
+                        <div class="w-12 h-12 bg-red-600/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-red-600 transition-colors">
+                            <i class="fas fa-train text-red-500 group-hover:text-white transition-colors"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">Rail Operations</h3>
+                        <p class="text-slate-400 text-sm">Expertise in metro rail systems, signaling, and automated train control.</p>
+                    </div>
+                    
+                    <div class="glass-panel p-6 rounded-2xl border border-white/10 hover:border-red-500/50 transition-all group">
+                        <div class="w-12 h-12 bg-red-600/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-red-600 transition-colors">
+                            <i class="fas fa-cogs text-red-500 group-hover:text-white transition-colors"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">Systems Engineering</h3>
+                        <p class="text-slate-400 text-sm">End-to-end metro systems integration and maintenance protocols.</p>
+                    </div>
+                    
+                    <div class="glass-panel p-6 rounded-2xl border border-white/10 hover:border-red-500/50 transition-all group">
+                        <div class="w-12 h-12 bg-red-600/20 rounded-xl flex items-center justify-center mb-4 group-hover:bg-red-600 transition-colors">
+                            <i class="fas fa-users text-red-500 group-hover:text-white transition-colors"></i>
+                        </div>
+                        <h3 class="font-bold text-lg mb-2">Team Leadership</h3>
+                        <p class="text-slate-400 text-sm">Leading multidisciplinary teams for large-scale metro projects.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
     <!-- Documents Section -->
-    <section class="py-24 px-4 max-w-6xl mx-auto">
-        <h2 class="text-3xl font-bold mb-12 text-center reveal">
-            <span class="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">Portfolio & Documents</span>
-        </h2>
-        <div id="docs-grid" class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <!-- Docs will be injected here -->
+    <section id="documents" class="py-32 px-6 bg-white/[0.02]">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-red-500 font-medium tracking-wider uppercase text-sm">Portfolio</span>
+                <h2 class="text-4xl font-bold mt-2">Documents & Certifications</h2>
+                <p class="text-slate-400 mt-4 max-w-xl mx-auto">Access my professional documents, certifications, and project files.</p>
+            </div>
+            
+            <div id="docs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Documents will be injected here -->
+            </div>
         </div>
     </section>
 
     <!-- Contact Section -->
-    <section class="py-24 px-4 text-center max-w-3xl mx-auto">
-        <div class="glass-panel p-12 rounded-3xl border border-white/10 reveal">
-            <h2 class="text-3xl font-bold mb-6">Get In Touch</h2>
-            <p id="contact-info" class="text-xl text-slate-400 mb-8">
-                Fetching contact info...
+    <section id="contact" class="py-32 px-6">
+        <div class="max-w-4xl mx-auto text-center">
+            <span class="text-red-500 font-medium tracking-wider uppercase text-sm">Get In Touch</span>
+            <h2 class="text-4xl font-bold mt-2 mb-6">Let's Connect</h2>
+            <p id="contact-info" class="text-slate-400 text-lg mb-12">
+                Contact details...
             </p>
-            <div class="flex justify-center gap-6 text-2xl">
-                <a href="#" class="hover:text-blue-400 transition-colors"><i class="fab fa-linkedin"></i></a>
-                <a href="#" class="hover:text-blue-400 transition-colors"><i class="fab fa-github"></i></a>
-                <a href="#" class="hover:text-blue-400 transition-colors"><i class="fas fa-envelope"></i></a>
+            
+            <div class="flex justify-center gap-6">
+                <a href="#" class="w-14 h-14 bg-white/5 hover:bg-red-600 border border-white/10 hover:border-red-600 rounded-xl flex items-center justify-center text-xl hover:text-white transition-all">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="#" class="w-14 h-14 bg-white/5 hover:bg-red-600 border border-white/10 hover:border-red-600 rounded-xl flex items-center justify-center text-xl hover:text-white transition-all">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" class="w-14 h-14 bg-white/5 hover:bg-red-600 border border-white/10 hover:border-red-600 rounded-xl flex items-center justify-center text-xl hover:text-white transition-all">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="#" class="w-14 h-14 bg-white/5 hover:bg-red-600 border border-white/10 hover:border-red-600 rounded-xl flex items-center justify-center text-xl hover:text-white transition-all">
+                    <i class="fas fa-phone"></i>
+                </a>
             </div>
         </div>
     </section>
 
+    <!-- Footer -->
+    <footer class="py-8 px-6 border-t border-white/5">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-4">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-subway text-red-500"></i>
+                <span class="font-medium">Metro Portfolio</span>
+            </div>
+            <p class="text-slate-500 text-sm">© 2024 All Rights Reserved</p>
+        </div>
+    </footer>
+
     <!-- File Viewer Modal -->
-    <div id="viewer-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-950/90 backdrop-blur-md">
-        <div class="relative w-full max-w-5xl h-full max-h-[90vh] glass-panel rounded-3xl overflow-hidden flex flex-col">
+    <div id="viewer-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-black/90 backdrop-blur-md">
+        <div class="relative w-full max-w-6xl h-full max-h-[90vh] bg-[#0a0a0f] rounded-2xl overflow-hidden border border-white/10 flex flex-col">
             <div class="p-4 border-b border-white/10 flex justify-between items-center">
-                <span id="modal-title" class="font-medium">Document Viewer</span>
-                <button id="close-modal" class="p-2 hover:bg-white/10 rounded-full transition-all">
+                <span id="modal-title" class="font-bold text-lg">Document Viewer</span>
+                <button id="close-modal" class="w-10 h-10 bg-white/5 hover:bg-red-600 rounded-lg flex items-center justify-center transition-all">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="flex-1 overflow-auto p-4 flex justify-center items-center">
+            <div class="flex-1 overflow-auto p-6 flex justify-center items-center">
                 <div id="modal-content" class="w-full h-full"></div>
             </div>
         </div>

@@ -1,9 +1,9 @@
-/* General Reset */
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap');
+
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
 }
 
 html {
@@ -11,8 +11,9 @@ html {
 }
 
 body {
-    background-color: #020617;
+    background-color: #0a0a0f;
     color: #f8fafc;
+    font-family: 'Outfit', sans-serif;
     line-height: 1.6;
 }
 
@@ -24,7 +25,25 @@ body {
     box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
 }
 
-/* Reveal Animation Class */
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0a0a0f;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #1e293b;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #334155;
+}
+
+/* Animation Classes */
 .reveal {
     opacity: 0;
     transform: translateY(30px);
@@ -44,41 +63,75 @@ body {
     overflow: hidden;
 }
 
+.doc-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #dc2626, #b91c1c);
+    transform: scaleX(0);
+    transition: transform 0.3s ease;
+}
+
 .doc-card:hover {
-    transform: translateY(-10px) scale(1.02);
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(59, 130, 246, 0.5);
-    box-shadow: 0 20px 40px -15px rgba(59, 130, 246, 0.3);
+    transform: translateY(-8px) scale(1.02);
+    background: rgba(255, 255, 255, 0.06);
+    border-color: rgba(220, 38, 38, 0.5);
 }
 
-/* Modal Transitions */
-#viewer-modal {
-    transition: opacity 0.3s ease;
+.doc-card:hover::before {
+    transform: scaleX(1);
 }
 
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-    width: 8px;
+/* Focus States */
+input:focus, textarea:focus {
+    box-shadow: 0 0 0 2px rgba(220, 38, 38, 0.3);
 }
 
-::-webkit-scrollbar-track {
-    background: #020617;
-}
-
-::-webkit-scrollbar-thumb {
-    background: #1e293b;
-    border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-    background: #334155;
-}
-
-/* Admin Inputs */
-input, textarea {
+/* Button Hover Effects */
+button {
     transition: all 0.2s ease;
 }
 
-input:focus, textarea:focus {
-    box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+button:active {
+    transform: scale(0.98);
+}
+
+/* Modal Styles */
+#viewer-modal {
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#viewer-modal.hidden {
+    opacity: 0;
+    visibility: hidden;
+}
+
+/* Gradient Text */
+.gradient-text {
+    background: linear-gradient(135deg, #fff 0%, #94a3b8 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Glow Effects */
+.glow-red {
+    box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+}
+
+/* Loading Animation */
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 40px rgba(220, 38, 38, 0.6);
+    }
+}
+
+.animate-pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
 }

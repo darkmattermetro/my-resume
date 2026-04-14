@@ -1,7 +1,6 @@
 const SUPABASE_URL = 'https://jrkuaysvvhjyxyrxmhul.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impya3VheXN2dmhqeXh5cnhtaHVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNDE0OTAsImV4cCI6MjA5MTcxNzQ5MH0.atCCNpZxriK2Xruo-kigPJCPrE-b2TeeB_E2C1IYxDI';
 
-// Robust Client Initialization
 let supabaseClient;
 try {
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -10,7 +9,6 @@ try {
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    // Always run animations first so the user doesn't see a blank page
     initAnimations();
     
     if (supabaseClient) {
@@ -19,13 +17,20 @@ document.addEventListener('DOMContentLoaded', async () => {
             await fetchDocuments();
         } catch (e) {
             console.error('Data fetching failed:', e);
+            setFallbackContent();
         }
     } else {
-        console.error('Supabase client not initialized');
-        document.getElementById('full-name').innerText = 'Portfolio';
-        document.getElementById('professional-title').innerText = 'Welcome to my site';
+        setFallbackContent();
     }
 });
+
+function setFallbackContent() {
+    document.getElementById('full-name').innerHTML = 'Metro Professional';
+    document.getElementById('professional-title').innerText = 'Rail Systems Specialist';
+    document.getElementById('introduction').innerText = 'Experienced professional in metro rail operations and systems engineering.';
+    document.getElementById('about-me').innerText = 'Dedicated to improving urban transit systems with over 10 years of experience in rail operations, signaling systems, and team leadership.';
+    document.getElementById('contact-info').innerText = 'Email: metro@example.com | Phone: +1 234 567 890';
+}
 
 async function fetchProfile() {
     const { data, error } = await supabaseClient
@@ -33,40 +38,51 @@ async function fetchProfile() {
         .select('*')
         .single();
 
-    if (error) {
-        console.warn('Error fetching profile:', error);
+    if (error || !data) {
+        console.warn('Profile not found or error:', error);
+        setFallbackContent();
         return;
     }
 
-    if (data) {
-        document.getElementById('full-name').innerText = data.full_name || 'Professional Name';
-        document.getElementById('professional-title').innerText = data.professional_title || 'Professional Title';
-        document.getElementById('introduction').innerText = data.introduction || 'Welcome to my professional portfolio.';
-        document.getElementById('about-me').innerText = data.about_me || 'Details about my experience...';
-        document.getElementById('contact-info').innerText = data.contact_info || 'Contact details...';
-        
-        if (data.profile_photo_url) {
-            document.getElementById('profile-img').src = data.profile_photo_url;
-        }
+    document.getElementById('full-name').innerHTML = data.full_name ? 
+        `<span class="bg-clip-text text-transparent bg-gradient-to-r from-white via-white to-slate-400">${data.full_name}</span>` : 
+        'Metro Professional';
+    document.getElementById('professional-title').innerText = data.professional_title || 'Rail Systems Specialist';
+    document.getElementById('introduction').innerText = data.introduction || 'Experienced professional in metro rail operations and systems engineering.';
+    document.getElementById('about-me').innerText = data.about_me || 'Dedicated to improving urban transit systems with over 10 years of experience in rail operations, signaling systems, and team leadership.';
+    document.getElementById('contact-info').innerText = data.contact_info || 'Email: metro@example.com | Phone: +1 234 567 890';
+    
+    if (data.profile_photo_url) {
+        document.getElementById('profile-img').src = data.profile_photo_url;
     }
 }
 
 async function fetchDocuments() {
     const { data, error } = await supabaseClient
         .from('documents')
-        .select('*');
+        .select('*')
+        .order('created_at', { ascending: false });
 
     const grid = document.getElementById('docs-grid');
     
     if (error || !data || data.length === 0) {
-        grid.innerHTML = `<p class="col-span-full text-center text-slate-500">No documents uploaded yet.</p>`;
+        grid.innerHTML = `
+            <div class="col-span-full text-center py-16 glass-panel rounded-2xl border border-white/10">
+                <i class="fas fa-folder-open text-4xl text-slate-600 mb-4"></i>
+                <p class="text-slate-500">No documents uploaded yet. Visit the admin panel to add some!</p>
+            </div>`;
         return;
     }
 
     grid.innerHTML = data.map(doc => `
-        <div class="doc-card glass-panel p-6 rounded-3xl border border-white/10 reveal" onclick="openViewer('${doc.url}', '${doc.name}')">
-            <div class="w-12 h-12 bg-blue-600/20 rounded-xl flex items-center justify-center mb-4 text-blue-500">
-                <i class="fas ${doc.url.toLowerCase().includes('.pdf') ? 'fa-file-pdf' : 'fa-file-image'} text-xl"></i>
+        <div class="doc-card glass-panel p-6 rounded-2xl border border-white/10" onclick="openViewer('${doc.url}', '${doc.name}')">
+            <div class="flex items-start justify-between mb-4">
+                <div class="w-14 h-14 bg-red-600/20 rounded-xl flex items-center justify-center">
+                    <i class="fas ${doc.url.toLowerCase().includes('.pdf') ? 'fa-file-pdf' : 'fa-file-image'} text-red-500 text-xl"></i>
+                </div>
+                <span class="text-xs text-slate-500 bg-white/5 px-2 py-1 rounded">
+                    ${doc.url.split('.').pop().toUpperCase()}
+                </span>
             </div>
             <h3 class="font-bold text-lg mb-2">${doc.name}</h3>
             <p class="text-sm text-slate-400">Click to view document</p>
@@ -75,16 +91,20 @@ async function fetchDocuments() {
 }
 
 function initAnimations() {
-    // Immediate Hero animation
-    gsap.to('#hero-content', {
-        opacity: 1,
-        y: 0,
-        duration: 1.2,
-        ease: 'power4.out',
-        delay: 0.2
+    gsap.from('#home', {
+        opacity: 0,
+        y: 50,
+        duration: 1,
+        ease: 'power3.out'
     });
 
-    // Scroll reveal
+    gsap.to('#home', {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power3.out'
+    });
+
     gsap.registerPlugin(ScrollTrigger);
     
     document.querySelectorAll('.reveal').forEach(el => {
@@ -96,13 +116,12 @@ function initAnimations() {
             },
             opacity: 1,
             y: 0,
-            duration: 1,
+            duration: 0.8,
             ease: 'power3.out'
         });
     });
 }
 
-// Viewer Modal Logic
 const modal = document.getElementById('viewer-modal');
 const modalContent = document.getElementById('modal-content');
 const modalTitle = document.getElementById('modal-title');
@@ -112,9 +131,9 @@ window.openViewer = (url, name) => {
     modalContent.innerHTML = '';
     
     if (url.toLowerCase().includes('.pdf')) {
-        modalContent.innerHTML = `<iframe src="${url}" class="w-full h-full rounded-xl border-none"></iframe>`;
+        modalContent.innerHTML = `<iframe src="${url}" class="w-full h-full rounded-lg border-none" style="min-height: 70vh;"></iframe>`;
     } else {
-        modalContent.innerHTML = `<img src="${url}" class="max-w-full max-h-full object-contain rounded-xl shadow-2xl">`;
+        modalContent.innerHTML = `<img src="${url}" class="max-w-full max-h-[70vh] object-contain rounded-lg shadow-2xl mx-auto">`;
     }
     
     modal.classList.remove('hidden');
@@ -132,3 +151,9 @@ modal.onclick = (e) => {
         document.getElementById('close-modal').onclick();
     }
 };
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && !modal.classList.contains('hidden')) {
+        document.getElementById('close-modal').onclick();
+    }
+});
