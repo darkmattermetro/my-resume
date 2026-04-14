@@ -18,8 +18,15 @@ async function loadProfileData() {
         return;
     }
     
-    const { data } = await window.supabaseClient.from('profile').select('*').maybeSingle();
+    const { data } = await window.supabaseClient.from('profile').select('*').limit(1).maybeSingle();
     console.log('Profile data:', data);
+    
+    if (!data) {
+        const { data: allData } = await window.supabaseClient.from('profile').select('*').limit(1);
+        if (allData && allData.length > 0) {
+            data = allData[0];
+        }
+    }
     
     if (!data) {
         console.log('No profile - showing defaults');

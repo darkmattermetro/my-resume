@@ -161,8 +161,14 @@
         async function loadProfile() {
             if (!supabaseClient) return;
             try {
-                var result = await supabaseClient.from('profile').select('*').maybeSingle();
+                var result = await supabaseClient.from('profile').select('*').limit(1).maybeSingle();
                 console.log('Load result:', result);
+                if (!result.data) {
+                    var allResult = await supabaseClient.from('profile').select('*').limit(1);
+                    if (allResult.data && allResult.data.length > 0) {
+                        result.data = allResult.data[0];
+                    }
+                }
                 if (result.data) {
                     var d = result.data;
                     document.getElementById('input-full-name').value = d.full_name || '';
