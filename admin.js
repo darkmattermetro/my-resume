@@ -41,174 +41,201 @@ function initAuth() {
 }
 
 async function loadCurrentProfile() {
-    const { data, error } = await supabaseClient
-        .from('profile')
-        .select('*')
-        .single();
+    try {
+        const { data, error } = await supabaseClient
+            .from('profile')
+            .select('*')
+            .single();
 
-    if (data && !error) {
-        document.getElementById('input-full-name').value = data.full_name || '';
-        document.getElementById('input-title').value = data.professional_title || '';
-        document.getElementById('input-intro').value = data.introduction || '';
-        document.getElementById('input-about').value = data.about_me || '';
-        document.getElementById('input-contact').value = data.contact_info || '';
-        
-        // Stats
-        document.getElementById('input-stat-years').value = data.stat_years || '';
-        document.getElementById('input-stat-projects').value = data.stat_projects || '';
-        document.getElementById('input-stat-success').value = data.stat_success || '';
-        
-        // Features
-        document.getElementById('input-feature1-title').value = data.feature1_title || '';
-        document.getElementById('input-feature1-desc').value = data.feature1_desc || '';
-        document.getElementById('input-feature2-title').value = data.feature2_title || '';
-        document.getElementById('input-feature2-desc').value = data.feature2_desc || '';
-        document.getElementById('input-feature3-title').value = data.feature3_title || '';
-        document.getElementById('input-feature3-desc').value = data.feature3_desc || '';
-        
-        if (data.profile_photo_url) {
-            document.getElementById('current-photo').src = data.profile_photo_url;
+        if (data) {
+            // Basic Info
+            document.getElementById('input-full-name').value = data.full_name || '';
+            document.getElementById('input-title').value = data.professional_title || '';
+            document.getElementById('input-intro').value = data.introduction || '';
+            document.getElementById('input-about').value = data.about_me || '';
+            document.getElementById('input-contact').value = data.contact_info || '';
+            
+            // Stats
+            document.getElementById('input-stat-years').value = data.stat_years || '';
+            document.getElementById('input-stat-projects').value = data.stat_projects || '';
+            document.getElementById('input-stat-success').value = data.stat_success || '';
+            
+            // Features
+            document.getElementById('input-feature1-title').value = data.feature1_title || '';
+            document.getElementById('input-feature1-desc').value = data.feature1_desc || '';
+            document.getElementById('input-feature2-title').value = data.feature2_title || '';
+            document.getElementById('input-feature2-desc').value = data.feature2_desc || '';
+            document.getElementById('input-feature3-title').value = data.feature3_title || '';
+            document.getElementById('input-feature3-desc').value = data.feature3_desc || '';
+            
+            // Images
+            if (data.profile_photo_url) {
+                document.getElementById('current-photo').src = data.profile_photo_url;
+            }
+            if (data.banner_url) {
+                document.getElementById('current-banner').src = data.banner_url;
+            }
         }
-        if (data.banner_url) {
-            document.getElementById('current-banner').src = data.banner_url;
-        }
+    } catch (e) {
+        console.log('No profile data yet');
     }
 }
 
 document.getElementById('save-profile-btn').onclick = async () => {
     const btn = document.getElementById('save-profile-btn');
+    const originalText = btn.innerHTML;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
     btn.disabled = true;
 
-    const profileData = {
-        full_name: document.getElementById('input-full-name').value,
-        professional_title: document.getElementById('input-title').value,
-        introduction: document.getElementById('input-intro').value,
-        about_me: document.getElementById('input-about').value,
-        contact_info: document.getElementById('input-contact').value,
-        stat_years: document.getElementById('input-stat-years').value,
-        stat_projects: document.getElementById('input-stat-projects').value,
-        stat_success: document.getElementById('input-stat-success').value,
-        feature1_title: document.getElementById('input-feature1-title').value,
-        feature1_desc: document.getElementById('input-feature1-desc').value,
-        feature2_title: document.getElementById('input-feature2-title').value,
-        feature2_desc: document.getElementById('input-feature2-desc').value,
-        feature3_title: document.getElementById('input-feature3-title').value,
-        feature3_desc: document.getElementById('input-feature3-desc').value
-    };
+    try {
+        const profileData = {
+            full_name: document.getElementById('input-full-name').value,
+            professional_title: document.getElementById('input-title').value,
+            introduction: document.getElementById('input-intro').value,
+            about_me: document.getElementById('input-about').value,
+            contact_info: document.getElementById('input-contact').value,
+            stat_years: document.getElementById('input-stat-years').value,
+            stat_projects: document.getElementById('input-stat-projects').value,
+            stat_success: document.getElementById('input-stat-success').value,
+            feature1_title: document.getElementById('input-feature1-title').value,
+            feature1_desc: document.getElementById('input-feature1-desc').value,
+            feature2_title: document.getElementById('input-feature2-title').value,
+            feature2_desc: document.getElementById('input-feature2-desc').value,
+            feature3_title: document.getElementById('input-feature3-title').value,
+            feature3_desc: document.getElementById('input-feature3-desc').value
+        };
 
-    const { error } = await supabaseClient
-        .from('profile')
-        .upsert(profileData);
+        // First check if profile exists
+        const { data: existing } = await supabaseClient
+            .from('profile')
+            .select('id')
+            .single();
 
-    if (error) {
-        alert('Error updating profile: ' + error.message);
-        btn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
-        btn.disabled = false;
-    } else {
-        alert('Profile updated successfully!');
-        btn.innerHTML = '<i class="fas fa-check"></i> Saved!';
-        setTimeout(() => {
-            btn.innerHTML = '<i class="fas fa-save"></i> Save Changes';
-            btn.disabled = false;
-        }, 2000);
+        let error;
+        if (existing && existing.id) {
+            const result = await supabaseClient
+                .from('profile')
+                .update(profileData)
+                .eq('id', existing.id);
+            error = result.error;
+        } else {
+            const result = await supabaseClient
+                .from('profile')
+                .insert([profileData]);
+            error = result.error;
+        }
+
+        if (error) {
+            alert('Error: ' + error.message);
+        } else {
+            alert('Profile saved successfully!');
+        }
+    } catch (e) {
+        alert('Error: ' + e.message);
     }
+
+    btn.innerHTML = originalText;
+    btn.disabled = false;
 };
 
 // Banner Upload
-document.getElementById('banner-upload').onchange = async (e) => {
+document.getElementById('banner-upload').addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     const btn = e.target.nextElementSibling;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
 
-    const fileName = `banner_${Date.now()}.${file.name.split('.').pop()}`;
-    const { data, error } = await supabaseClient.storage
-        .from('resume-assets')
-        .upload(fileName, file);
+    try {
+        const fileName = `banner_${Date.now()}.${file.name.split('.').pop()}`;
+        const { data, error } = await supabaseClient.storage
+            .from('resume-assets')
+            .upload(fileName, file);
 
-    if (error) {
-        alert('Upload failed: ' + error.message);
-        btn.innerHTML = '<i class="fas fa-upload mr-2"></i> Upload Banner';
-        return;
+        if (error) throw error;
+
+        const { data: publicUrlData } = supabaseClient.storage
+            .from('resume-assets')
+            .getPublicUrl(fileName);
+
+        const publicUrl = publicUrlData.publicUrl;
+
+        // Update profile with banner URL
+        const { data: existing } = await supabaseClient
+            .from('profile')
+            .select('id')
+            .single();
+
+        if (existing) {
+            await supabaseClient
+                .from('profile')
+                .update({ banner_url: publicUrl })
+                .eq('id', existing.id);
+        } else {
+            await supabaseClient
+                .from('profile')
+                .insert([{ banner_url: publicUrl }]);
+        }
+
+        document.getElementById('current-banner').src = publicUrl;
+        alert('Banner updated!');
+    } catch (err) {
+        alert('Upload failed: ' + err.message);
     }
 
-    const { data: publicUrlData } = supabaseClient.storage
-        .from('resume-assets')
-        .getPublicUrl(fileName);
-
-    const publicUrl = publicUrlData.publicUrl;
-
-    const { data: existingProfile } = await supabaseClient
-        .from('profile')
-        .select('id')
-        .single();
-
-    if (existingProfile) {
-        await supabaseClient
-            .from('profile')
-            .update({ banner_url: publicUrl })
-            .eq('id', existingProfile.id);
-    } else {
-        await supabaseClient
-            .from('profile')
-            .insert([{ banner_url: publicUrl }]);
-    }
-
-    document.getElementById('current-banner').src = publicUrl;
-    alert('Banner updated!');
     btn.innerHTML = '<i class="fas fa-upload mr-2"></i> Upload Banner';
-};
+});
 
 // Photo Upload
-document.getElementById('photo-upload').onchange = async (e) => {
+document.getElementById('photo-upload').addEventListener('change', async (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
     const btn = e.target.nextElementSibling;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
 
-    const fileName = `profile_photo_${Date.now()}.${file.name.split('.').pop()}`;
-    const { data, error } = await supabaseClient.storage
-        .from('resume-assets')
-        .upload(fileName, file);
+    try {
+        const fileName = `profile_${Date.now()}.${file.name.split('.').pop()}`;
+        const { data, error } = await supabaseClient.storage
+            .from('resume-assets')
+            .upload(fileName, file);
 
-    if (error) {
-        alert('Upload failed: ' + error.message);
-        btn.innerHTML = '<i class="fas fa-upload mr-2"></i> Upload Photo';
-        return;
+        if (error) throw error;
+
+        const { data: publicUrlData } = supabaseClient.storage
+            .from('resume-assets')
+            .getPublicUrl(fileName);
+
+        const publicUrl = publicUrlData.publicUrl;
+
+        // Update profile with photo URL
+        const { data: existing } = await supabaseClient
+            .from('profile')
+            .select('id')
+            .single();
+
+        if (existing) {
+            await supabaseClient
+                .from('profile')
+                .update({ profile_photo_url: publicUrl })
+                .eq('id', existing.id);
+        } else {
+            await supabaseClient
+                .from('profile')
+                .insert([{ profile_photo_url: publicUrl }]);
+        }
+
+        document.getElementById('current-photo').src = publicUrl;
+        alert('Photo updated!');
+    } catch (err) {
+        alert('Upload failed: ' + err.message);
     }
 
-    const { data: publicUrlData } = supabaseClient.storage
-        .from('resume-assets')
-        .getPublicUrl(fileName);
-
-    const publicUrl = publicUrlData.publicUrl;
-
-    const { data: existingProfile } = await supabaseClient
-        .from('profile')
-        .select('id')
-        .single();
-
-    if (existingProfile) {
-        await supabaseClient
-            .from('profile')
-            .update({ profile_photo_url: publicUrl })
-            .eq('id', existingProfile.id);
-    } else {
-        await supabaseClient
-            .from('profile')
-            .insert([{ profile_photo_url: publicUrl }]);
-    }
-
-    document.getElementById('current-photo').src = publicUrl;
-    alert('Photo updated!');
     btn.innerHTML = '<i class="fas fa-upload mr-2"></i> Upload Photo';
-};
+});
 
 // Document Upload
-document.getElementById('upload-doc-btn').onclick = async () => {
+document.getElementById('upload-doc-btn').addEventListener('click', async () => {
     const nameInput = document.getElementById('doc-name');
     const fileInput = document.getElementById('doc-upload');
     const file = fileInput.files[0];
@@ -219,49 +246,43 @@ document.getElementById('upload-doc-btn').onclick = async () => {
         return;
     }
 
+    const originalText = btn.innerHTML;
     btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
     btn.disabled = true;
 
-    const ext = file.name.split('.').pop();
-    const fileName = `${Date.now()}.${ext}`;
-    
-    const { error: uploadError } = await supabaseClient.storage
-        .from('resume-assets')
-        .upload(fileName, file);
+    try {
+        const ext = file.name.split('.').pop();
+        const fileName = `${Date.now()}.${ext}`;
+        
+        const { error: uploadError } = await supabaseClient.storage
+            .from('resume-assets')
+            .upload(fileName, file);
 
-    if (uploadError) {
-        alert('Upload failed: ' + uploadError.message);
-        btn.innerHTML = '<i class="fas fa-cloud-upload-alt mr-2"></i> Upload Document';
-        btn.disabled = false;
-        return;
-    }
+        if (uploadError) throw uploadError;
 
-    const { data: publicUrlData } = supabaseClient.storage
-        .from('resume-assets')
-        .getPublicUrl(fileName);
+        const { data: publicUrlData } = supabaseClient.storage
+            .from('resume-assets')
+            .getPublicUrl(fileName);
 
-    const publicUrl = publicUrlData.publicUrl;
+        const publicUrl = publicUrlData.publicUrl;
 
-    const { error: dbError } = await supabaseClient
-        .from('documents')
-        .insert([{ name: nameInput.value, url: publicUrl }]);
+        const { error: dbError } = await supabaseClient
+            .from('documents')
+            .insert([{ name: nameInput.value, url: publicUrl }]);
 
-    if (dbError) {
-        alert('Database update failed: ' + dbError.message);
-        btn.innerHTML = '<i class="fas fa-cloud-upload-alt mr-2"></i> Upload Document';
-        btn.disabled = false;
-    } else {
+        if (dbError) throw dbError;
+
         alert('Document uploaded successfully!');
         nameInput.value = '';
         fileInput.value = '';
         loadDocuments();
-        btn.innerHTML = '<i class="fas fa-check"></i> Uploaded!';
-        setTimeout(() => {
-            btn.innerHTML = '<i class="fas fa-cloud-upload-alt mr-2"></i> Upload Document';
-            btn.disabled = false;
-        }, 2000);
+    } catch (err) {
+        alert('Error: ' + err.message);
     }
-};
+
+    btn.innerHTML = originalText;
+    btn.disabled = false;
+});
 
 async function loadDocuments() {
     const { data, error } = await supabaseClient
@@ -291,9 +312,12 @@ async function loadDocuments() {
 window.deleteDoc = async (id, url) => {
     if (!confirm('Delete this document?')) return;
 
-    const fileName = url.split('/').pop();
-    await supabaseClient.storage.from('resume-assets').remove([fileName]);
-    await supabaseClient.from('documents').delete().eq('id', id);
-    
-    loadDocuments();
+    try {
+        const fileName = url.split('/').pop();
+        await supabaseClient.storage.from('resume-assets').remove([fileName]);
+        await supabaseClient.from('documents').delete().eq('id', id);
+        loadDocuments();
+    } catch (err) {
+        alert('Error deleting: ' + err.message);
+    }
 };
