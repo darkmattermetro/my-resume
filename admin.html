@@ -3,26 +3,36 @@
 <head>
     <title>Admin Panel</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: Arial, sans-serif; background: #f0f0f0; }
         
-        /* Login Page */
-        #login-page { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(135deg, #1a1a2e, #16213e); display: flex; align-items: center; justify-content: center; z-index: 9999; }
-        #login-box { background: rgba(255,255,255,0.15); padding: 50px; border-radius: 20px; text-align: center; width: 320px; backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+        #login-page { 
+            position: fixed; top: 0; left: 0; right: 0; bottom: 0; 
+            background: linear-gradient(135deg, #1a1a2e, #16213e); 
+            display: flex; align-items: center; justify-content: center; 
+            z-index: 9999; 
+        }
+        #login-box { 
+            background: rgba(255,255,255,0.15); padding: 50px; border-radius: 20px; 
+            text-align: center; width: 320px; backdrop-filter: blur(10px); 
+            border: 1px solid rgba(255,255,255,0.2); 
+        }
         #login-box h2 { color: white; margin-bottom: 5px; }
         #login-box p { color: #aaa; margin-bottom: 25px; }
-        #password { width: 100%; padding: 15px; border-radius: 10px; border: none; text-align: center; font-size: 16px; outline: none; }
-        #login-btn { width: 100%; padding: 15px; background: #3b82f6; color: white; border: none; border-radius: 10px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 15px; }
-        #login-btn:hover { background: #2563eb; }
+        #password { 
+            width: 100%; padding: 15px; border-radius: 10px; border: none; 
+            text-align: center; font-size: 16px; outline: none; 
+        }
+        #login-btn { 
+            width: 100%; padding: 15px; background: #3b82f6; color: white; 
+            border: none; border-radius: 10px; cursor: pointer; font-size: 16px; 
+            font-weight: bold; margin-top: 15px; 
+        }
         #error-msg { color: #ff6b6b; display: none; margin-top: 15px; }
         
-        /* Admin Dashboard */
         #admin-page { display: none; }
         .header { background: white; padding: 15px 30px; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        .header h1 { color: #333; font-size: 20px; }
-        .logout-btn { padding: 8px 20px; background: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer; }
         .content { padding: 30px; max-width: 900px; margin: 0 auto; }
         .card { background: white; padding: 25px; border-radius: 15px; margin-bottom: 25px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
         .card h3 { margin: 0 0 20px 0; color: #333; border-bottom: 1px solid #eee; padding-bottom: 10px; }
@@ -30,25 +40,19 @@
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: bold; color: #555; font-size: 14px; }
         .form-group input, .form-group textarea { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #3b82f6; }
         .save-btn { display: block; width: 100%; padding: 18px; background: linear-gradient(135deg, #3b82f6, #2563eb); color: white; border: none; border-radius: 12px; cursor: pointer; font-size: 18px; font-weight: bold; }
-        .save-btn:hover { transform: scale(1.02); }
         
-        /* Media Section */
         .media-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
         .media-item { background: #f8fafc; padding: 20px; border-radius: 12px; text-align: center; }
-        .media-item h4 { margin-bottom: 15px; color: #333; }
         .media-item img { max-width: 100%; height: 100px; object-fit: cover; border-radius: 8px; margin-bottom: 10px; border: 2px solid #eee; }
         .media-item input[type="file"] { margin-top: 10px; width: 100%; }
         .upload-btn { display: block; width: 100%; padding: 10px; background: #3b82f6; color: white; border: none; border-radius: 8px; cursor: pointer; margin-top: 10px; }
         
-        /* Documents List */
         .docs-list { margin-top: 20px; }
         .doc-item { display: flex; justify-content: space-between; align-items: center; padding: 12px; background: #f8fafc; border-radius: 8px; margin-bottom: 8px; }
-        .doc-item span { color: #333; }
         .delete-btn { padding: 5px 10px; background: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer; }
-        
         .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        .logout-btn { padding: 8px 20px; background: #ef4444; color: white; border: none; border-radius: 5px; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -56,10 +60,10 @@
     <!-- Login Page -->
     <div id="login-page">
         <div id="login-box">
-            <h2><i class="fas fa-cog"></i> Admin</h2>
+            <h2>Admin Login</h2>
             <p>Enter password to continue</p>
             <input type="password" id="password" placeholder="Password">
-            <button id="login-btn" onclick="checkLogin()">Login</button>
+            <button id="login-btn">Login</button>
             <div id="error-msg">Incorrect password!</div>
         </div>
     </div>
@@ -67,14 +71,14 @@
     <!-- Admin Dashboard -->
     <div id="admin-page">
         <div class="header">
-            <h1><i class="fas fa-cog"></i> Admin Panel</h1>
+            <h1>Admin Panel</h1>
             <button class="logout-btn" onclick="doLogout()">Logout</button>
         </div>
         
         <div class="content">
             <!-- Profile -->
             <div class="card">
-                <h3><i class="fas fa-user"></i> Profile Information</h3>
+                <h3>Profile Information</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Full Name</label>
@@ -101,7 +105,7 @@
 
             <!-- Stats -->
             <div class="card">
-                <h3><i class="fas fa-chart-line"></i> Statistics</h3>
+                <h3>Statistics</h3>
                 <div class="form-row">
                     <div class="form-group">
                         <label>Years Experience</label>
@@ -120,7 +124,7 @@
 
             <!-- Features -->
             <div class="card">
-                <h3><i class="fas fa-star"></i> Feature Cards</h3>
+                <h3>Feature Cards</h3>
                 <div class="three-col">
                     <div class="form-group">
                         <label>Feature 1 Title</label>
@@ -143,11 +147,11 @@
                 </div>
             </div>
 
-            <button class="save-btn" onclick="saveProfile()">💾 Save Changes</button>
+            <button class="save-btn" onclick="saveProfile()">Save Changes</button>
 
             <!-- Media -->
             <div class="card">
-                <h3><i class="fas fa-image"></i> Media & Documents</h3>
+                <h3>Media & Documents</h3>
                 <div class="media-grid">
                     <div class="media-item">
                         <h4>Banner</h4>
@@ -174,6 +178,173 @@
         </div>
     </div>
 
-    <script src="admin.js"></script>
+    <script>
+        const ADMIN_PASSWORD = 'admin123';
+        let supabase = null;
+
+        try {
+            supabase = supabase.createClient(
+                'https://jrkuaysvvhjyxyrxmhul.supabase.co',
+                'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impya3VheXN2dmhqeXh5cnhtaHVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNDE0OTAsImV4cCI6MjA5MTcxNzQ5MH0.atCCNpZxriK2Xruo-kigPJCPrE-b2TeeB_E2C1IYxDI'
+            );
+        } catch(e) {
+            console.log('Supabase error:', e);
+        }
+
+        document.getElementById('login-btn').onclick = function() {
+            var pwd = document.getElementById('password').value;
+            if (pwd === ADMIN_PASSWORD) {
+                localStorage.setItem('admin_logged_in', 'true');
+                showAdmin();
+            } else {
+                document.getElementById('error-msg').style.display = 'block';
+            }
+        };
+
+        if (localStorage.getItem('admin_logged_in') === 'true') {
+            showAdmin();
+        }
+
+        function showAdmin() {
+            document.getElementById('login-page').style.display = 'none';
+            document.getElementById('admin-page').style.display = 'block';
+            if (supabase) {
+                loadProfile();
+                loadDocs();
+            }
+        }
+
+        function doLogout() {
+            localStorage.removeItem('admin_logged_in');
+            location.reload();
+        }
+
+        async function loadProfile() {
+            if (!supabase) return;
+            var result = await supabase.from('profile').select('*').maybeSingle();
+            if (result.data) {
+                var d = result.data;
+                document.getElementById('input-full-name').value = d.full_name || '';
+                document.getElementById('input-title').value = d.professional_title || '';
+                document.getElementById('input-intro').value = d.introduction || '';
+                document.getElementById('input-about').value = d.about_me || '';
+                document.getElementById('input-contact').value = d.contact_info || '';
+                document.getElementById('input-stat-years').value = d.stat_years || '';
+                document.getElementById('input-stat-projects').value = d.stat_projects || '';
+                document.getElementById('input-stat-success').value = d.stat_success || '';
+                document.getElementById('input-feature1-title').value = d.feature1_title || '';
+                document.getElementById('input-feature1-desc').value = d.feature1_desc || '';
+                document.getElementById('input-feature2-title').value = d.feature2_title || '';
+                document.getElementById('input-feature2-desc').value = d.feature2_desc || '';
+                document.getElementById('input-feature3-title').value = d.feature3_title || '';
+                document.getElementById('input-feature3-desc').value = d.feature3_desc || '';
+                if (d.profile_photo_url) document.getElementById('current-photo').src = d.profile_photo_url;
+                if (d.banner_url) document.getElementById('current-banner').src = d.banner_url;
+            }
+        }
+
+        async function saveProfile() {
+            var data = {
+                full_name: document.getElementById('input-full-name').value,
+                professional_title: document.getElementById('input-title').value,
+                introduction: document.getElementById('input-intro').value,
+                about_me: document.getElementById('input-about').value,
+                contact_info: document.getElementById('input-contact').value,
+                stat_years: document.getElementById('input-stat-years').value,
+                stat_projects: document.getElementById('input-stat-projects').value,
+                stat_success: document.getElementById('input-stat-success').value,
+                feature1_title: document.getElementById('input-feature1-title').value,
+                feature1_desc: document.getElementById('input-feature1-desc').value,
+                feature2_title: document.getElementById('input-feature2-title').value,
+                feature2_desc: document.getElementById('input-feature2-desc').value,
+                feature3_title: document.getElementById('input-feature3-title').value,
+                feature3_desc: document.getElementById('input-feature3-desc').value
+            };
+            
+            var existing = await supabase.from('profile').select('id').maybeSingle();
+            var result;
+            if (existing && existing.id) {
+                result = await supabase.from('profile').update(data).eq('id', existing.id);
+            } else {
+                result = await supabase.from('profile').insert([data]);
+            }
+            
+            if (result.error) alert('Error: ' + result.error.message);
+            else alert('Saved!');
+        }
+
+        async function uploadBanner() {
+            var file = document.getElementById('banner-upload').files[0];
+            if (!file) return alert('Select file');
+            
+            var result = await supabase.storage.from('resume-assets').upload('banner_' + Date.now(), file);
+            if (result.error) return alert('Error: ' + result.error.message);
+            
+            var url = supabase.storage.from('resume-assets').getPublicUrl(result.data.path).data.publicUrl;
+            var existing = await supabase.from('profile').select('id').maybeSingle();
+            if (existing && existing.id) {
+                await supabase.from('profile').update({banner_url: url}).eq('id', existing.id);
+            } else {
+                await supabase.from('profile').insert([{banner_url: url}]);
+            }
+            
+            document.getElementById('current-banner').src = url;
+            alert('Uploaded!');
+        }
+
+        async function uploadPhoto() {
+            var file = document.getElementById('photo-upload').files[0];
+            if (!file) return alert('Select file');
+            
+            var result = await supabase.storage.from('resume-assets').upload('photo_' + Date.now(), file);
+            if (result.error) return alert('Error: ' + result.error.message);
+            
+            var url = supabase.storage.from('resume-assets').getPublicUrl(result.data.path).data.publicUrl;
+            var existing = await supabase.from('profile').select('id').maybeSingle();
+            if (existing && existing.id) {
+                await supabase.from('profile').update({profile_photo_url: url}).eq('id', existing.id);
+            } else {
+                await supabase.from('profile').insert([{profile_photo_url: url}]);
+            }
+            
+            document.getElementById('current-photo').src = url;
+            alert('Uploaded!');
+        }
+
+        async function uploadDoc() {
+            var name = document.getElementById('doc-name').value;
+            var file = document.getElementById('doc-upload').files[0];
+            if (!name || !file) return alert('Enter name and select file');
+            
+            var result = await supabase.storage.from('resume-assets').upload(Date.now() + '_' + file.name, file);
+            if (result.error) return alert('Error: ' + result.error.message);
+            
+            var url = supabase.storage.from('resume-assets').getPublicUrl(result.data.path).data.publicUrl;
+            await supabase.from('documents').insert([{name: name, url: url}]);
+            
+            document.getElementById('doc-name').value = '';
+            document.getElementById('doc-upload').value = '';
+            loadDocs();
+            alert('Uploaded!');
+        }
+
+        async function loadDocs() {
+            var result = await supabase.from('documents').select('*').order('created_at', { ascending: false });
+            var list = document.getElementById('docs-list');
+            if (!result.data || result.data.length === 0) {
+                list.innerHTML = '<p style="color:#999;">No documents</p>';
+                return;
+            }
+            list.innerHTML = result.data.map(function(d) {
+                return '<div class="doc-item"><span>' + d.name + '</span><button class="delete-btn" onclick="deleteDoc(' + d.id + ')">Delete</button></div>';
+            }).join('');
+        }
+
+        async function deleteDoc(id) {
+            if (!confirm('Delete?')) return;
+            await supabase.from('documents').delete().eq('id', id);
+            loadDocs();
+        }
+    </script>
 </body>
 </html>
