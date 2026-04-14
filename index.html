@@ -19,7 +19,8 @@
 
     <!-- Hero Section -->
     <section class="min-h-screen flex flex-col items-center justify-center relative px-4 text-center">
-        <div id="hero-content" class="opacity-0 translate-y-10">
+        <!-- Removed opacity-0 to ensure it's visible if JS fails -->
+        <div id="hero-content" class="translate-y-10 transition-all duration-700">
             <div class="relative inline-block mb-8">
                 <img id="profile-img" src="https://via.placeholder.com/150" alt="Profile" class="w-40 h-40 rounded-full border-4 border-blue-500/50 shadow-[0_0_30px_rgba(59,130,246,0.5)] object-cover">
                 <div class="absolute -bottom-2 -right-2 bg-blue-600 p-2 rounded-full border-2 border-slate-950">

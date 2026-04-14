@@ -1,13 +1,30 @@
-const SUPABASE_URL = 'https://jrkuaysvvhjyxyrxmhul.supabaseClient.co';
+const SUPABASE_URL = 'https://jrkuaysvvhjyxyrxmhul.supabase.co';
 const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impya3VheXN2dmhqeXh5cnhtaHVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNDE0OTAsImV4cCI6MjA5MTcxNzQ5MH0.atCCNpZxriK2Xruo-kigPJCPrE-b2TeeB_E2C1IYxDI';
 
-const { createClient } = supabaseClient;
-const supabaseClientClient = createClient(SUPABASE_URL, SUPABASE_KEY);
+// Robust Client Initialization
+let supabaseClient;
+try {
+    supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+} catch (e) {
+    console.error('Supabase initialization failed:', e);
+}
 
 document.addEventListener('DOMContentLoaded', async () => {
-    await fetchProfile();
-    await fetchDocuments();
+    // Always run animations first so the user doesn't see a blank page
     initAnimations();
+    
+    if (supabaseClient) {
+        try {
+            await fetchProfile();
+            await fetchDocuments();
+        } catch (e) {
+            console.error('Data fetching failed:', e);
+        }
+    } else {
+        console.error('Supabase client not initialized');
+        document.getElementById('full-name').innerText = 'Portfolio';
+        document.getElementById('professional-title').innerText = 'Welcome to my site';
+    }
 });
 
 async function fetchProfile() {
@@ -17,7 +34,7 @@ async function fetchProfile() {
         .single();
 
     if (error) {
-        console.error('Error fetching profile:', error);
+        console.warn('Error fetching profile:', error);
         return;
     }
 
@@ -35,12 +52,6 @@ async function fetchProfile() {
 }
 
 async function fetchDocuments() {
-    // We'll use a separate table for documents if exists, or list files from bucket.
-    // For simplicity, let's assume documents are listed in a table called 'documents'
-    // If the table doesn't exist, we will try to list bucket files (requires more permissions).
-    // Since user asked for "click on file", let's assume we have a table 'documents'
-    // with columns: 'name' and 'url'.
-    
     const { data, error } = await supabaseClient
         .from('documents')
         .select('*');
@@ -64,13 +75,13 @@ async function fetchDocuments() {
 }
 
 function initAnimations() {
-    // Hero fade-in
+    // Immediate Hero animation
     gsap.to('#hero-content', {
         opacity: 1,
         y: 0,
         duration: 1.2,
         ease: 'power4.out',
-        delay: 0.5
+        delay: 0.2
     });
 
     // Scroll reveal
@@ -116,7 +127,6 @@ document.getElementById('close-modal').onclick = () => {
     modalContent.innerHTML = '';
 };
 
-// Close on background click
 modal.onclick = (e) => {
     if (e.target === modal) {
         document.getElementById('close-modal').onclick();
