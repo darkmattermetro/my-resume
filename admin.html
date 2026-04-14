@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | Resume Manager</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="bg-slate-950 text-white min-h-screen">
+
+    <!-- Login Overlay -->
+    <div id="login-overlay" class="fixed inset-0 z-[100] bg-slate-950 flex items-center justify-center px-4">
+        <div class="glass-panel p-8 rounded-3xl border border-white/10 max-w-md w-full text-center">
+            <h2 class="text-2xl font-bold mb-6">Admin Access</h2>
+            <input type="password" id="admin-pass" placeholder="Enter Admin Password" class="w-full p-3 rounded-xl bg-white/5 border border-white/10 mb-4 outline-none focus:border-blue-500 transition-all">
+            <button id="login-btn" class="w-full py-3 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold transition-all">Unlock Dashboard</button>
+            <p id="login-error" class="text-red-400 mt-4 hidden text-sm">Incorrect password. Please try again.</p>
+        </div>
+    </div>
+
+    <!-- Main Admin Content -->
+    <div id="admin-content" class="hidden py-12 px-4 max-w-4xl mx-auto">
+        <div class="flex justify-between items-center mb-12">
+            <h1 class="text-3xl font-bold">Dashboard</h1>
+            <button id="logout-btn" class="px-4 py-2 bg-red-600/20 text-red-400 border border-red-600/50 rounded-lg hover:bg-red-600 hover:text-white transition-all">
+                Logout <i class="fas fa-sign-out-alt ml-2"></i>
+            </button>
+        </div>
+
+        <div class="grid grid-cols-1 gap-8">
+            <!-- Profile Text Editor -->
+            <div class="glass-panel p-8 rounded-3xl border border-white/10">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+                    <i class="fas fa-edit text-blue-500"></i> Edit Profile Info
+                </h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <div class="flex flex-col gap-2">
+                        <label class="text-sm text-slate-400">Full Name</label>
+                        <input type="text" id="input-full-name" class="p-3 rounded-xl bg-white/5 border border-white/10 outline-none focus:border-blue-500">
+                    </div>
+                    <div class="flex flex-col gap-2">
+                        <label class="text-sm text-slate-400">Professional Title</label>
+                        <input type="text" id="input-title" class="p-3 rounded-xl bg-white/5 border border-white/10 outline-none focus:border-blue-500">
+                    </div>
+                    <div class="flex flex-col gap-2 md:col-span-2">
+                        <label class="text-sm text-slate-400">Introduction</label>
+                        <textarea id="input-intro" rows="3" class="p-3 rounded-xl bg-white/5 border border-white/10 outline-none focus:border-blue-500"></textarea>
+                    </div>
+                    <div class="flex flex-col gap-2 md:col-span-2">
+                        <label class="text-sm text-slate-400">About Me (Full Bio)</label>
+                        <textarea id="input-about" rows="5" class="p-3 rounded-xl bg-white/5 border border-white/10 outline-none focus:border-blue-500"></textarea>
+                    </div>
+                    <div class="flex flex-col gap-2 md:col-span-2">
+                        <label class="text-sm text-slate-400">Contact Info (Email, Phone, etc.)</label>
+                        <input type="text" id="input-contact" class="p-3 rounded-xl bg-white/5 border border-white/10 outline-none focus:border-blue-500">
+                    </div>
+                </div>
+                <button id="save-profile-btn" class="mt-8 px-6 py-3 bg-blue-600 hover:bg-blue-500 rounded-xl font-bold transition-all flex items-center gap-2">
+                    <i class="fas fa-save"></i> Save Changes
+                </button>
+            </div>
+
+            <!-- Media Uploads -->
+            <div class="glass-panel p-8 rounded-3xl border border-white/10">
+                <h2 class="text-xl font-bold mb-6 flex items-center gap-3">
+                    <i class="fas fa-cloud-upload-alt text-blue-500"></i> Media & Documents
+                </h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- Profile Photo -->
+                    <div class="flex flex-col items-center gap-4 p-6 border border-white/5 rounded-2xl bg-white/5">
+                        <img id="current-photo" src="https://via.placeholder.com/100" class="w-24 h-24 rounded-full object-cover border-2 border-blue-500">
+                        <label class="cursor-pointer text-sm bg-blue-600 px-4 py-2 rounded-lg hover:bg-blue-500 transition-all">
+                            Upload Photo
+                            <input type="file" id="photo-upload" accept="image/*" class="hidden">
+                        </label>
+                    </div>
+
+                    <!-- Document Upload -->
+                    <div class="flex flex-col gap-4 p-6 border border-white/5 rounded-2xl bg-white/5">
+                        <div class="flex flex-col gap-2">
+                            <label class="text-sm text-slate-400">Document Name</label>
+                            <input type="text" id="doc-name" placeholder="e.g. Resume 2024" class="p-3 rounded-xl bg-white/5 border border-white/10 outline-none focus:border-blue-500">
+                        </div>
+                        <div class="flex flex-col gap-2">
+                            <label class="text-sm text-slate-400">Select PDF/Image</label>
+                            <input type="file" id="doc-upload" accept="application/pdf,image/*" class="p-2 text-sm">
+                        </div>
+                        <button id="upload-doc-btn" class="py-3 bg-purple-600 hover:bg-purple-500 rounded-xl font-bold transition-all">
+                            Upload Document
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Current Documents List -->
+                <div class="mt-8">
+                    <h3 class="text-sm font-medium text-slate-400 mb-4">Manage Uploaded Files</h3>
+                    <div id="docs-list" class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                        <!-- Files will be listed here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="admin.js"></script>
+</body>
+</html>
