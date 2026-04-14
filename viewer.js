@@ -4,90 +4,88 @@ const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZ
 let supabaseClient;
 try {
     supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+    console.log('Supabase client initialized');
 } catch (e) {
     console.error('Supabase init failed:', e);
 }
 
 document.addEventListener('DOMContentLoaded', async () => {
-    initAnimations();
+    console.log('Page loaded, fetching data...');
     
     if (supabaseClient) {
-        try {
-            await fetchProfile();
-            await fetchDocuments();
-        } catch (e) {
-            console.error('Error fetching data:', e);
-        }
+        await fetchProfile();
+        await fetchDocuments();
     }
 });
 
-function setFallbackContent() {
-    document.getElementById('full-name').innerText = 'Your Name';
-    document.getElementById('professional-title').innerText = 'Your Title';
-    document.getElementById('introduction').innerText = 'Your introduction goes here...';
-    document.getElementById('about-me').innerText = 'Your bio goes here...';
-    document.getElementById('contact-info').innerText = 'Your contact info goes here...';
-}
-
 async function fetchProfile() {
     try {
+        console.log('Fetching profile...');
         const { data, error } = await supabaseClient
             .from('profile')
             .select('*')
-            .single();
+            .limit(1)
+            .maybeSingle();
 
-        if (error || !data) {
-            setFallbackContent();
-            return;
-        }
+        console.log('Profile data:', data);
+        console.log('Profile error:', error);
 
-        // Basic Info
-        document.getElementById('full-name').innerText = data.full_name || 'Your Name';
-        document.getElementById('professional-title').innerText = data.professional_title || 'Professional Title';
-        document.getElementById('introduction').innerText = data.introduction || '';
-        document.getElementById('about-me').innerText = data.about_me || '';
-        document.getElementById('contact-info').innerText = data.contact_info || '';
-        
-        // Stats - only update if they have values
-        if (data.stat_years) document.getElementById('stat-years').innerText = data.stat_years;
-        if (data.stat_projects) document.getElementById('stat-projects').innerText = data.stat_projects;
-        if (data.stat_success) document.getElementById('stat-success').innerText = data.stat_success;
-        
-        // Feature 1
-        if (data.feature1_title) document.getElementById('feature1-title').innerText = data.feature1_title;
-        if (data.feature1_desc) document.getElementById('feature1-desc').innerText = data.feature1_desc;
-        
-        // Feature 2
-        if (data.feature2_title) document.getElementById('feature2-title').innerText = data.feature2_title;
-        if (data.feature2_desc) document.getElementById('feature2-desc').innerText = data.feature2_desc;
-        
-        // Feature 3
-        if (data.feature3_title) document.getElementById('feature3-title').innerText = data.feature3_title;
-        if (data.feature3_desc) document.getElementById('feature3-desc').innerText = data.feature3_desc;
-        
-        // Images
-        if (data.profile_photo_url) {
-            document.getElementById('profile-img').src = data.profile_photo_url;
-        }
-        if (data.banner_url) {
-            document.getElementById('banner-img').src = data.banner_url;
+        if (data) {
+            // Basic Info
+            if (data.full_name) document.getElementById('full-name').innerText = data.full_name;
+            if (data.professional_title) document.getElementById('professional-title').innerText = data.professional_title;
+            if (data.introduction) document.getElementById('introduction').innerText = data.introduction;
+            if (data.about_me) document.getElementById('about-me').innerText = data.about_me;
+            if (data.contact_info) document.getElementById('contact-info').innerText = data.contact_info;
+            
+            // Stats
+            if (data.stat_years) document.getElementById('stat-years').innerText = data.stat_years;
+            if (data.stat_projects) document.getElementById('stat-projects').innerText = data.stat_projects;
+            if (data.stat_success) document.getElementById('stat-success').innerText = data.stat_success;
+            
+            // Feature 1
+            if (data.feature1_title) document.getElementById('feature1-title').innerText = data.feature1_title;
+            if (data.feature1_desc) document.getElementById('feature1-desc').innerText = data.feature1_desc;
+            
+            // Feature 2
+            if (data.feature2_title) document.getElementById('feature2-title').innerText = data.feature2_title;
+            if (data.feature2_desc) document.getElementById('feature2-desc').innerText = data.feature2_desc;
+            
+            // Feature 3
+            if (data.feature3_title) document.getElementById('feature3-title').innerText = data.feature3_title;
+            if (data.feature3_desc) document.getElementById('feature3-desc').innerText = data.feature3_desc;
+            
+            // Images
+            if (data.profile_photo_url) {
+                document.getElementById('profile-img').src = data.profile_photo_url;
+            }
+            if (data.banner_url) {
+                document.getElementById('banner-img').src = data.banner_url;
+            }
+            
+            console.log('Profile updated successfully');
+        } else {
+            console.log('No profile data found');
         }
     } catch (e) {
         console.error('Error in fetchProfile:', e);
-        setFallbackContent();
     }
 }
 
 async function fetchDocuments() {
     try {
+        console.log('Fetching documents...');
         const { data, error } = await supabaseClient
             .from('documents')
             .select('*')
             .order('created_at', { ascending: false });
 
+        console.log('Documents data:', data);
+        console.log('Documents error:', error);
+
         const grid = document.getElementById('docs-grid');
         
-        if (error || !data || data.length === 0) {
+        if (!data || data.length === 0) {
             grid.innerHTML = `
                 <div class="col-span-full text-center py-12 bg-white rounded-2xl border border-slate-200 shadow-sm">
                     <i class="fas fa-folder-open text-4xl text-slate-300 mb-4"></i>
@@ -110,20 +108,14 @@ async function fetchDocuments() {
                 <p class="text-sm text-slate-500">Click to view</p>
             </div>
         `).join('');
+        
+        console.log('Documents updated successfully');
     } catch (e) {
-        console.error('Error fetching documents:', e);
+        console.error('Error in fetchDocuments:', e);
     }
 }
 
-function initAnimations() {
-    gsap.from('#home', {
-        opacity: 0,
-        y: 30,
-        duration: 0.8,
-        ease: 'power3.out'
-    });
-}
-
+// Viewer Modal Logic
 const modal = document.getElementById('viewer-modal');
 const modalContent = document.getElementById('modal-content');
 const modalTitle = document.getElementById('modal-title');

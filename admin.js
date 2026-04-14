@@ -41,53 +41,55 @@ function initAuth() {
 }
 
 async function loadCurrentProfile() {
-    try {
-        const { data, error } = await supabaseClient
-            .from('profile')
-            .select('*')
-            .single();
+    const { data, error } = await supabaseClient
+        .from('profile')
+        .select('*')
+        .limit(1)
+        .maybeSingle();
 
-        if (data) {
-            // Basic Info
-            document.getElementById('input-full-name').value = data.full_name || '';
-            document.getElementById('input-title').value = data.professional_title || '';
-            document.getElementById('input-intro').value = data.introduction || '';
-            document.getElementById('input-about').value = data.about_me || '';
-            document.getElementById('input-contact').value = data.contact_info || '';
-            
-            // Stats
-            document.getElementById('input-stat-years').value = data.stat_years || '';
-            document.getElementById('input-stat-projects').value = data.stat_projects || '';
-            document.getElementById('input-stat-success').value = data.stat_success || '';
-            
-            // Features
-            document.getElementById('input-feature1-title').value = data.feature1_title || '';
-            document.getElementById('input-feature1-desc').value = data.feature1_desc || '';
-            document.getElementById('input-feature2-title').value = data.feature2_title || '';
-            document.getElementById('input-feature2-desc').value = data.feature2_desc || '';
-            document.getElementById('input-feature3-title').value = data.feature3_title || '';
-            document.getElementById('input-feature3-desc').value = data.feature3_desc || '';
-            
-            // Images
-            if (data.profile_photo_url) {
-                document.getElementById('current-photo').src = data.profile_photo_url;
-            }
-            if (data.banner_url) {
-                document.getElementById('current-banner').src = data.banner_url;
-            }
+    if (data) {
+        document.getElementById('input-full-name').value = data.full_name || '';
+        document.getElementById('input-title').value = data.professional_title || '';
+        document.getElementById('input-intro').value = data.introduction || '';
+        document.getElementById('input-about').value = data.about_me || '';
+        document.getElementById('input-contact').value = data.contact_info || '';
+        
+        // Stats
+        document.getElementById('input-stat-years').value = data.stat_years || '';
+        document.getElementById('input-stat-projects').value = data.stat_projects || '';
+        document.getElementById('input-stat-success').value = data.stat_success || '';
+        
+        // Features
+        document.getElementById('input-feature1-title').value = data.feature1_title || '';
+        document.getElementById('input-feature1-desc').value = data.feature1_desc || '';
+        document.getElementById('input-feature2-title').value = data.feature2_title || '';
+        document.getElementById('input-feature2-desc').value = data.feature2_desc || '';
+        document.getElementById('input-feature3-title').value = data.feature3_title || '';
+        document.getElementById('input-feature3-desc').value = data.feature3_desc || '';
+        
+        // Images
+        if (data.profile_photo_url) {
+            document.getElementById('current-photo').src = data.profile_photo_url;
         }
-    } catch (e) {
-        console.log('No profile data yet');
+        if (data.banner_url) {
+            document.getElementById('current-banner').src = data.banner_url;
+        }
     }
 }
 
 document.getElementById('save-profile-btn').onclick = async () => {
     const btn = document.getElementById('save-profile-btn');
-    const originalText = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Saving...';
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Saving...';
     btn.disabled = true;
 
     try {
+        // Get existing profile
+        const { data: existingProfile } = await supabaseClient
+            .from('profile')
+            .select('id')
+            .limit(1)
+            .maybeSingle();
+
         const profileData = {
             full_name: document.getElementById('input-full-name').value,
             professional_title: document.getElementById('input-title').value,
@@ -105,20 +107,16 @@ document.getElementById('save-profile-btn').onclick = async () => {
             feature3_desc: document.getElementById('input-feature3-desc').value
         };
 
-        // First check if profile exists
-        const { data: existing } = await supabaseClient
-            .from('profile')
-            .select('id')
-            .single();
-
         let error;
-        if (existing && existing.id) {
+        if (existingProfile && existingProfile.id) {
+            // Update existing
             const result = await supabaseClient
                 .from('profile')
                 .update(profileData)
-                .eq('id', existing.id);
+                .eq('id', existingProfile.id);
             error = result.error;
         } else {
+            // Insert new
             const result = await supabaseClient
                 .from('profile')
                 .insert([profileData]);
@@ -126,15 +124,17 @@ document.getElementById('save-profile-btn').onclick = async () => {
         }
 
         if (error) {
+            console.error('Save error:', error);
             alert('Error: ' + error.message);
         } else {
             alert('Profile saved successfully!');
         }
     } catch (e) {
+        console.error('Save exception:', e);
         alert('Error: ' + e.message);
     }
 
-    btn.innerHTML = originalText;
+    btn.innerHTML = '<i class="fas fa-save mr-2"></i> Save Changes';
     btn.disabled = false;
 };
 
@@ -144,7 +144,8 @@ document.getElementById('banner-upload').addEventListener('change', async (e) =>
     if (!file) return;
 
     const btn = e.target.nextElementSibling;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Uploading...';
 
     try {
         const fileName = `banner_${Date.now()}.${file.name.split('.').pop()}`;
@@ -160,17 +161,18 @@ document.getElementById('banner-upload').addEventListener('change', async (e) =>
 
         const publicUrl = publicUrlData.publicUrl;
 
-        // Update profile with banner URL
-        const { data: existing } = await supabaseClient
+        // Get existing profile
+        const { data: existingProfile } = await supabaseClient
             .from('profile')
             .select('id')
-            .single();
+            .limit(1)
+            .maybeSingle();
 
-        if (existing) {
+        if (existingProfile && existingProfile.id) {
             await supabaseClient
                 .from('profile')
                 .update({ banner_url: publicUrl })
-                .eq('id', existing.id);
+                .eq('id', existingProfile.id);
         } else {
             await supabaseClient
                 .from('profile')
@@ -178,12 +180,14 @@ document.getElementById('banner-upload').addEventListener('change', async (e) =>
         }
 
         document.getElementById('current-banner').src = publicUrl;
+        document.getElementById('banner-img').src = publicUrl;
         alert('Banner updated!');
     } catch (err) {
+        console.error(err);
         alert('Upload failed: ' + err.message);
     }
 
-    btn.innerHTML = '<i class="fas fa-upload mr-2"></i> Upload Banner';
+    btn.innerHTML = originalText;
 });
 
 // Photo Upload
@@ -192,7 +196,8 @@ document.getElementById('photo-upload').addEventListener('change', async (e) => 
     if (!file) return;
 
     const btn = e.target.nextElementSibling;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+    const originalText = btn.innerHTML;
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Uploading...';
 
     try {
         const fileName = `profile_${Date.now()}.${file.name.split('.').pop()}`;
@@ -208,17 +213,18 @@ document.getElementById('photo-upload').addEventListener('change', async (e) => 
 
         const publicUrl = publicUrlData.publicUrl;
 
-        // Update profile with photo URL
-        const { data: existing } = await supabaseClient
+        // Get existing profile
+        const { data: existingProfile } = await supabaseClient
             .from('profile')
             .select('id')
-            .single();
+            .limit(1)
+            .maybeSingle();
 
-        if (existing) {
+        if (existingProfile && existingProfile.id) {
             await supabaseClient
                 .from('profile')
                 .update({ profile_photo_url: publicUrl })
-                .eq('id', existing.id);
+                .eq('id', existingProfile.id);
         } else {
             await supabaseClient
                 .from('profile')
@@ -226,12 +232,14 @@ document.getElementById('photo-upload').addEventListener('change', async (e) => 
         }
 
         document.getElementById('current-photo').src = publicUrl;
+        document.getElementById('profile-img').src = publicUrl;
         alert('Photo updated!');
     } catch (err) {
+        console.error(err);
         alert('Upload failed: ' + err.message);
     }
 
-    btn.innerHTML = '<i class="fas fa-upload mr-2"></i> Upload Photo';
+    btn.innerHTML = originalText;
 });
 
 // Document Upload
@@ -247,7 +255,7 @@ document.getElementById('upload-doc-btn').addEventListener('click', async () => 
     }
 
     const originalText = btn.innerHTML;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Uploading...';
+    btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Uploading...';
     btn.disabled = true;
 
     try {
@@ -277,6 +285,7 @@ document.getElementById('upload-doc-btn').addEventListener('click', async () => 
         fileInput.value = '';
         loadDocuments();
     } catch (err) {
+        console.error(err);
         alert('Error: ' + err.message);
     }
 
