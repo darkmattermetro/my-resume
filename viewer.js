@@ -50,6 +50,7 @@ async function loadProfileData() {
         console.log('Using profile ID:', profileData.id, 'name:', profileData.full_name);
         
         document.getElementById('full-name').innerText = profileData.full_name || 'Your Name';
+        document.getElementById('header-name').innerText = profileData.full_name || 'My Portfolio';
         document.getElementById('professional-title').innerText = profileData.professional_title || 'Your Title';
         document.getElementById('introduction').innerText = profileData.introduction || 'Your introduction goes here...';
         document.getElementById('about-me').innerText = profileData.about_me || 'Your bio goes here...';

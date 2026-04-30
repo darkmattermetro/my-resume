@@ -10,8 +10,21 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body class="bg-metro-light text-slate-800 overflow-x-hidden font-['Outfit']">
-
+    <body class="bg-metro-light text-slate-800 overflow-x-hidden font-['Outfit']">
+    
+    <!-- Animated Background -->
+    <div class="fixed inset-0 z-0 overflow-hidden">
+        <div class="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100"></div>
+        <div class="bg-shapes">
+            <div class="shape shape-1"></div>
+            <div class="shape shape-2"></div>
+            <div class="shape shape-3"></div>
+            <div class="shape shape-4"></div>
+            <div class="shape shape-5"></div>
+        </div>
+        <div class="grid-overlay"></div>
+    </div>
+    
     <!-- Header Navigation (Mobile-First) -->
     <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b-2 border-metro-amber">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
@@ -19,7 +32,7 @@
                 <div class="w-10 h-10 bg-gradient-to-br from-metro-navy to-slate-800 rounded-lg flex items-center justify-center">
                     <i class="fas fa-subway text-white"></i>
                 </div>
-                <span class="font-bold text-xl tracking-tight text-metro-navy">METRO<span class="text-metro-amber">RESUME</span></span>
+                <span id="header-name" class="font-bold text-xl tracking-tight text-metro-navy">My Portfolio</span>
             </div>
             
             <!-- Desktop Nav -->
