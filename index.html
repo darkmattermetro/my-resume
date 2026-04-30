@@ -329,18 +329,24 @@
             const h2 = document.getElementById('hamburger-2');
             const h3 = document.getElementById('hamburger-3');
             
-            mobileNav.classList.toggle('hidden');
-            h1.classList.toggle('rotate-45');
-            h1.classList.toggle('translate-y-2');
-            h2.classList.toggle('opacity-0');
-            h3.classList.toggle('-rotate-45');
-            h3.classList.toggle('-translate-y-2');
+            mobileNav.classList.toggle('active');
+            hamburger.classList.toggle('active');
+            if (h1) {
+                h1.classList.toggle('rotate-45');
+                h1.classList.toggle('translate-y-2');
+            }
+            if (h2) h2.classList.toggle('opacity-0');
+            if (h3) {
+                h3.classList.toggle('-rotate-45');
+                h3.classList.toggle('-translate-y-2');
+            }
         }
         
         // Close mobile nav on scroll
         window.addEventListener('scroll', () => {
             const mobileNav = document.getElementById('mobile-nav');
-            if (!mobileNav.classList.contains('hidden')) {
+            const hamburger = document.getElementById('hamburger');
+            if (mobileNav.classList.contains('active')) {
                 toggleMobileNav();
             }
         });

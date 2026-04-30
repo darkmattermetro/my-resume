@@ -440,8 +440,8 @@ button:active { transform: scale(0.98); }
 @media (max-width: 768px) {
     .desktop-nav { display: none !important; }
     .hamburger { display: flex !important; }
-    .mobile-nav { display: none; }
-    .mobile-nav.show { display: flex; flex-direction: column; }
+    .mobile-nav { display: none !important; }
+    .mobile-nav.active { display: flex !important; flex-direction: column; }
     .timeline-container { padding-left: 32px; }
     .timeline-line { left: 11px; }
     .timeline-dot { left: -28px; width: 12px; height: 12px; }
