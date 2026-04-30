@@ -10,29 +10,29 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-    <body class="bg-metro-light text-slate-800 overflow-x-hidden font-['Outfit']">
+    <body class="text-slate-200 overflow-x-hidden font-['Outfit']">
     
-    <!-- Animated Background -->
-    <div class="fixed inset-0 z-0 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-br from-slate-50 via-blue-50 to-slate-100"></div>
-        <div class="bg-shapes">
-            <div class="shape shape-1"></div>
-            <div class="shape shape-2"></div>
-            <div class="shape shape-3"></div>
-            <div class="shape shape-4"></div>
-            <div class="shape shape-5"></div>
-        </div>
+    <!-- Aurora Background -->
+    <div class="aurora-bg">
+        <div class="aurora-orb aurora-orb-1"></div>
+        <div class="aurora-orb aurora-orb-2"></div>
+        <div class="aurora-orb aurora-orb-3"></div>
+        <div class="aurora-orb aurora-orb-4"></div>
+        <div class="aurora-orb aurora-orb-5"></div>
         <div class="grid-overlay"></div>
     </div>
     
+    <!-- Sparkle Particles -->
+    <div class="sparkle-container" id="sparkle-container"></div>
+    
     <!-- Header Navigation (Mobile-First) -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b-2 border-metro-amber">
+    <header class="fixed top-0 left-0 right-0 z-50 glass-card border-b border-white/10 rounded-none">
         <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
             <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-metro-navy to-slate-800 rounded-lg flex items-center justify-center">
-                    <i class="fas fa-subway text-white"></i>
+                <div class="w-10 h-10 bg-gradient-to-br from-metro-amber to-metro-amber-dark rounded-lg flex items-center justify-center">
+                    <i class="fas fa-subway text-metro-navy"></i>
                 </div>
-                <span id="header-name" class="font-bold text-xl tracking-tight text-metro-navy">My Portfolio</span>
+                <span id="header-name" class="font-bold text-xl tracking-tight text-white">My Portfolio</span>
             </div>
             
             <!-- Desktop Nav -->
@@ -71,98 +71,98 @@
     </header>
 
     <div class="h-16"></div>
-
+    
     <!-- Banner Section -->
-    <div id="banner-container" class="relative h-48 md:h-56 w-full overflow-hidden bg-gradient-to-r from-metro-navy to-slate-800">
+    <div id="banner-container" class="relative h-48 md:h-56 w-full overflow-hidden">
         <img id="banner-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 500'%3E%3Crect fill='%230f172a' width='1920' height='500'/%3E%3C/svg%3E" alt="Banner" class="w-full h-full object-cover hidden">
-        <div class="absolute inset-0 bg-gradient-to-t from-metro-navy/60 via-transparent to-transparent"></div>
+        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
     </div>
-
+    
     <!-- Hero Section -->
     <section id="home" class="relative px-6 pb-12 -mt-20">
         <div class="max-w-4xl mx-auto text-center">
             <div class="relative inline-block mb-4 group">
-                <div class="absolute inset-0 bg-gradient-to-r from-metro-navy to-metro-steel rounded-2xl blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-500"></div>
-                <img id="profile-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%230f172a' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='40'%3E%3C/text%3E%3C/svg%3E" alt="Profile" class="relative w-56 h-56 md:w-48 md:h-48 rounded-2xl border-4 border-white shadow-2xl object-cover">
+                <div class="absolute inset-0 bg-gradient-to-r from-metro-amber/20 to-blue-600/20 rounded-2xl blur-2xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
+                <img id="profile-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%230f172a' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='40'%3E%3C/text%3E%3C/svg%3E" alt="Profile" class="relative w-56 h-56 md:w-48 md:h-48 rounded-2xl border-4 border-white/20 shadow-2xl object-cover backdrop-blur-xl">
             </div>
             
-            <h1 id="full-name" class="text-4xl md:text-5xl font-extrabold mb-3 text-metro-navy mt-2">
+            <h1 id="full-name" class="text-4xl md:text-5xl font-extrabold mb-3 text-white mt-2 drop-shadow-lg">
                 Your Name
             </h1>
             
-            <p id="professional-title" class="text-xl text-metro-amber font-semibold mb-6 tracking-wide">
+            <p id="professional-title" class="text-xl text-metro-amber font-semibold mb-6 tracking-wide drop-shadow">
                 Metro Train Operator
             </p>
             
             <!-- Stat Badges -->
             <div class="flex flex-wrap justify-center gap-3 mb-8">
-                <div class="px-4 py-2 bg-white rounded-full shadow-sm border border-metro-border flex items-center gap-2">
+                <div class="glass-card px-4 py-2 rounded-full flex items-center gap-2">
                     <i class="fas fa-clock text-metro-amber"></i>
-                    <span id="stat-years" class="font-bold text-metro-navy">10+</span>
-                    <span class="text-sm text-slate-500">Years</span>
+                    <span id="stat-years" class="font-bold text-white">10+</span>
+                    <span class="text-sm text-slate-300">Years</span>
                 </div>
-                <div class="px-4 py-2 bg-white rounded-full shadow-sm border border-metro-border flex items-center gap-2">
+                <div class="glass-card px-4 py-2 rounded-full flex items-center gap-2">
                     <i class="fas fa-route text-metro-amber"></i>
-                    <span id="stat-projects" class="font-bold text-metro-navy">50+</span>
-                    <span class="text-sm text-slate-500">Routes</span>
+                    <span id="stat-projects" class="font-bold text-white">50+</span>
+                    <span class="text-sm text-slate-300">Routes</span>
                 </div>
-                <div class="px-4 py-2 bg-white rounded-full shadow-sm border border-metro-border flex items-center gap-2">
+                <div class="glass-card px-4 py-2 rounded-full flex items-center gap-2">
                     <i class="fas fa-shield-alt text-metro-amber"></i>
-                    <span id="stat-success" class="font-bold text-metro-navy">100%</span>
-                    <span class="text-sm text-slate-500">Safety</span>
+                    <span id="stat-success" class="font-bold text-white">100%</span>
+                    <span class="text-sm text-slate-300">Safety</span>
                 </div>
             </div>
             
-            <p id="introduction" class="text-lg text-slate-600 max-w-2xl mx-auto mb-6 leading-relaxed px-4">
+            <p id="introduction" class="text-lg text-slate-300 max-w-2xl mx-auto mb-6 leading-relaxed px-4 drop-shadow">
                 Your introduction goes here...
             </p>
             
             <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#documents" class="px-8 py-4 bg-metro-navy hover:bg-slate-800 text-white transition-all rounded-xl font-bold shadow-lg flex items-center justify-center gap-2">
+                <a href="#documents" class="px-8 py-4 bg-metro-amber hover:bg-metro-amber-dark text-metro-navy transition-all rounded-xl font-bold shadow-lg flex items-center justify-center gap-2">
                     <i class="fas fa-folder-open"></i> View Documents
                 </a>
-                <a href="#contact" class="px-8 py-4 bg-white hover:bg-slate-50 text-metro-navy border-2 border-metro-navy hover:border-metro-amber transition-all rounded-xl font-medium flex items-center justify-center gap-2 shadow-md">
+                <a href="#contact" class="px-8 py-4 glass-card text-white border border-white/20 hover:border-metro-amber transition-all rounded-xl font-medium flex items-center justify-center gap-2 shadow-md">
                     <i class="fas fa-envelope"></i> Contact Me
                 </a>
             </div>
         </div>
     </section>
-
+    
     <!-- About Section -->
-    <section id="about" class="py-16 px-6 bg-white">
+    <section id="about" class="py-16 px-6">
         <div class="max-w-5xl mx-auto">
             <div class="grid md:grid-cols-2 gap-10 items-center">
                 <div>
-                    <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">About Me</span>
-                    <h2 class="text-3xl font-bold mt-2 mb-5 text-metro-navy">Professional Excellence</h2>
-                    <p id="about-me" class="text-slate-600 text-lg leading-relaxed mb-6">
+                    <span class="text-metro-amber font-medium tracking-wider uppercase text-sm drop-shadow">About Me</span>
+                    <h2 class="text-3xl font-bold mt-2 mb-5 text-white drop-shadow">Professional Excellence</h2>
+                    <p id="about-me" class="text-slate-300 text-lg leading-relaxed mb-6">
                         Your bio goes here...
                     </p>
                 </div>
                 
                 <div class="grid gap-4">
-                    <div class="p-5 rounded-2xl border border-metro-border hover:border-metro-amber hover:shadow-lg transition-all group">
-                        <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-metro-amber transition-colors">
-                            <i class="fas fa-shield-alt text-metro-amber group-hover:text-white transition-colors"></i>
+                    <div class="glass-card p-5 rounded-2xl transition-all group">
+                        <div class="w-10 h-10 bg-metro-amber/20 rounded-xl flex items-center justify-center mb-3 group-hover:bg-metro-amber/30 transition-colors">
+                            <i class="fas fa-shield-alt text-metro-amber"></i>
                         </div>
-                        <h3 id="feature1-title" class="font-bold text-lg mb-1 text-metro-navy">Safety First</h3>
-                        <p id="feature1-desc" class="text-slate-500 text-sm">Your description here...</p>
+                        <h3 id="feature1-title" class="font-bold text-lg mb-1 text-white">Safety First</h3>
+                        <p id="feature1-desc" class="text-slate-400 text-sm">Your description here...</p>
                     </div>
                     
-                    <div class="p-5 rounded-2xl border border-metro-border hover:border-metro-amber hover:shadow-lg transition-all group">
-                        <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-metro-amber transition-colors">
-                            <i class="fas fa-clock text-metro-amber group-hover:text-white transition-colors"></i>
+                    <div class="glass-card p-5 rounded-2xl transition-all group">
+                        <div class="w-10 h-10 bg-metro-amber/20 rounded-xl flex items-center justify-center mb-3 group-hover:bg-metro-amber/30 transition-colors">
+                            <i class="fas fa-clock text-metro-amber"></i>
                         </div>
-                        <h3 id="feature2-title" class="font-bold text-lg mb-1 text-metro-navy">Punctuality</h3>
-                        <p id="feature2-desc" class="text-slate-500 text-sm">Your description here...</p>
+                        <h3 id="feature2-title" class="font-bold text-lg mb-1 text-white">Punctuality</h3>
+                        <p id="feature2-desc" class="text-slate-400 text-sm">Your description here...</p>
                     </div>
                     
-                    <div class="p-5 rounded-2xl border border-metro-border hover:border-metro-amber hover:shadow-lg transition-all group">
-                        <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-metro-amber transition-colors">
-                            <i class="fas fa-user-tie text-metro-amber group-hover:text-white transition-colors"></i>
+                    <div class="glass-card p-5 rounded-2xl transition-all group">
+                        <div class="w-10 h-10 bg-metro-amber/20 rounded-xl flex items-center justify-center mb-3 group-hover:bg-metro-amber/30 transition-colors">
+                            <i class="fas fa-user-tie text-metro-amber"></i>
                         </div>
-                        <h3 id="feature3-title" class="font-bold text-lg mb-1 text-metro-navy">Professionalism</h3>
-                        <p id="feature3-desc" class="text-slate-500 text-sm">Your description here...</p>
+                        <h3 id="feature3-title" class="font-bold text-lg mb-1 text-white">Professionalism</h3>
+                        <p id="feature3-desc" class="text-slate-400 text-sm">Your description here...</p>
                     </div>
                 </div>
             </div>
@@ -170,28 +170,28 @@
     </section>
 
     <!-- Work Experience Section -->
-    <section id="experience" class="py-16 px-6 bg-metro-light">
+    <section id="experience" class="py-16 px-6">
         <div class="max-w-5xl mx-auto">
             <div class="text-center mb-12">
-                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">Career History</span>
-                <h2 class="text-3xl font-bold mt-2 text-metro-navy">Work Experience</h2>
-                <p class="text-slate-500 mt-3 max-w-xl mx-auto">My professional journey as a metro transit operator</p>
+                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm drop-shadow">Career History</span>
+                <h2 class="text-3xl font-bold mt-2 text-white drop-shadow">Work Experience</h2>
+                <p class="text-slate-300 mt-3 max-w-xl mx-auto">My professional journey as a metro transit operator</p>
             </div>
             
             <div class="timeline-container" id="experience-timeline">
                 <!-- Populated by viewer.js -->
-                <p class="text-center text-slate-500 py-8">No work experience added yet.</p>
+                <p class="text-center text-slate-400 py-8">No work experience added yet.</p>
             </div>
         </div>
     </section>
-
+    
     <!-- Skills Section -->
-    <section id="skills" class="py-16 px-6 bg-white">
+    <section id="skills" class="py-16 px-6">
         <div class="max-w-5xl mx-auto">
             <div class="text-center mb-12">
-                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">Expertise</span>
-                <h2 class="text-3xl font-bold mt-2 text-metro-navy">Skills & Competencies</h2>
-                <p class="text-slate-500 mt-3 max-w-xl mx-auto">Technical and soft skills developed over years of service</p>
+                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm drop-shadow">Expertise</span>
+                <h2 class="text-3xl font-bold mt-2 text-white drop-shadow">Skills & Competencies</h2>
+                <p class="text-slate-300 mt-3 max-w-xl mx-auto">Technical and soft skills developed over years of service</p>
             </div>
             
             <div class="skill-category-tabs" id="skill-tabs">
@@ -203,66 +203,66 @@
             
             <div id="skills-container">
                 <!-- Populated by viewer.js -->
-                <p class="text-center text-slate-500 py-8">No skills added yet.</p>
+                <p class="text-center text-slate-400 py-8">No skills added yet.</p>
             </div>
         </div>
     </section>
-
+    
     <!-- Certifications Section -->
-    <section id="certifications" class="py-16 px-6 bg-metro-light">
+    <section id="certifications" class="py-16 px-6">
         <div class="max-w-5xl mx-auto">
             <div class="text-center mb-12">
-                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">Credentials</span>
-                <h2 class="text-3xl font-bold mt-2 text-metro-navy">Certifications</h2>
-                <p class="text-slate-500 mt-3 max-w-xl mx-auto">Official certifications and training completions</p>
+                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm drop-shadow">Credentials</span>
+                <h2 class="text-3xl font-bold mt-2 text-white drop-shadow">Certifications</h2>
+                <p class="text-slate-300 mt-3 max-w-xl mx-auto">Official certifications and training completions</p>
             </div>
             
             <div class="cert-grid" id="certifications-grid">
                 <!-- Populated by viewer.js -->
-                <p class="text-center text-slate-500 py-8 col-span-full">No certifications added yet.</p>
+                <p class="text-center text-slate-400 py-8 col-span-full">No certifications added yet.</p>
             </div>
         </div>
     </section>
-
+    
     <!-- Achievements Section -->
-    <section id="achievements" class="py-16 px-6 bg-white">
+    <section id="achievements" class="py-16 px-6">
         <div class="max-w-5xl mx-auto">
             <div class="text-center mb-12">
-                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">Recognition</span>
-                <h2 class="text-3xl font-bold mt-2 text-metro-navy">Achievements</h2>
-                <p class="text-slate-500 mt-3 max-w-xl mx-auto">Awards and milestones from my career</p>
+                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm drop-shadow">Recognition</span>
+                <h2 class="text-3xl font-bold mt-2 text-white drop-shadow">Achievements</h2>
+                <p class="text-slate-300 mt-3 max-w-xl mx-auto">Awards and milestones from my career</p>
             </div>
             
             <div class="achievement-grid" id="achievements-grid">
                 <!-- Populated by viewer.js -->
-                <p class="text-center text-slate-500 py-8 col-span-full">No achievements added yet.</p>
+                <p class="text-center text-slate-400 py-8 col-span-full">No achievements added yet.</p>
             </div>
         </div>
     </section>
-
+    
     <!-- Education Section -->
-    <section id="education" class="py-16 px-6 bg-metro-light">
+    <section id="education" class="py-16 px-6">
         <div class="max-w-5xl mx-auto">
             <div class="text-center mb-12">
-                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">Learning</span>
-                <h2 class="text-3xl font-bold mt-2 text-metro-navy">Education & Training</h2>
-                <p class="text-slate-500 mt-3 max-w-xl mx-auto">Formal education and professional development</p>
+                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm drop-shadow">Learning</span>
+                <h2 class="text-3xl font-bold mt-2 text-white drop-shadow">Education & Training</h2>
+                <p class="text-slate-300 mt-3 max-w-xl mx-auto">Formal education and professional development</p>
             </div>
             
             <div class="education-grid" id="education-grid">
                 <!-- Populated by viewer.js -->
-                <p class="text-center text-slate-500 py-8 col-span-full">No education entries added yet.</p>
+                <p class="text-center text-slate-400 py-8 col-span-full">No education entries added yet.</p>
             </div>
         </div>
     </section>
-
+    
     <!-- Documents Section (Existing, Restyled) -->
-    <section id="documents" class="py-16 px-6 bg-white">
+    <section id="documents" class="py-16 px-6">
         <div class="max-w-6xl mx-auto">
             <div class="text-center mb-10">
-                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">Portfolio</span>
-                <h2 class="text-3xl font-bold mt-2 text-metro-navy">Documents & Certifications</h2>
-                <p class="text-slate-500 mt-3 max-w-xl mx-auto">Click on any document to view or download.</p>
+                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm drop-shadow">Portfolio</span>
+                <h2 class="text-3xl font-bold mt-2 text-white drop-shadow">Documents & Certifications</h2>
+                <p class="text-slate-300 mt-3 max-w-xl mx-auto">Click on any document to view or download.</p>
             </div>
             
             <div id="docs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
@@ -272,37 +272,37 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contact" class="py-16 px-6 bg-metro-navy text-white">
+    <section id="contact" class="py-16 px-6">
         <div class="max-w-4xl mx-auto text-center">
-            <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">Get In Touch</span>
-            <h2 class="text-3xl font-bold mt-2 mb-6">Let's Connect</h2>
+            <span class="text-metro-amber font-medium tracking-wider uppercase text-sm drop-shadow">Get In Touch</span>
+            <h2 class="text-3xl font-bold mt-2 mb-6 text-white drop-shadow">Let's Connect</h2>
             <p id="contact-info" class="text-slate-300 text-lg mb-10">
                 Your contact info goes here...
             </p>
             
             <div class="flex justify-center gap-5">
-                <a href="#" class="w-12 h-12 bg-white/10 hover:bg-metro-amber border border-white/20 hover:border-metro-amber rounded-xl flex items-center justify-center text-lg text-white hover:text-metro-navy transition-all">
-                    <i class="fab fa-linkedin"></i>
+                <a href="#" class="w-12 h-12 glass-card rounded-xl flex items-center justify-center text-lg text-white hover:text-metro-navy transition-all border border-white/20 hover:border-metro-amber group">
+                    <i class="fab fa-linkedin group-hover:scale-110 transition-transform"></i>
                 </a>
-                <a href="#" class="w-12 h-12 bg-white/10 hover:bg-metro-amber border border-white/20 hover:border-metro-amber rounded-xl flex items-center justify-center text-lg text-white hover:text-metro-navy transition-all">
-                    <i class="fab fa-github"></i>
+                <a href="#" class="w-12 h-12 glass-card rounded-xl flex items-center justify-center text-lg text-white hover:text-metro-navy transition-all border border-white/20 hover:border-metro-amber group">
+                    <i class="fab fa-github group-hover:scale-110 transition-transform"></i>
                 </a>
-                <a href="#" class="w-12 h-12 bg-white/10 hover:bg-metro-amber border border-white/20 hover:border-metro-amber rounded-xl flex items-center justify-center text-lg text-white hover:text-metro-navy transition-all">
-                    <i class="fas fa-envelope"></i>
+                <a href="#" class="w-12 h-12 glass-card rounded-xl flex items-center justify-center text-lg text-white hover:text-metro-navy transition-all border border-white/20 hover:border-metro-amber group">
+                    <i class="fas fa-envelope group-hover:scale-110 transition-transform"></i>
                 </a>
-                <a href="#" class="w-12 h-12 bg-white/10 hover:bg-metro-amber border border-white/20 hover:border-metro-amber rounded-xl flex items-center justify-center text-lg text-white hover:text-metro-navy transition-all">
-                    <i class="fas fa-phone"></i>
+                <a href="#" class="w-12 h-12 glass-card rounded-xl flex items-center justify-center text-lg text-white hover:text-metro-navy transition-all border border-white/20 hover:border-metro-amber group">
+                    <i class="fas fa-phone group-hover:scale-110 transition-transform"></i>
                 </a>
             </div>
         </div>
     </section>
-
+    
     <!-- Footer -->
-    <footer class="py-6 px-6 bg-slate-900 text-white">
+    <footer class="py-6 px-6 glass-card rounded-none border-t border-white/10">
         <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
             <div class="flex items-center gap-2">
                 <i class="fas fa-subway text-metro-amber"></i>
-                <span class="font-medium">Metro Resume</span>
+                <span id="footer-name" class="font-medium text-white">My Portfolio</span>
             </div>
             <p class="text-slate-400 text-sm">© 2024 All Rights Reserved</p>
         </div>
@@ -342,6 +342,31 @@
                 mobileNav.classList.remove('active');
             }
         });
+        
+        // Update footer name from Supabase
+        if (window.supabaseClient) {
+            window.supabaseClient.from('profile').select('full_name').order('id', { ascending: false }).limit(1).then(result => {
+                if (result.data && result.data[0] && result.data[0].full_name) {
+                    document.getElementById('footer-name').innerText = result.data[0].full_name + "'s Portfolio";
+                }
+            });
+        }
+        
+        // Sparkle Particles
+        function createSparkles() {
+            const container = document.getElementById('sparkle-container');
+            for (let i = 0; i < 30; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = Math.random() * 100 + '%';
+                sparkle.style.top = Math.random() * 100 + '%';
+                sparkle.style.animationDelay = Math.random() * 4 + 's';
+                sparkle.style.width = (Math.random() * 3 + 1) + 'px';
+                sparkle.style.height = sparkle.style.width;
+                container.appendChild(sparkle);
+            }
+        }
+        createSparkles();
     </script>
 </body>
 </html>
