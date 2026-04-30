@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professional Portfolio | Metro Train Operator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body class="bg-metro-light text-slate-800 overflow-x-hidden font-['Outfit']">
+
+    <!-- Header Navigation (Mobile-First) -->
+    <header class="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-xl shadow-sm border-b-2 border-metro-amber">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-br from-metro-navy to-slate-800 rounded-lg flex items-center justify-center">
+                    <i class="fas fa-subway text-white"></i>
+                </div>
+                <span class="font-bold text-xl tracking-tight text-metro-navy">METRO<span class="text-metro-amber">RESUME</span></span>
+            </div>
+            
+            <!-- Desktop Nav -->
+            <nav class="desktop-nav flex gap-6 text-sm font-medium text-slate-600">
+                <a href="#home" class="hover:text-metro-amber transition-colors">Home</a>
+                <a href="#about" class="hover:text-metro-amber transition-colors">About</a>
+                <a href="#experience" class="hover:text-metro-amber transition-colors">Experience</a>
+                <a href="#skills" class="hover:text-metro-amber transition-colors">Skills</a>
+                <a href="#certifications" class="hover:text-metro-amber transition-colors">Certifications</a>
+                <a href="#achievements" class="hover:text-metro-amber transition-colors">Achievements</a>
+                <a href="#education" class="hover:text-metro-amber transition-colors">Education</a>
+                <a href="#documents" class="hover:text-metro-amber transition-colors">Documents</a>
+                <a href="#contact" class="hover:text-metro-amber transition-colors">Contact</a>
+            </nav>
+            
+            <!-- Mobile Hamburger -->
+            <div class="hamburger" onclick="toggleMobileNav()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+        
+        <!-- Mobile Nav -->
+        <div class="mobile-nav" id="mobile-nav">
+            <a href="#home" onclick="toggleMobileNav()">Home</a>
+            <a href="#about" onclick="toggleMobileNav()">About</a>
+            <a href="#experience" onclick="toggleMobileNav()">Experience</a>
+            <a href="#skills" onclick="toggleMobileNav()">Skills</a>
+            <a href="#certifications" onclick="toggleMobileNav()">Certifications</a>
+            <a href="#achievements" onclick="toggleMobileNav()">Achievements</a>
+            <a href="#education" onclick="toggleMobileNav()">Education</a>
+            <a href="#documents" onclick="toggleMobileNav()">Documents</a>
+            <a href="#contact" onclick="toggleMobileNav()">Contact</a>
+        </div>
+    </header>
+
+    <div class="h-16"></div>
+
+    <!-- Banner Section -->
+    <div id="banner-container" class="relative h-48 md:h-56 w-full overflow-hidden bg-gradient-to-r from-metro-navy to-slate-800">
+        <img id="banner-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1920 500'%3E%3Crect fill='%230f172a' width='1920' height='500'/%3E%3C/svg%3E" alt="Banner" class="w-full h-full object-cover hidden">
+        <div class="absolute inset-0 bg-gradient-to-t from-metro-navy/60 via-transparent to-transparent"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative px-6 pb-12 -mt-20">
+        <div class="max-w-4xl mx-auto text-center">
+            <div class="relative inline-block mb-4 group">
+                <div class="absolute inset-0 bg-gradient-to-r from-metro-navy to-metro-steel rounded-2xl blur-2xl opacity-40 group-hover:opacity-60 transition-opacity duration-500"></div>
+                <img id="profile-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%230f172a' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='40'%3E%3C/text%3E%3C/svg%3E" alt="Profile" class="relative w-56 h-56 md:w-48 md:h-48 rounded-2xl border-4 border-white shadow-2xl object-cover">
+            </div>
+            
+            <h1 id="full-name" class="text-4xl md:text-5xl font-extrabold mb-3 text-metro-navy mt-2">
+                Your Name
+            </h1>
+            
+            <p id="professional-title" class="text-xl text-metro-amber font-semibold mb-6 tracking-wide">
+                Metro Train Operator
+            </p>
+            
+            <!-- Stat Badges -->
+            <div class="flex flex-wrap justify-center gap-3 mb-8">
+                <div class="px-4 py-2 bg-white rounded-full shadow-sm border border-metro-border flex items-center gap-2">
+                    <i class="fas fa-clock text-metro-amber"></i>
+                    <span id="stat-years" class="font-bold text-metro-navy">10+</span>
+                    <span class="text-sm text-slate-500">Years</span>
+                </div>
+                <div class="px-4 py-2 bg-white rounded-full shadow-sm border border-metro-border flex items-center gap-2">
+                    <i class="fas fa-route text-metro-amber"></i>
+                    <span id="stat-projects" class="font-bold text-metro-navy">50+</span>
+                    <span class="text-sm text-slate-500">Routes</span>
+                </div>
+                <div class="px-4 py-2 bg-white rounded-full shadow-sm border border-metro-border flex items-center gap-2">
+                    <i class="fas fa-shield-alt text-metro-amber"></i>
+                    <span id="stat-success" class="font-bold text-metro-navy">100%</span>
+                    <span class="text-sm text-slate-500">Safety</span>
+                </div>
+            </div>
+            
+            <p id="introduction" class="text-lg text-slate-600 max-w-2xl mx-auto mb-6 leading-relaxed px-4">
+                Your introduction goes here...
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                <a href="#documents" class="px-8 py-4 bg-gradient-to-r from-metro-navy to-slate-800 hover:from-slate-800 hover:to-metro-navy text-white transition-all rounded-xl font-bold shadow-lg shadow-metro-navy/30 flex items-center justify-center gap-2">
+                    <i class="fas fa-folder-open"></i> View Documents
+                </a>
+                <a href="#contact" class="px-8 py-4 bg-white hover:bg-slate-50 text-slate-700 border border-slate-200 hover:border-metro-amber transition-all rounded-xl font-medium flex items-center justify-center gap-2 shadow-md">
+                    <i class="fas fa-envelope"></i> Contact Me
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-16 px-6 bg-white">
+        <div class="max-w-5xl mx-auto">
+            <div class="grid md:grid-cols-2 gap-10 items-center">
+                <div>
+                    <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">About Me</span>
+                    <h2 class="text-3xl font-bold mt-2 mb-5 text-metro-navy">Professional Excellence</h2>
+                    <p id="about-me" class="text-slate-600 text-lg leading-relaxed mb-6">
+                        Your bio goes here...
+                    </p>
+                </div>
+                
+                <div class="grid gap-4">
+                    <div class="p-5 rounded-2xl border border-metro-border hover:border-metro-amber hover:shadow-lg transition-all group">
+                        <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-metro-amber transition-colors">
+                            <i class="fas fa-shield-alt text-metro-amber group-hover:text-white transition-colors"></i>
+                        </div>
+                        <h3 id="feature1-title" class="font-bold text-lg mb-1 text-metro-navy">Safety First</h3>
+                        <p id="feature1-desc" class="text-slate-500 text-sm">Your description here...</p>
+                    </div>
+                    
+                    <div class="p-5 rounded-2xl border border-metro-border hover:border-metro-amber hover:shadow-lg transition-all group">
+                        <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-metro-amber transition-colors">
+                            <i class="fas fa-clock text-metro-amber group-hover:text-white transition-colors"></i>
+                        </div>
+                        <h3 id="feature2-title" class="font-bold text-lg mb-1 text-metro-navy">Punctuality</h3>
+                        <p id="feature2-desc" class="text-slate-500 text-sm">Your description here...</p>
+                    </div>
+                    
+                    <div class="p-5 rounded-2xl border border-metro-border hover:border-metro-amber hover:shadow-lg transition-all group">
+                        <div class="w-10 h-10 bg-amber-50 rounded-xl flex items-center justify-center mb-3 group-hover:bg-metro-amber transition-colors">
+                            <i class="fas fa-user-tie text-metro-amber group-hover:text-white transition-colors"></i>
+                        </div>
+                        <h3 id="feature3-title" class="font-bold text-lg mb-1 text-metro-navy">Professionalism</h3>
+                        <p id="feature3-desc" class="text-slate-500 text-sm">Your description here...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Work Experience Section -->
+    <section id="experience" class="py-16 px-6 bg-metro-light">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">Career History</span>
+                <h2 class="text-3xl font-bold mt-2 text-metro-navy">Work Experience</h2>
+                <p class="text-slate-500 mt-3 max-w-xl mx-auto">My professional journey as a metro transit operator</p>
+            </div>
+            
+            <div class="timeline-container" id="experience-timeline">
+                <!-- Populated by viewer.js -->
+                <p class="text-center text-slate-500 py-8">No work experience added yet.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-16 px-6 bg-white">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">Expertise</span>
+                <h2 class="text-3xl font-bold mt-2 text-metro-navy">Skills & Competencies</h2>
+                <p class="text-slate-500 mt-3 max-w-xl mx-auto">Technical and soft skills developed over years of service</p>
+            </div>
+            
+            <div class="skill-category-tabs" id="skill-tabs">
+                <div class="skill-tab active" data-category="all" onclick="filterSkills('all')">All Skills</div>
+                <div class="skill-tab" data-category="Technical" onclick="filterSkills('Technical')">Technical</div>
+                <div class="skill-tab" data-category="Safety" onclick="filterSkills('Safety')">Safety</div>
+                <div class="skill-tab" data-category="Soft Skills" onclick="filterSkills('Soft Skills')">Soft Skills</div>
+            </div>
+            
+            <div id="skills-container">
+                <!-- Populated by viewer.js -->
+                <p class="text-center text-slate-500 py-8">No skills added yet.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certifications" class="py-16 px-6 bg-metro-light">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">Credentials</span>
+                <h2 class="text-3xl font-bold mt-2 text-metro-navy">Certifications</h2>
+                <p class="text-slate-500 mt-3 max-w-xl mx-auto">Official certifications and training completions</p>
+            </div>
+            
+            <div class="cert-grid" id="certifications-grid">
+                <!-- Populated by viewer.js -->
+                <p class="text-center text-slate-500 py-8 col-span-full">No certifications added yet.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Section -->
+    <section id="achievements" class="py-16 px-6 bg-white">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">Recognition</span>
+                <h2 class="text-3xl font-bold mt-2 text-metro-navy">Achievements</h2>
+                <p class="text-slate-500 mt-3 max-w-xl mx-auto">Awards and milestones from my career</p>
+            </div>
+            
+            <div class="achievement-grid" id="achievements-grid">
+                <!-- Populated by viewer.js -->
+                <p class="text-center text-slate-500 py-8 col-span-full">No achievements added yet.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-16 px-6 bg-metro-light">
+        <div class="max-w-5xl mx-auto">
+            <div class="text-center mb-12">
+                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">Learning</span>
+                <h2 class="text-3xl font-bold mt-2 text-metro-navy">Education & Training</h2>
+                <p class="text-slate-500 mt-3 max-w-xl mx-auto">Formal education and professional development</p>
+            </div>
+            
+            <div class="education-grid" id="education-grid">
+                <!-- Populated by viewer.js -->
+                <p class="text-center text-slate-500 py-8 col-span-full">No education entries added yet.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Documents Section (Existing, Restyled) -->
+    <section id="documents" class="py-16 px-6 bg-white">
+        <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-10">
+                <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">Portfolio</span>
+                <h2 class="text-3xl font-bold mt-2 text-metro-navy">Documents & Certifications</h2>
+                <p class="text-slate-500 mt-3 max-w-xl mx-auto">Click on any document to view or download.</p>
+            </div>
+            
+            <div id="docs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                <!-- Populated by viewer.js -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-16 px-6 bg-metro-navy text-white">
+        <div class="max-w-4xl mx-auto text-center">
+            <span class="text-metro-amber font-medium tracking-wider uppercase text-sm">Get In Touch</span>
+            <h2 class="text-3xl font-bold mt-2 mb-6">Let's Connect</h2>
+            <p id="contact-info" class="text-slate-300 text-lg mb-10">
+                Your contact info goes here...
+            </p>
+            
+            <div class="flex justify-center gap-5">
+                <a href="#" class="w-12 h-12 bg-white/10 hover:bg-metro-amber border border-white/20 hover:border-metro-amber rounded-xl flex items-center justify-center text-lg text-white hover:text-metro-navy transition-all">
+                    <i class="fab fa-linkedin"></i>
+                </a>
+                <a href="#" class="w-12 h-12 bg-white/10 hover:bg-metro-amber border border-white/20 hover:border-metro-amber rounded-xl flex items-center justify-center text-lg text-white hover:text-metro-navy transition-all">
+                    <i class="fab fa-github"></i>
+                </a>
+                <a href="#" class="w-12 h-12 bg-white/10 hover:bg-metro-amber border border-white/20 hover:border-metro-amber rounded-xl flex items-center justify-center text-lg text-white hover:text-metro-navy transition-all">
+                    <i class="fas fa-envelope"></i>
+                </a>
+                <a href="#" class="w-12 h-12 bg-white/10 hover:bg-metro-amber border border-white/20 hover:border-metro-amber rounded-xl flex items-center justify-center text-lg text-white hover:text-metro-navy transition-all">
+                    <i class="fas fa-phone"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-6 px-6 bg-slate-900 text-white">
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-subway text-metro-amber"></i>
+                <span class="font-medium">Metro Resume</span>
+            </div>
+            <p class="text-slate-400 text-sm">© 2024 All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <!-- File Viewer Modal (Existing, Preserved) -->
+    <div id="viewer-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md">
+        <div class="relative w-full max-w-5xl h-full max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
+            <div class="p-4 border-b border-slate-200 flex justify-between items-center">
+                <span id="modal-title" class="font-bold text-lg text-slate-800">Document Viewer</span>
+                <button id="close-modal" class="w-10 h-10 bg-slate-100 hover:bg-red-500 hover:text-white rounded-lg flex items-center justify-center transition-all">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="flex-1 overflow-auto p-6 flex justify-center items-center bg-slate-100">
+                <div id="modal-content" class="w-full h-full"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="viewer.js"></script>
+    <script>
+        // Mobile nav toggle
+        function toggleMobileNav() {
+            const hamburger = document.querySelector('.hamburger');
+            const mobileNav = document.getElementById('mobile-nav');
+            hamburger.classList.toggle('active');
+            mobileNav.classList.toggle('active');
+        }
+        
+        // Close mobile nav on scroll
+        window.addEventListener('scroll', () => {
+            const hamburger = document.querySelector('.hamburger');
+            const mobileNav = document.getElementById('mobile-nav');
+            if (mobileNav.classList.contains('active')) {
+                hamburger.classList.remove('active');
+                mobileNav.classList.remove('active');
+            }
+        });
+    </script>
+</body>
+</html>

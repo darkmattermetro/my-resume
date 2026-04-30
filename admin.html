@@ -1,0 +1,1348 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Admin Dashboard</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Outfit', Arial, sans-serif; background: #f0f0f0; }
+        
+        /* Header */
+        .header { 
+            background: white; 
+            padding: 15px 30px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+        }
+        .header h1 { color: #0f172a; font-size: 20px; display: flex; align-items: center; gap: 8px; }
+        .header h1 i { color: #f59e0b; }
+        .logout-btn { 
+            padding: 8px 20px; 
+            background: #ef4444; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-weight: 500;
+        }
+        
+        /* Content */
+        .content { padding: 30px; max-width: 1000px; margin: 0 auto; }
+        
+        /* Tab Styles (from style.css) */
+        .admin-tabs { 
+            display: flex; 
+            gap: 4px; 
+            border-bottom: 1px solid #e2e8f0; 
+            margin-bottom: 24px; 
+            overflow-x: auto; 
+            padding-bottom: 0; 
+        }
+        .admin-tab { 
+            padding: 12px 20px; 
+            font-weight: 500; 
+            color: #475569; 
+            border-bottom: 3px solid transparent; 
+            transition: all 0.2s; 
+            white-space: nowrap; 
+            cursor: pointer; 
+            background: none; 
+            border-top: none; 
+            border-left: none; 
+            border-right: none;
+        }
+        .admin-tab.active { 
+            color: #0f172a; 
+            border-bottom-color: #f59e0b; 
+        }
+        .admin-tab:hover:not(.active) { 
+            color: #0f172a; 
+            border-bottom-color: #e2e8f0; 
+        }
+        .admin-tab-content { display: none; }
+        .admin-tab-content.active { display: block; }
+        
+        /* Card Styles */
+        .card { 
+            background: white; 
+            padding: 25px; 
+            border-radius: 15px; 
+            margin-bottom: 25px; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+        }
+        .card h3 { 
+            margin: 0 0 20px 0; 
+            color: #0f172a; 
+            border-bottom: 1px solid #eee; 
+            padding-bottom: 10px; 
+        }
+        
+        /* Form Styles */
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { 
+            display: block; 
+            margin-bottom: 5px; 
+            font-weight: 500; 
+            color: #555; 
+            font-size: 14px; 
+        }
+        .form-group input, .form-group textarea, .form-group select { 
+            width: 100%; 
+            padding: 12px; 
+            border: 1px solid #ddd; 
+            border-radius: 8px; 
+            font-size: 14px; 
+            font-family: 'Outfit', sans-serif;
+        }
+        .save-btn { 
+            display: block; 
+            width: 100%; 
+            padding: 18px; 
+            background: linear-gradient(135deg, #0f172a, #1e3a5f); 
+            color: white; 
+            border: none; 
+            border-radius: 12px; 
+            cursor: pointer; 
+            font-size: 18px; 
+            font-weight: bold; 
+            font-family: 'Outfit', sans-serif;
+        }
+        .save-btn:hover { background: linear-gradient(135deg, #1e3a5f, #0f172a); }
+        .save-btn:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        /* Media Grid */
+        .media-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+        .media-item { 
+            background: #f8fafc; 
+            padding: 20px; 
+            border-radius: 12px; 
+            text-align: center; 
+        }
+        .media-item img { 
+            max-width: 100%; 
+            height: 100px; 
+            object-fit: cover; 
+            border-radius: 8px; 
+            margin-bottom: 10px; 
+            border: 2px solid #eee; 
+        }
+        .media-item input[type="file"] { margin-top: 10px; width: 100%; }
+        .upload-btn { 
+            display: block; 
+            width: 100%; 
+            padding: 10px; 
+            background: #0f172a; 
+            color: white; 
+            border: none; 
+            border-radius: 8px; 
+            cursor: pointer; 
+            margin-top: 10px; 
+            font-family: 'Outfit', sans-serif;
+        }
+        .upload-btn:hover { background: #1e3a5f; }
+        
+        /* List Styles */
+        .docs-list, .experience-list, .skills-list, .cert-list, .achievement-list, .education-list { 
+            margin-top: 20px; 
+        }
+        .list-item { 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
+            padding: 12px; 
+            background: #f8fafc; 
+            border-radius: 8px; 
+            margin-bottom: 8px; 
+        }
+        .delete-btn { 
+            padding: 5px 10px; 
+            background: #ef4444; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-size: 13px;
+        }
+        .edit-btn { 
+            padding: 5px 10px; 
+            background: #3b82f6; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            font-size: 13px; 
+            margin-right: 5px;
+        }
+        
+        /* Three Column */
+        .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 15px; }
+        
+        /* Upload Progress */
+        .upload-progress { 
+            height: 6px; 
+            background: #e2e8f0; 
+            border-radius: 3px; 
+            margin-top: 8px; 
+            overflow: hidden; 
+            display: none; 
+        }
+        .upload-progress.active { display: block; }
+        .upload-progress-fill { 
+            height: 100%; 
+            background: #f59e0b; 
+            width: 0; 
+            transition: width 0.3s ease; 
+        }
+        
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            bottom: 24px;
+            right: 24px;
+            padding: 16px 24px;
+            border-radius: 12px;
+            color: white;
+            font-weight: 500;
+            z-index: 9999;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s ease;
+            font-family: 'Outfit', sans-serif;
+        }
+        .toast.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .toast.success { background: #16a34a; }
+        .toast.error { background: #dc2626; }
+        .toast.info { background: #2563eb; }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .form-row, .three-col, .media-grid { grid-template-columns: 1fr; }
+            .admin-tabs { gap: 0; }
+            .admin-tab { padding: 10px 12px; font-size: 14px; }
+            .content { padding: 15px; }
+        }
+    </style>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="header">
+        <h1><i class="fas fa-subway"></i> Metro Resume Admin</h1>
+        <button class="logout-btn" onclick="doLogout()"><i class="fas fa-sign-out-alt mr-2"></i>Logout</button>
+    </div>
+    
+    <div class="content">
+        <!-- Tab Navigation -->
+        <div class="admin-tabs">
+            <button class="admin-tab active" data-tab="profile">Profile</button>
+            <button class="admin-tab" data-tab="experience">Experience</button>
+            <button class="admin-tab" data-tab="skills">Skills</button>
+            <button class="admin-tab" data-tab="certifications">Certifications</button>
+            <button class="admin-tab" data-tab="achievements">Achievements</button>
+            <button class="admin-tab" data-tab="education">Education</button>
+            <button class="admin-tab" data-tab="documents">Documents</button>
+            <button class="admin-tab" data-tab="settings">Settings</button>
+        </div>
+        
+        <!-- Profile Tab -->
+        <div class="admin-tab-content active" id="tab-profile">
+            <div class="card">
+                <h3>Profile Information</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="input-full-name">
+                    </div>
+                    <div class="form-group">
+                        <label>Professional Title</label>
+                        <input type="text" id="input-title" value="Metro Train Operator">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Short Introduction</label>
+                    <textarea id="input-intro" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>About Me</label>
+                    <textarea id="input-about" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Contact Information</label>
+                    <input type="text" id="input-contact">
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Statistics</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Years Experience</label>
+                        <input type="text" id="input-stat-years">
+                    </div>
+                    <div class="form-group">
+                        <label>Routes Covered</label>
+                        <input type="text" id="input-stat-projects">
+                    </div>
+                    <div class="form-group">
+                        <label>Safety Record</label>
+                        <input type="text" id="input-stat-success">
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <h3>Feature Cards</h3>
+                <div class="three-col">
+                    <div class="form-group">
+                        <label>Feature 1 Title</label>
+                        <input type="text" id="input-feature1-title" value="Safety First">
+                        <label style="margin-top:10px;">Description</label>
+                        <textarea id="input-feature1-desc" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Feature 2 Title</label>
+                        <input type="text" id="input-feature2-title" value="Punctuality">
+                        <label style="margin-top:10px;">Description</label>
+                        <textarea id="input-feature2-desc" rows="2"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label>Feature 3 Title</label>
+                        <input type="text" id="input-feature3-title" value="Professionalism">
+                        <label style="margin-top:10px;">Description</label>
+                        <textarea id="input-feature3-desc" rows="2"></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <button class="save-btn" onclick="saveProfile()">Save Profile Changes</button>
+        </div>
+        
+        <!-- Experience Tab -->
+        <div class="admin-tab-content" id="tab-experience">
+            <div class="card">
+                <h3>Add Work Experience</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Role</label>
+                        <input type="text" id="exp-role" placeholder="e.g. Metro Train Operator">
+                    </div>
+                    <div class="form-group">
+                        <label>Company</label>
+                        <input type="text" id="exp-company" placeholder="e.g. City Metro Transit">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="date" id="exp-start">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date (leave empty if current)</label>
+                        <input type="date" id="exp-end">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>
+                        <input type="checkbox" id="exp-current"> Current Position
+                    </label>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="exp-desc" rows="3"></textarea>
+                </div>
+                <input type="hidden" id="exp-edit-id">
+                <button class="save-btn" onclick="saveExperience()">Save Experience</button>
+            </div>
+            
+            <div class="card">
+                <h3>Existing Experience</h3>
+                <div class="experience-list" id="experience-list"></div>
+            </div>
+        </div>
+        
+        <!-- Skills Tab -->
+        <div class="admin-tab-content" id="tab-skills">
+            <div class="card">
+                <h3>Add Skill</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Skill Name</label>
+                        <input type="text" id="skill-name" placeholder="e.g. Train Operation">
+                    </div>
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select id="skill-category">
+                            <option value="Technical">Technical</option>
+                            <option value="Safety">Safety</option>
+                            <option value="Soft Skills">Soft Skills</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Level (1-5)</label>
+                    <input type="range" id="skill-level" min="1" max="5" value="3" style="padding: 0;">
+                    <span id="skill-level-display">3</span>/5
+                </div>
+                <input type="hidden" id="skill-edit-id">
+                <button class="save-btn" onclick="saveSkill()">Save Skill</button>
+            </div>
+            
+            <div class="card">
+                <h3>Existing Skills</h3>
+                <div class="skills-list" id="skills-list"></div>
+            </div>
+        </div>
+        
+        <!-- Certifications Tab -->
+        <div class="admin-tab-content" id="tab-certifications">
+            <div class="card">
+                <h3>Add Certification</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Certification Name</label>
+                        <input type="text" id="cert-name" placeholder="e.g. Metro Safety Certification">
+                    </div>
+                    <div class="form-group">
+                        <label>Issuer</label>
+                        <input type="text" id="cert-issuer" placeholder="e.g. Transit Authority">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Date Earned</label>
+                        <input type="date" id="cert-earned">
+                    </div>
+                    <div class="form-group">
+                        <label>Expiry Date (optional)</label>
+                        <input type="date" id="cert-expiry">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Certificate File (PDF)</label>
+                    <input type="file" id="cert-upload" accept=".pdf">
+                    <div class="upload-progress" id="cert-progress">
+                        <div class="upload-progress-fill" id="cert-progress-fill"></div>
+                    </div>
+                </div>
+                <input type="hidden" id="cert-edit-id">
+                <button class="save-btn" onclick="saveCertification()">Save Certification</button>
+            </div>
+            
+            <div class="card">
+                <h3>Existing Certifications</h3>
+                <div class="cert-list" id="cert-list"></div>
+            </div>
+        </div>
+        
+        <!-- Achievements Tab -->
+        <div class="admin-tab-content" id="tab-achievements">
+            <div class="card">
+                <h3>Add Achievement</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Title</label>
+                        <input type="text" id="ach-title" placeholder="e.g. Million Mile Safe Driver">
+                    </div>
+                    <div class="form-group">
+                        <label>Icon</label>
+                        <select id="ach-icon">
+                            <option value="fa-trophy">Trophy</option>
+                            <option value="fa-shield-alt">Shield</option>
+                            <option value="fa-medal">Medal</option>
+                            <option value="fa-star">Star</option>
+                            <option value="fa-award">Award</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="ach-desc" rows="2"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="ach-date">
+                </div>
+                <input type="hidden" id="ach-edit-id">
+                <button class="save-btn" onclick="saveAchievement()">Save Achievement</button>
+            </div>
+            
+            <div class="card">
+                <h3>Existing Achievements</h3>
+                <div class="achievement-list" id="achievement-list"></div>
+            </div>
+        </div>
+        
+        <!-- Education Tab -->
+        <div class="admin-tab-content" id="tab-education">
+            <div class="card">
+                <h3>Add Education</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Institution</label>
+                        <input type="text" id="edu-institution" placeholder="e.g. State University">
+                    </div>
+                    <div class="form-group">
+                        <label>Degree</label>
+                        <input type="text" id="edu-degree" placeholder="e.g. Bachelor of Science">
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Field of Study</label>
+                        <input type="text" id="edu-field" placeholder="e.g. Transportation Management">
+                    </div>
+                    <div class="form-group">
+                        <label>Year</label>
+                        <input type="number" id="edu-year" placeholder="e.g. 2020">
+                    </div>
+                </div>
+                <input type="hidden" id="edu-edit-id">
+                <button class="save-btn" onclick="saveEducation()">Save Education</button>
+            </div>
+            
+            <div class="card">
+                <h3>Existing Education</h3>
+                <div class="education-list" id="education-list"></div>
+            </div>
+        </div>
+        
+        <!-- Documents Tab -->
+        <div class="admin-tab-content" id="tab-documents">
+            <div class="card">
+                <h3>Media & Documents</h3>
+                <div class="media-grid">
+                    <div class="media-item">
+                        <h4>Banner</h4>
+                        <img id="current-banner" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 100'%3E%3Crect fill='%230f172a' width='200' height='100'/%3E%3C/svg%3E" style="width:100%;height:100px;object-fit:cover;border-radius:8px;margin-bottom:10px;border:2px solid #eee;">
+                        <input type="file" id="banner-upload" accept="image/*">
+                        <button class="upload-btn" onclick="uploadBanner()">Upload</button>
+                        <div class="upload-progress" id="banner-progress">
+                            <div class="upload-progress-fill" id="banner-progress-fill"></div>
+                        </div>
+                    </div>
+                    <div class="media-item">
+                        <h4>Profile Photo</h4>
+                        <img id="current-photo" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Crect fill='%230f172a' width='120' height='120'/%3E%3C/svg%3E" style="width:100%;height:100px;object-fit:cover;border-radius:8px;margin-bottom:10px;border:2px solid #eee;">
+                        <input type="file" id="photo-upload" accept="image/*">
+                        <button class="upload-btn" onclick="uploadPhoto()">Upload</button>
+                        <div class="upload-progress" id="photo-progress">
+                            <div class="upload-progress-fill" id="photo-progress-fill"></div>
+                        </div>
+                    </div>
+                    <div class="media-item">
+                        <h4>Documents</h4>
+                        <input type="text" id="doc-name" placeholder="Document name" style="width:100%;padding:8px;margin-bottom:5px;border:1px solid #ddd;border-radius:5px;">
+                        <input type="file" id="doc-upload" style="margin-bottom:5px;">
+                        <button class="upload-btn" onclick="uploadDoc()">Upload</button>
+                        <div class="upload-progress" id="doc-progress">
+                            <div class="upload-progress-fill" id="doc-progress-fill"></div>
+                        </div>
+                    </div>
+                </div>
+                <h4 style="margin-top:20px;">Uploaded Documents:</h4>
+                <div id="docs-list"></div>
+            </div>
+        </div>
+        
+        <!-- Settings Tab -->
+        <div class="admin-tab-content" id="tab-settings">
+            <div class="card">
+                <h3>Contact & Social Links</h3>
+                <div class="form-group">
+                    <label>LinkedIn URL</label>
+                    <input type="url" id="setting-linkedin" placeholder="https://linkedin.com/in/yourprofile">
+                </div>
+                <div class="form-group">
+                    <label>GitHub URL</label>
+                    <input type="url" id="setting-github" placeholder="https://github.com/yourusername">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="setting-email" placeholder="your.email@example.com">
+                </div>
+                <div class="form-group">
+                    <label>Phone</label>
+                    <input type="tel" id="setting-phone" placeholder="+1 (555) 123-4567">
+                </div>
+                <button class="save-btn" onclick="saveSettings()">Save Settings</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Toast Notification -->
+    <div class="toast" id="toast"></div>
+
+    <script>
+        // Supabase Credentials (Unchanged)
+        const SUPABASE_URL = 'https://jrkuaysvvhjyxyrxmhul.supabase.co';
+        const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Impya3VheXN2dmhqeXh5cnhtaHVsIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzYxNDE0OTAsImV4cCI6MjA5MTcxNzQ5MH0.atCCNpZxriK2Xruo-kigPJCPrE-b2TeeB_E2C1IYxDI';
+        
+        // Check Login
+        if (localStorage.getItem('admin_logged_in') !== 'true') {
+            window.location.href = 'login.html';
+        }
+        
+        // Initialize Supabase
+        let supabaseClient = null;
+        try {
+            supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+            console.log('Supabase connected');
+        } catch(e) {
+            console.log('Supabase error: ' + e);
+            showToast('Failed to connect to database', 'error');
+        }
+        
+        // Tab Switching
+        document.querySelectorAll('.admin-tab').forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active from all tabs and content
+                document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+                document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.remove('active'));
+                
+                // Add active to clicked tab
+                tab.classList.add('active');
+                // Show corresponding content
+                const tabId = tab.dataset.tab;
+                document.getElementById(`tab-${tabId}`).classList.add('active');
+            });
+        });
+        
+        // Toast Notification
+        function showToast(message, type = 'info') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `toast ${type} show`;
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Logout
+        function doLogout() {
+            localStorage.removeItem('admin_logged_in');
+            window.location.href = 'login.html';
+        }
+        
+        // ==================== PROFILE FUNCTIONS ====================
+        async function loadProfile() {
+            if (!supabaseClient) return;
+            try {
+                var result = await supabaseClient.from('profile').select('*').order('id', { ascending: false }).limit(5);
+                if (!result.data || result.data.length === 0) return;
+                
+                var profileData = result.data[0];
+                for (var i = 0; i < result.data.length; i++) {
+                    if (result.data[i].full_name || result.data[i].professional_title) {
+                        profileData = result.data[i];
+                        break;
+                    }
+                }
+                
+                var d = profileData;
+                document.getElementById('input-full-name').value = d.full_name || '';
+                document.getElementById('input-title').value = d.professional_title || 'Metro Train Operator';
+                document.getElementById('input-intro').value = d.introduction || '';
+                document.getElementById('input-about').value = d.about_me || '';
+                document.getElementById('input-contact').value = d.contact_info || '';
+                document.getElementById('input-stat-years').value = d.stat_years || '';
+                document.getElementById('input-stat-projects').value = d.stat_projects || '';
+                document.getElementById('input-stat-success').value = d.stat_success || '';
+                document.getElementById('input-feature1-title').value = d.feature1_title || 'Safety First';
+                document.getElementById('input-feature1-desc').value = d.feature1_desc || '';
+                document.getElementById('input-feature2-title').value = d.feature2_title || 'Punctuality';
+                document.getElementById('input-feature2-desc').value = d.feature2_desc || '';
+                document.getElementById('input-feature3-title').value = d.feature3_title || 'Professionalism';
+                document.getElementById('input-feature3-desc').value = d.feature3_desc || '';
+                if (d.profile_photo_url) document.getElementById('current-photo').src = d.profile_photo_url;
+                if (d.banner_url) document.getElementById('current-banner').src = d.banner_url;
+            } catch (err) {
+                console.log('Profile load error:', err);
+            }
+        }
+        
+        async function saveProfile() {
+            if (!supabaseClient) return showToast('Database not connected', 'error');
+            const btn = document.querySelector('#tab-profile .save-btn');
+            btn.disabled = true;
+            btn.innerText = 'Saving...';
+            
+            var data = {
+                full_name: document.getElementById('input-full-name').value,
+                professional_title: document.getElementById('input-title').value,
+                introduction: document.getElementById('input-intro').value,
+                about_me: document.getElementById('input-about').value,
+                contact_info: document.getElementById('input-contact').value,
+                stat_years: document.getElementById('input-stat-years').value,
+                stat_projects: document.getElementById('input-stat-projects').value,
+                stat_success: document.getElementById('input-stat-success').value,
+                feature1_title: document.getElementById('input-feature1-title').value,
+                feature1_desc: document.getElementById('input-feature1-desc').value,
+                feature2_title: document.getElementById('input-feature2-title').value,
+                feature2_desc: document.getElementById('input-feature2-desc').value,
+                feature3_title: document.getElementById('input-feature3-title').value,
+                feature3_desc: document.getElementById('input-feature3-desc').value
+            };
+            
+            try {
+                var checkResult = await supabaseClient.from('profile').select('id').order('id', { ascending: false }).limit(1);
+                var saveResult;
+                
+                if (checkResult.data && checkResult.data.length > 0) {
+                    saveResult = await supabaseClient.from('profile').update(data).eq('id', checkResult.data[0].id);
+                } else {
+                    saveResult = await supabaseClient.from('profile').insert([data]);
+                }
+                
+                if (saveResult.error) {
+                    showToast('Error: ' + saveResult.error.message, 'error');
+                } else {
+                    showToast('Profile saved successfully!', 'success');
+                }
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+            
+            btn.disabled = false;
+            btn.innerText = 'Save Profile Changes';
+        }
+        
+        // ==================== EXPERIENCE FUNCTIONS ====================
+        async function loadExperience() {
+            if (!supabaseClient) return;
+            const list = document.getElementById('experience-list');
+            try {
+                const { data, error } = await supabaseClient.from('work_experience').select('*').order('start_date', { ascending: false });
+                if (error) return;
+                if (!data || data.length === 0) {
+                    list.innerHTML = '<p style="color:#999;">No experience entries</p>';
+                    return;
+                }
+                list.innerHTML = data.map(exp => `
+                    <div class="list-item">
+                        <div>
+                            <strong>${exp.role}</strong> at ${exp.company}<br>
+                            <small>${new Date(exp.start_date).toLocaleDateString()} - ${exp.is_current ? 'Present' : new Date(exp.end_date).toLocaleDateString()}</small>
+                        </div>
+                        <div>
+                            <button class="edit-btn" onclick="editExperience(${exp.id})">Edit</button>
+                            <button class="delete-btn" onclick="deleteExperience(${exp.id})">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.log('Experience load error:', err);
+            }
+        }
+        
+        async function saveExperience() {
+            if (!supabaseClient) return showToast('Database not connected', 'error');
+            const id = document.getElementById('exp-edit-id').value;
+            const data = {
+                role: document.getElementById('exp-role').value,
+                company: document.getElementById('exp-company').value,
+                start_date: document.getElementById('exp-start').value,
+                end_date: document.getElementById('exp-current').checked ? null : document.getElementById('exp-end').value,
+                is_current: document.getElementById('exp-current').checked,
+                description: document.getElementById('exp-desc').value
+            };
+            
+            if (!data.role || !data.company || !data.start_date) {
+                return showToast('Please fill in required fields', 'error');
+            }
+            
+            try {
+                let result;
+                if (id) {
+                    result = await supabaseClient.from('work_experience').update(data).eq('id', id);
+                } else {
+                    result = await supabaseClient.from('work_experience').insert([data]);
+                }
+                
+                if (result.error) {
+                    showToast('Error: ' + result.error.message, 'error');
+                } else {
+                    showToast('Experience saved successfully!', 'success');
+                    clearExperienceForm();
+                    loadExperience();
+                }
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+        
+        async function editExperience(id) {
+            const { data } = await supabaseClient.from('work_experience').select('*').eq('id', id).single();
+            if (!data) return;
+            document.getElementById('exp-edit-id').value = data.id;
+            document.getElementById('exp-role').value = data.role;
+            document.getElementById('exp-company').value = data.company;
+            document.getElementById('exp-start').value = data.start_date;
+            document.getElementById('exp-end').value = data.end_date || '';
+            document.getElementById('exp-current').checked = data.is_current;
+            document.getElementById('exp-desc').value = data.description || '';
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        async function deleteExperience(id) {
+            if (!confirm('Delete this experience entry?')) return;
+            try {
+                await supabaseClient.from('work_experience').delete().eq('id', id);
+                showToast('Experience deleted', 'info');
+                loadExperience();
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+        
+        function clearExperienceForm() {
+            document.getElementById('exp-edit-id').value = '';
+            document.getElementById('exp-role').value = '';
+            document.getElementById('exp-company').value = '';
+            document.getElementById('exp-start').value = '';
+            document.getElementById('exp-end').value = '';
+            document.getElementById('exp-current').checked = false;
+            document.getElementById('exp-desc').value = '';
+        }
+        
+        // ==================== SKILLS FUNCTIONS ====================
+        async function loadSkills() {
+            if (!supabaseClient) return;
+            const list = document.getElementById('skills-list');
+            try {
+                const { data, error } = await supabaseClient.from('skills').select('*').order('category', { ascending: true });
+                if (error) return;
+                if (!data || data.length === 0) {
+                    list.innerHTML = '<p style="color:#999;">No skills added</p>';
+                    return;
+                }
+                list.innerHTML = data.map(skill => `
+                    <div class="list-item">
+                        <div>
+                            <strong>${skill.name}</strong> (${skill.category})<br>
+                            <small>Level: ${skill.level}/5</small>
+                        </div>
+                        <div>
+                            <button class="edit-btn" onclick="editSkill(${skill.id})">Edit</button>
+                            <button class="delete-btn" onclick="deleteSkill(${skill.id})">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.log('Skills load error:', err);
+            }
+        }
+        
+        document.getElementById('skill-level').addEventListener('input', function() {
+            document.getElementById('skill-level-display').innerText = this.value;
+        });
+        
+        async function saveSkill() {
+            if (!supabaseClient) return showToast('Database not connected', 'error');
+            const id = document.getElementById('skill-edit-id').value;
+            const data = {
+                name: document.getElementById('skill-name').value,
+                category: document.getElementById('skill-category').value,
+                level: parseInt(document.getElementById('skill-level').value)
+            };
+            
+            if (!data.name) return showToast('Please enter skill name', 'error');
+            
+            try {
+                let result;
+                if (id) {
+                    result = await supabaseClient.from('skills').update(data).eq('id', id);
+                } else {
+                    result = await supabaseClient.from('skills').insert([data]);
+                }
+                
+                if (result.error) {
+                    showToast('Error: ' + result.error.message, 'error');
+                } else {
+                    showToast('Skill saved successfully!', 'success');
+                    clearSkillForm();
+                    loadSkills();
+                }
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+        
+        async function editSkill(id) {
+            const { data } = await supabaseClient.from('skills').select('*').eq('id', id).single();
+            if (!data) return;
+            document.getElementById('skill-edit-id').value = data.id;
+            document.getElementById('skill-name').value = data.name;
+            document.getElementById('skill-category').value = data.category;
+            document.getElementById('skill-level').value = data.level;
+            document.getElementById('skill-level-display').innerText = data.level;
+        }
+        
+        async function deleteSkill(id) {
+            if (!confirm('Delete this skill?')) return;
+            try {
+                await supabaseClient.from('skills').delete().eq('id', id);
+                showToast('Skill deleted', 'info');
+                loadSkills();
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+        
+        function clearSkillForm() {
+            document.getElementById('skill-edit-id').value = '';
+            document.getElementById('skill-name').value = '';
+            document.getElementById('skill-level').value = 3;
+            document.getElementById('skill-level-display').innerText = 3;
+        }
+        
+        // ==================== CERTIFICATIONS FUNCTIONS ====================
+        async function loadCertifications() {
+            if (!supabaseClient) return;
+            const list = document.getElementById('cert-list');
+            try {
+                const { data, error } = await supabaseClient.from('certifications').select('*').order('date_earned', { ascending: false });
+                if (error) return;
+                if (!data || data.length === 0) {
+                    list.innerHTML = '<p style="color:#999;">No certifications added</p>';
+                    return;
+                }
+                list.innerHTML = data.map(cert => `
+                    <div class="list-item">
+                        <div>
+                            <strong>${cert.name}</strong> (${cert.issuer})<br>
+                            <small>Earned: ${new Date(cert.date_earned).toLocaleDateString()}</small>
+                        </div>
+                        <div>
+                            <button class="edit-btn" onclick="editCertification(${cert.id})">Edit</button>
+                            <button class="delete-btn" onclick="deleteCertification(${cert.id})">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.log('Certifications load error:', err);
+            }
+        }
+        
+        async function saveCertification() {
+            if (!supabaseClient) return showToast('Database not connected', 'error');
+            const id = document.getElementById('cert-edit-id').value;
+            const name = document.getElementById('cert-name').value;
+            const issuer = document.getElementById('cert-issuer').value;
+            const earned = document.getElementById('cert-earned').value;
+            const expiry = document.getElementById('cert-expiry').value;
+            const file = document.getElementById('cert-upload').files[0];
+            
+            if (!name || !issuer || !earned) {
+                return showToast('Please fill in required fields', 'error');
+            }
+            
+            try {
+                let certificate_url = null;
+                if (file) {
+                    // Upload file
+                    const progressBar = document.getElementById('cert-progress');
+                    const progressFill = document.getElementById('cert-progress-fill');
+                    progressBar.classList.add('active');
+                    
+                    const fileName = `cert_${Date.now()}_${file.name}`;
+                    const upload = await supabaseClient.storage.from('resume-assets').upload(fileName, file);
+                    if (upload.error) throw upload.error;
+                    certificate_url = supabaseClient.storage.from('resume-assets').getPublicUrl(fileName).data.publicUrl;
+                    
+                    progressBar.classList.remove('active');
+                }
+                
+                const data = {
+                    name,
+                    issuer,
+                    date_earned: earned,
+                    expiry_date: expiry || null,
+                    certificate_url
+                };
+                
+                let result;
+                if (id) {
+                    // If no new file, keep existing URL
+                    if (!certificate_url) {
+                        const { data: existing } = await supabaseClient.from('certifications').select('certificate_url').eq('id', id).single();
+                        data.certificate_url = existing.certificate_url;
+                    }
+                    result = await supabaseClient.from('certifications').update(data).eq('id', id);
+                } else {
+                    result = await supabaseClient.from('certifications').insert([data]);
+                }
+                
+                if (result.error) {
+                    showToast('Error: ' + result.error.message, 'error');
+                } else {
+                    showToast('Certification saved successfully!', 'success');
+                    clearCertForm();
+                    loadCertifications();
+                }
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+                document.getElementById('cert-progress').classList.remove('active');
+            }
+        }
+        
+        async function editCertification(id) {
+            const { data } = await supabaseClient.from('certifications').select('*').eq('id', id).single();
+            if (!data) return;
+            document.getElementById('cert-edit-id').value = data.id;
+            document.getElementById('cert-name').value = data.name;
+            document.getElementById('cert-issuer').value = data.issuer;
+            document.getElementById('cert-earned').value = data.date_earned;
+            document.getElementById('cert-expiry').value = data.expiry_date || '';
+        }
+        
+        async function deleteCertification(id) {
+            if (!confirm('Delete this certification?')) return;
+            try {
+                await supabaseClient.from('certifications').delete().eq('id', id);
+                showToast('Certification deleted', 'info');
+                loadCertifications();
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+        
+        function clearCertForm() {
+            document.getElementById('cert-edit-id').value = '';
+            document.getElementById('cert-name').value = '';
+            document.getElementById('cert-issuer').value = '';
+            document.getElementById('cert-earned').value = '';
+            document.getElementById('cert-expiry').value = '';
+            document.getElementById('cert-upload').value = '';
+        }
+        
+        // ==================== ACHIEVEMENTS FUNCTIONS ====================
+        async function loadAchievements() {
+            if (!supabaseClient) return;
+            const list = document.getElementById('achievement-list');
+            try {
+                const { data, error } = await supabaseClient.from('achievements').select('*').order('date', { ascending: false });
+                if (error) return;
+                if (!data || data.length === 0) {
+                    list.innerHTML = '<p style="color:#999;">No achievements added</p>';
+                    return;
+                }
+                list.innerHTML = data.map(ach => `
+                    <div class="list-item">
+                        <div>
+                            <strong>${ach.title}</strong><br>
+                            <small><i class="fas ${ach.icon}"></i> ${new Date(ach.date).toLocaleDateString()}</small>
+                        </div>
+                        <div>
+                            <button class="edit-btn" onclick="editAchievement(${ach.id})">Edit</button>
+                            <button class="delete-btn" onclick="deleteAchievement(${ach.id})">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.log('Achievements load error:', err);
+            }
+        }
+        
+        async function saveAchievement() {
+            if (!supabaseClient) return showToast('Database not connected', 'error');
+            const id = document.getElementById('ach-edit-id').value;
+            const data = {
+                title: document.getElementById('ach-title').value,
+                description: document.getElementById('ach-desc').value,
+                date: document.getElementById('ach-date').value,
+                icon: document.getElementById('ach-icon').value
+            };
+            
+            if (!data.title || !data.date) {
+                return showToast('Please fill in required fields', 'error');
+            }
+            
+            try {
+                let result;
+                if (id) {
+                    result = await supabaseClient.from('achievements').update(data).eq('id', id);
+                } else {
+                    result = await supabaseClient.from('achievements').insert([data]);
+                }
+                
+                if (result.error) {
+                    showToast('Error: ' + result.error.message, 'error');
+                } else {
+                    showToast('Achievement saved successfully!', 'success');
+                    clearAchievementForm();
+                    loadAchievements();
+                }
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+        
+        async function editAchievement(id) {
+            const { data } = await supabaseClient.from('achievements').select('*').eq('id', id).single();
+            if (!data) return;
+            document.getElementById('ach-edit-id').value = data.id;
+            document.getElementById('ach-title').value = data.title;
+            document.getElementById('ach-desc').value = data.description || '';
+            document.getElementById('ach-date').value = data.date;
+            document.getElementById('ach-icon').value = data.icon || 'fa-trophy';
+        }
+        
+        async function deleteAchievement(id) {
+            if (!confirm('Delete this achievement?')) return;
+            try {
+                await supabaseClient.from('achievements').delete().eq('id', id);
+                showToast('Achievement deleted', 'info');
+                loadAchievements();
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+        
+        function clearAchievementForm() {
+            document.getElementById('ach-edit-id').value = '';
+            document.getElementById('ach-title').value = '';
+            document.getElementById('ach-desc').value = '';
+            document.getElementById('ach-date').value = '';
+            document.getElementById('ach-icon').value = 'fa-trophy';
+        }
+        
+        // ==================== EDUCATION FUNCTIONS ====================
+        async function loadEducation() {
+            if (!supabaseClient) return;
+            const list = document.getElementById('education-list');
+            try {
+                const { data, error } = await supabaseClient.from('education').select('*').order('year', { ascending: false });
+                if (error) return;
+                if (!data || data.length === 0) {
+                    list.innerHTML = '<p style="color:#999;">No education entries</p>';
+                    return;
+                }
+                list.innerHTML = data.map(edu => `
+                    <div class="list-item">
+                        <div>
+                            <strong>${edu.degree}</strong> (${edu.field || 'N/A'})<br>
+                            <small>${edu.institution}, ${edu.year}</small>
+                        </div>
+                        <div>
+                            <button class="edit-btn" onclick="editEducation(${edu.id})">Edit</button>
+                            <button class="delete-btn" onclick="deleteEducation(${edu.id})">Delete</button>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.log('Education load error:', err);
+            }
+        }
+        
+        async function saveEducation() {
+            if (!supabaseClient) return showToast('Database not connected', 'error');
+            const id = document.getElementById('edu-edit-id').value;
+            const data = {
+                institution: document.getElementById('edu-institution').value,
+                degree: document.getElementById('edu-degree').value,
+                field: document.getElementById('edu-field').value,
+                year: parseInt(document.getElementById('edu-year').value)
+            };
+            
+            if (!data.institution || !data.degree || !data.year) {
+                return showToast('Please fill in required fields', 'error');
+            }
+            
+            try {
+                let result;
+                if (id) {
+                    result = await supabaseClient.from('education').update(data).eq('id', id);
+                } else {
+                    result = await supabaseClient.from('education').insert([data]);
+                }
+                
+                if (result.error) {
+                    showToast('Error: ' + result.error.message, 'error');
+                } else {
+                    showToast('Education saved successfully!', 'success');
+                    clearEducationForm();
+                    loadEducation();
+                }
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+        
+        async function editEducation(id) {
+            const { data } = await supabaseClient.from('education').select('*').eq('id', id).single();
+            if (!data) return;
+            document.getElementById('edu-edit-id').value = data.id;
+            document.getElementById('edu-institution').value = data.institution;
+            document.getElementById('edu-degree').value = data.degree;
+            document.getElementById('edu-field').value = data.field || '';
+            document.getElementById('edu-year').value = data.year;
+        }
+        
+        async function deleteEducation(id) {
+            if (!confirm('Delete this education entry?')) return;
+            try {
+                await supabaseClient.from('education').delete().eq('id', id);
+                showToast('Education deleted', 'info');
+                loadEducation();
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+        
+        function clearEducationForm() {
+            document.getElementById('edu-edit-id').value = '';
+            document.getElementById('edu-institution').value = '';
+            document.getElementById('edu-degree').value = '';
+            document.getElementById('edu-field').value = '';
+            document.getElementById('edu-year').value = '';
+        }
+        
+        // ==================== MEDIA & DOCUMENT FUNCTIONS ====================
+        async function uploadBanner() {
+            if (!supabaseClient) return showToast('Database not connected', 'error');
+            const file = document.getElementById('banner-upload').files[0];
+            if (!file) return showToast('Select a file', 'error');
+            
+            const progressBar = document.getElementById('banner-progress');
+            const progressFill = document.getElementById('banner-progress-fill');
+            progressBar.classList.add('active');
+            
+            try {
+                const fileName = `banner_${Date.now()}`;
+                const upload = await supabaseClient.storage.from('resume-assets').upload(fileName, file);
+                if (upload.error) throw upload.error;
+                
+                const url = supabaseClient.storage.from('resume-assets').getPublicUrl(fileName).data.publicUrl;
+                const existing = await supabaseClient.from('profile').select('id').order('id', { ascending: false }).limit(1);
+                
+                if (existing.data && existing.data.length > 0) {
+                    await supabaseClient.from('profile').update({ banner_url: url }).eq('id', existing.data[0].id);
+                } else {
+                    await supabaseClient.from('profile').insert([{ banner_url: url }]);
+                }
+                
+                document.getElementById('current-banner').src = url;
+                progressBar.classList.remove('active');
+                showToast('Banner uploaded!', 'success');
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+                progressBar.classList.remove('active');
+            }
+        }
+        
+        async function uploadPhoto() {
+            if (!supabaseClient) return showToast('Database not connected', 'error');
+            const file = document.getElementById('photo-upload').files[0];
+            if (!file) return showToast('Select a file', 'error');
+            
+            const progressBar = document.getElementById('photo-progress');
+            const progressFill = document.getElementById('photo-progress-fill');
+            progressBar.classList.add('active');
+            
+            try {
+                const fileName = `photo_${Date.now()}`;
+                const upload = await supabaseClient.storage.from('resume-assets').upload(fileName, file);
+                if (upload.error) throw upload.error;
+                
+                const url = supabaseClient.storage.from('resume-assets').getPublicUrl(fileName).data.publicUrl;
+                const existing = await supabaseClient.from('profile').select('id').order('id', { ascending: false }).limit(1);
+                
+                if (existing.data && existing.data.length > 0) {
+                    await supabaseClient.from('profile').update({ profile_photo_url: url }).eq('id', existing.data[0].id);
+                } else {
+                    await supabaseClient.from('profile').insert([{ profile_photo_url: url }]);
+                }
+                
+                document.getElementById('current-photo').src = url;
+                progressBar.classList.remove('active');
+                showToast('Photo uploaded!', 'success');
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+                progressBar.classList.remove('active');
+            }
+        }
+        
+        async function uploadDoc() {
+            if (!supabaseClient) return showToast('Database not connected', 'error');
+            const name = document.getElementById('doc-name').value;
+            const file = document.getElementById('doc-upload').files[0];
+            if (!name || !file) return showToast('Enter name and select file', 'error');
+            
+            const progressBar = document.getElementById('doc-progress');
+            progressBar.classList.add('active');
+            
+            try {
+                const fileName = `${Date.now()}_${file.name}`;
+                const upload = await supabaseClient.storage.from('resume-assets').upload(fileName, file);
+                if (upload.error) throw upload.error;
+                
+                const url = supabaseClient.storage.from('resume-assets').getPublicUrl(fileName).data.publicUrl;
+                await supabaseClient.from('documents').insert([{ name: name, url: url }]);
+                
+                document.getElementById('doc-name').value = '';
+                document.getElementById('doc-upload').value = '';
+                progressBar.classList.remove('active');
+                loadDocs();
+                showToast('Document uploaded!', 'success');
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+                progressBar.classList.remove('active');
+            }
+        }
+        
+        async function loadDocs() {
+            if (!supabaseClient) return;
+            const list = document.getElementById('docs-list');
+            try {
+                const { data, error } = await supabaseClient.from('documents').select('*').order('created_at', { ascending: false });
+                if (error) return;
+                if (!data || data.length === 0) {
+                    list.innerHTML = '<p style="color:#999;">No documents uploaded</p>';
+                    return;
+                }
+                list.innerHTML = data.map(doc => `
+                    <div class="list-item">
+                        <span>${doc.name}</span>
+                        <button class="delete-btn" onclick="deleteDoc(${doc.id})">Delete</button>
+                    </div>
+                `).join('');
+            } catch (err) {
+                console.log('Docs load error:', err);
+            }
+        }
+        
+        async function deleteDoc(id) {
+            if (!confirm('Delete this document?')) return;
+            try {
+                await supabaseClient.from('documents').delete().eq('id', id);
+                loadDocs();
+                showToast('Document deleted', 'info');
+            } catch (err) {
+                showToast('Error: ' + err.message, 'error');
+            }
+        }
+        
+        // ==================== SETTINGS FUNCTIONS ====================
+        async function saveSettings() {
+            showToast('Settings saved (feature pending full implementation)', 'info');
+        }
+        
+        // ==================== INITIAL LOAD ====================
+        if (supabaseClient) {
+            loadProfile();
+            loadExperience();
+            loadSkills();
+            loadCertifications();
+            loadAchievements();
+            loadEducation();
+            loadDocs();
+        }
+    </script>
+</body>
+</html>
