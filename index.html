@@ -76,7 +76,128 @@
 
     <!-- Banner Section -->
     <div id="banner-container" class="relative h-48 md:h-56 w-full overflow-hidden">
-        <img id="banner-img" src="metro-banner.svg" alt="Metro Banner" class="w-full h-full object-cover">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 500" preserveAspectRatio="xMidYMid slice" class="w-full h-full">
+  <defs>
+    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="trackGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#94a3b8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#cbd5e1;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Sky background -->
+  <rect fill="url(#sky)" width="1920" height="500"/>
+  
+  <!-- Stars -->
+  <circle cx="200" cy="80" r="1.5" fill="white" opacity="0.6"/>
+  <circle cx="500" cy="120" r="1" fill="white" opacity="0.4"/>
+  <circle cx="800" cy="60" r="1.5" fill="white" opacity="0.5"/>
+  <circle cx="1100" cy="100" r="1" fill="white" opacity="0.3"/>
+  <circle cx="1400" cy="70" r="1.5" fill="white" opacity="0.6"/>
+  <circle cx="1700" cy="90" r="1" fill="white" opacity="0.4"/>
+  <circle cx="300" cy="150" r="1" fill="white" opacity="0.3"/>
+  <circle cx="1600" cy="140" r="1" fill="white" opacity="0.5"/>
+  
+  <!-- Platform -->
+  <rect x="0" y="320" width="1920" height="180" fill="#1e293b" opacity="0.8"/>
+  <rect x="0" y="320" width="1920" height="4" fill="#f59e0b"/>
+  
+  <!-- Platform Signage -->
+  <rect x="100" y="280" width="300" height="40" rx="5" fill="#0f172a" opacity="0.9"/>
+  <text x="250" y="305" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#f59e0b" text-anchor="middle">METRO</text>
+  
+  <rect x="1520" y="280" width="300" height="40" rx="5" fill="#0f172a" opacity="0.9"/>
+  <text x="1670" y="305" font-family="Arial, sans-serif" font-size="18" fill="#e2e8f0" text-anchor="middle">TRAIN OPERATOR</text>
+  
+  <!-- Tracks -->
+  <line x1="0" y1="360" x2="1920" y2="360" stroke="url(#trackGrad)" stroke-width="3"/>
+  <line x1="0" y1="400" x2="1920" y2="400" stroke="url(#trackGrad)" stroke-width="3"/>
+  <line x1="0" y1="440" x2="1920" y2="440" stroke="url(#trackGrad)" stroke-width="3"/>
+  
+  <!-- Track Sleepers -->
+  <g opacity="0.4">
+    <rect x="100" y="365" width="60" height="30" fill="#64748b"/>
+    <rect x="300" y="365" width="60" height="30" fill="#64748b"/>
+    <rect x="500" y="365" width="60" height="30" fill="#64748b"/>
+    <rect x="700" y="365" width="60" height="30" fill="#64748b"/>
+    <rect x="900" y="365" width="60" height="30" fill="#64748b"/>
+    <rect x="1100" y="365" width="60" height="30" fill="#64748b"/>
+    <rect x="1300" y="365" width="60" height="30" fill="#64748b"/>
+    <rect x="1500" y="365" width="60" height="30" fill="#64748b"/>
+    <rect x="1700" y="365" width="60" height="30" fill="#64748b"/>
+  </g>
+  
+  <!-- Metro Train -->
+  <g transform="translate(600, 300)">
+    <!-- Train Body -->
+    <rect x="0" y="0" width="400" height="60" rx="5" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
+    
+    <!-- Windows -->
+    <rect x="20" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
+    <rect x="60" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
+    <rect x="100" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
+    <rect x="140" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
+    <rect x="180" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
+    <rect x="220" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
+    <rect x="260" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
+    <rect x="300" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
+    <rect x="340" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
+    
+    <!-- Door -->
+    <rect x="140" y="10" width="30" height="40" fill="none" stroke="#f59e0b" stroke-width="1" opacity="0.5"/>
+    
+    <!-- Headlight -->
+    <circle cx="395" cy="30" r="6" fill="#fef3c7"/>
+    <circle cx="395" cy="30" r="3" fill="#f59e0b"/>
+    
+    <!-- Metro Logo -->
+    <text x="200" y="50" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#f59e0b" text-anchor="middle">METRO</text>
+    
+    <!-- Wheels -->
+    <circle cx="50" cy="65" r="8" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
+    <circle cx="50" cy="65" r="3" fill="#64748b"/>
+    <circle cx="150" cy="65" r="8" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
+    <circle cx="150" cy="65" r="3" fill="#64748b"/>
+    <circle cx="250" cy="65" r="8" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
+    <circle cx="250" cy="65" r="3" fill="#64748b"/>
+    <circle cx="350" cy="65" r="8" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
+    <circle cx="350" cy="65" r="3" fill="#64748b"/>
+  </g>
+  
+  <!-- Second Train (background) -->
+  <g transform="translate(200, 340)" opacity="0.3">
+    <rect x="0" y="0" width="350" height="50" rx="5" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
+    <rect x="20" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
+    <rect x="55" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
+    <rect x="90" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
+    <rect x="125" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
+    <rect x="160" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
+    <rect x="195" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
+    <rect x="230" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
+    <rect x="265" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
+    <rect x="300" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
+    <circle cx="30" cy="55" r="6" fill="#334155"/>
+    <circle cx="120" cy="55" r="6" fill="#334155"/>
+    <circle cx="210" cy="55" r="6" fill="#334155"/>
+    <circle cx="300" cy="55" r="6" fill="#334155"/>
+  </g>
+  
+  <!-- Platform Lights -->
+  <circle cx="250" cy="280" r="8" fill="#fef3c7" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.4;0.8" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="1670" cy="280" r="8" fill="#fef3c7" opacity="0.8">
+    <animate attributeName="opacity" values="0.8;0.4;0.8" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Motion Blur Lines (speed effect) -->
+  <line x1="1000" y1="330" x2="1100" y2="330" stroke="#f59e0b" stroke-width="1" opacity="0.2"/>
+  <line x1="1050" y1="335" x2="1150" y2="335" stroke="#f59e0b" stroke-width="1" opacity="0.15"/>
+  <line x1="1100" y1="340" x2="1200" y2="340" stroke="#f59e0b" stroke-width="1" opacity="0.1"/>
+</svg>
         <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
     </div>
 
