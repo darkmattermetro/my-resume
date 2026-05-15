@@ -247,6 +247,8 @@
             <button class="admin-tab" data-tab="achievements">Achievements</button>
             <button class="admin-tab" data-tab="education">Education</button>
             <button class="admin-tab" data-tab="documents">Documents</button>
+            <button class="admin-tab" data-tab="innovation">Innovation</button>
+            <button class="admin-tab" data-tab="memberships">Memberships</button>
             <button class="admin-tab" data-tab="settings">Settings</button>
         </div>
         
@@ -550,6 +552,58 @@
             </div>
         </div>
         
+        <!-- Innovation Tab -->
+        <div class="admin-tab-content" id="tab-innovation">
+            <div class="card">
+                <h3>Add Technical Innovation</h3>
+                <div class="form-group">
+                    <label>Project Name</label>
+                    <input type="text" id="inn-name" placeholder="e.g. Digital Roster Tool">
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="inn-desc" rows="4" placeholder="Describe the project and its impact..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Project URL (optional)</label>
+                    <input type="url" id="inn-url" placeholder="https://github.com/...">
+                </div>
+                <input type="hidden" id="inn-edit-id">
+                <button class="save-btn" onclick="saveInnovation()">Save Innovation</button>
+            </div>
+            <div class="card">
+                <h3>Existing Innovations</h3>
+                <div id="innovation-list"></div>
+            </div>
+        </div>
+
+        <!-- Memberships Tab -->
+        <div class="admin-tab-content" id="tab-memberships">
+            <div class="card">
+                <h3>Add Professional Membership</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label>Membership Title</label>
+                        <input type="text" id="mem-name" placeholder="e.g. Affiliate Member">
+                    </div>
+                    <div class="form-group">
+                        <label>Organization</label>
+                        <input type="text" id="mem-org" placeholder="e.g. CIRO, UK">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Description</label>
+                    <textarea id="mem-desc" rows="2"></textarea>
+                </div>
+                <input type="hidden" id="mem-edit-id">
+                <button class="save-btn" onclick="saveMembership()">Save Membership</button>
+            </div>
+            <div class="card">
+                <h3>Existing Memberships</h3>
+                <div id="membership-list"></div>
+            </div>
+        </div>
+
         <!-- Settings Tab -->
         <div class="admin-tab-content" id="tab-settings">
             <div class="card">
@@ -1328,6 +1382,174 @@
             }
         }
         
+        // ==================== INNOVATION FUNCTIONS ====================
+        function getInnovations() {
+            try { return JSON.parse(localStorage.getItem('admin_innovations') || '[]'); } catch(e) { return []; }
+        }
+        function saveInnovationsToLocal(data) {
+            localStorage.setItem('admin_innovations', JSON.stringify(data));
+        }
+        
+        async function loadInnovations() {
+            const list = document.getElementById('innovation-list');
+            let data = getInnovations();
+            if (supabaseClient) {
+                try {
+                    const { data: dbData } = await supabaseClient.from('technical_innovation').select('*').order('created_at', { ascending: false });
+                    if (dbData && dbData.length > 0) data = dbData;
+                } catch(e) {}
+            }
+            if (!data || data.length === 0) {
+                list.innerHTML = '<p style="color:#999;">No innovations added</p>';
+                return;
+            }
+            list.innerHTML = data.map((item, idx) => `
+                <div class="list-item">
+                    <div><strong>${item.name}</strong><br><small>${(item.description || '').substring(0, 80)}${(item.description || '').length > 80 ? '...' : ''}</small></div>
+                    <div>
+                        <button class="edit-btn" onclick="editInnovation(${item.id || idx})">Edit</button>
+                        <button class="delete-btn" onclick="deleteInnovation(${item.id || idx}, ${idx})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        async function saveInnovation() {
+            const id = document.getElementById('inn-edit-id').value;
+            const data = {
+                name: document.getElementById('inn-name').value,
+                description: document.getElementById('inn-desc').value,
+                url: document.getElementById('inn-url').value
+            };
+            if (!data.name) return showToast('Please enter project name', 'error');
+            
+            if (supabaseClient) {
+                try {
+                    let result;
+                    if (id) { result = await supabaseClient.from('technical_innovation').update(data).eq('id', id); }
+                    else { result = await supabaseClient.from('technical_innovation').insert([data]); }
+                    if (result.error) throw result.error;
+                    showToast('Innovation saved!', 'success');
+                } catch(err) {
+                    showToast('Error: ' + err.message, 'error');
+                }
+            } else {
+                let list = getInnovations();
+                if (id) { list = list.map((item, idx) => idx == id ? { ...item, ...data } : item); }
+                else { list.push({ ...data, id: Date.now() }); }
+                saveInnovationsToLocal(list);
+                showToast('Innovation saved locally!', 'success');
+            }
+            document.getElementById('inn-name').value = '';
+            document.getElementById('inn-desc').value = '';
+            document.getElementById('inn-url').value = '';
+            document.getElementById('inn-edit-id').value = '';
+            loadInnovations();
+        }
+        
+        function editInnovation(id) {
+            let data = getInnovations();
+            const item = data.find((item, idx) => item.id === id || idx === id);
+            if (!item) return;
+            document.getElementById('inn-edit-id').value = id;
+            document.getElementById('inn-name').value = item.name;
+            document.getElementById('inn-desc').value = item.description || '';
+            document.getElementById('inn-url').value = item.url || '';
+        }
+        
+        function deleteInnovation(id, idx) {
+            if (!confirm('Delete this innovation?')) return;
+            let data = getInnovations();
+            data = data.filter((item, i) => i !== idx);
+            saveInnovationsToLocal(data);
+            loadInnovations();
+            showToast('Innovation deleted', 'info');
+        }
+        
+        // ==================== MEMBERSHIPS FUNCTIONS ====================
+        function getMemberships() {
+            try { return JSON.parse(localStorage.getItem('admin_memberships') || '[]'); } catch(e) { return []; }
+        }
+        function saveMembershipsToLocal(data) {
+            localStorage.setItem('admin_memberships', JSON.stringify(data));
+        }
+        
+        async function loadMemberships() {
+            const list = document.getElementById('membership-list');
+            let data = getMemberships();
+            if (supabaseClient) {
+                try {
+                    const { data: dbData } = await supabaseClient.from('memberships').select('*').order('created_at', { ascending: false });
+                    if (dbData && dbData.length > 0) data = dbData;
+                } catch(e) {}
+            }
+            if (!data || data.length === 0) {
+                list.innerHTML = '<p style="color:#999;">No memberships added</p>';
+                return;
+            }
+            list.innerHTML = data.map((item, idx) => `
+                <div class="list-item">
+                    <div><strong>${item.name}</strong> — ${item.organization}<br><small>${(item.description || '').substring(0, 60)}${(item.description || '').length > 60 ? '...' : ''}</small></div>
+                    <div>
+                        <button class="edit-btn" onclick="editMembership(${item.id || idx})">Edit</button>
+                        <button class="delete-btn" onclick="deleteMembership(${item.id || idx}, ${idx})">Delete</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        async function saveMembership() {
+            const id = document.getElementById('mem-edit-id').value;
+            const data = {
+                name: document.getElementById('mem-name').value,
+                organization: document.getElementById('mem-org').value,
+                description: document.getElementById('mem-desc').value
+            };
+            if (!data.name || !data.organization) return showToast('Please fill required fields', 'error');
+            
+            if (supabaseClient) {
+                try {
+                    let result;
+                    if (id) { result = await supabaseClient.from('memberships').update(data).eq('id', id); }
+                    else { result = await supabaseClient.from('memberships').insert([data]); }
+                    if (result.error) throw result.error;
+                    showToast('Membership saved!', 'success');
+                } catch(err) {
+                    showToast('Error: ' + err.message, 'error');
+                }
+            } else {
+                let list = getMemberships();
+                if (id) { list = list.map((item, idx) => idx == id ? { ...item, ...data } : item); }
+                else { list.push({ ...data, id: Date.now() }); }
+                saveMembershipsToLocal(list);
+                showToast('Membership saved locally!', 'success');
+            }
+            document.getElementById('mem-name').value = '';
+            document.getElementById('mem-org').value = '';
+            document.getElementById('mem-desc').value = '';
+            document.getElementById('mem-edit-id').value = '';
+            loadMemberships();
+        }
+        
+        function editMembership(id) {
+            let data = getMemberships();
+            const item = data.find((item, idx) => item.id === id || idx === id);
+            if (!item) return;
+            document.getElementById('mem-edit-id').value = id;
+            document.getElementById('mem-name').value = item.name;
+            document.getElementById('mem-org').value = item.organization;
+            document.getElementById('mem-desc').value = item.description || '';
+        }
+        
+        function deleteMembership(id, idx) {
+            if (!confirm('Delete this membership?')) return;
+            let data = getMemberships();
+            data = data.filter((item, i) => i !== idx);
+            saveMembershipsToLocal(data);
+            loadMemberships();
+            showToast('Membership deleted', 'info');
+        }
+        
         // ==================== SETTINGS FUNCTIONS ====================
         async function saveSettings() {
             showToast('Settings saved (feature pending full implementation)', 'info');
@@ -1343,6 +1565,8 @@
             loadEducation();
             loadDocs();
         }
+        loadInnovations();
+        loadMemberships();
     </script>
 </body>
 </html>

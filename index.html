@@ -3,430 +3,218 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Professional Portfolio | Metro Train Operator</title>
+    <title>Mohit Kumar — Railway Operations Professional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
-<body class="bg-slate-900 text-white overflow-x-hidden font-['Outfit']">
-    
-    <!-- Aurora Background -->
-    <div class="aurora-bg">
-        <div class="aurora-orb aurora-orb-1"></div>
-        <div class="aurora-orb aurora-orb-2"></div>
-        <div class="aurora-orb aurora-orb-3"></div>
-        <div class="aurora-orb aurora-orb-4"></div>
-        <div class="aurora-orb aurora-orb-5"></div>
-        <div class="grid-overlay"></div>
-    </div>
-    
-    <!-- Sparkle Particles -->
-    <div class="fixed inset-0 z-10 pointer-events-none" id="sparkle-container"></div>
-    
-    <!-- Header Navigation -->
-    <header class="fixed top-0 left-0 right-0 z-50 bg-slate-900/80 backdrop-blur-xl shadow-lg border-b border-white/10">
-        <div class="max-w-6xl mx-auto px-4 py-3 flex justify-between items-center">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-br from-amber-500 to-amber-600 rounded-lg flex items-center justify-center shadow-lg shadow-amber-500/25">
-                    <i class="fas fa-subway text-slate-900"></i>
+<body>
+
+    <!-- Sticky Navigation -->
+    <nav class="resume-nav">
+        <div class="resume-nav-inner">
+            <div class="resume-nav-logo">
+                <div class="logo-icon"><i class="fas fa-subway"></i></div>
+                <span id="header-name">Mohit Kumar</span>
+            </div>
+            <div class="resume-nav-links">
+                <a href="#about">About</a>
+                <a href="#competencies">Competencies</a>
+                <a href="#experience">Experience</a>
+                <a href="#skills">Skills</a>
+                <a href="#certifications">Certifications</a>
+                <a href="#education">Education</a>
+                <a href="#innovation">Innovation</a>
+                <a href="#memberships">Memberships</a>
+                <a href="#contact">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="resume-page">
+
+        <!-- Top Accent Bar -->
+        <div class="resume-header-bar"></div>
+
+        <!-- Hero Section -->
+        <div class="resume-hero reveal active">
+            <img id="profile-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 140'%3E%3Crect fill='%23eef1f5' width='140' height='140'/%3E%3Ctext x='70' y='75' text-anchor='middle' fill='%231a5276' font-size='40'%3E%3C/text%3E%3C/svg%3E" alt="Profile" class="resume-hero-photo">
+            <div class="resume-hero-content">
+                <h1 id="full-name" class="resume-hero-name">Mohit Kumar</h1>
+                <p id="professional-title" class="resume-hero-title">Senior Traffic Controller | Railway Operations Professional</p>
+                <div class="resume-hero-contact">
+                    <span><i class="fas fa-map-marker-alt"></i> New Delhi, India</span>
+                    <span><i class="fas fa-phone"></i> 8010787840</span>
+                    <span><i class="fas fa-envelope"></i> mohit2210kumar@gmail.com</span>
+                    <span><i class="fas fa-globe"></i> darkmattermetro.github.io/my-resume/</span>
                 </div>
-                <span id="header-name" class="font-bold text-xl tracking-tight text-white">My Portfolio</span>
-            </div>
-            
-            <!-- Desktop Nav -->
-            <nav class="hidden md:flex gap-6 text-sm font-medium text-slate-300">
-                <a href="#home" class="hover:text-amber-400 transition-colors">Home</a>
-                <a href="#about" class="hover:text-amber-400 transition-colors">About</a>
-                <a href="#experience" class="hover:text-amber-400 transition-colors">Experience</a>
-                <a href="#skills" class="hover:text-amber-400 transition-colors">Skills</a>
-                <a href="#certifications" class="hover:text-amber-400 transition-colors">Certifications</a>
-                <a href="#achievements" class="hover:text-amber-400 transition-colors">Achievements</a>
-                <a href="#education" class="hover:text-amber-400 transition-colors">Education</a>
-                <a href="#documents" class="hover:text-amber-400 transition-colors">Documents</a>
-                <a href="#contact" class="hover:text-amber-400 transition-colors">Contact</a>
-            </nav>
-            
-            <!-- Mobile Hamburger -->
-            <div class="md:hidden flex flex-col gap-1.5 cursor-pointer p-2" onclick="toggleMobileNav()" id="hamburger">
-                <span class="w-6 h-0.5 bg-white transition-all duration-300" id="hamburger-1"></span>
-                <span class="w-6 h-0.5 bg-white transition-all duration-300" id="hamburger-2"></span>
-                <span class="w-6 h-0.5 bg-white transition-all duration-300" id="hamburger-3"></span>
+                <div class="resume-hero-stats">
+                    <div class="resume-hero-stat"><i class="fas fa-clock"></i> <strong id="stat-years">8+</strong> Years</div>
+                    <div class="resume-hero-stat"><i class="fas fa-subway"></i> <strong id="stat-projects">3</strong> Lines</div>
+                    <div class="resume-hero-stat"><i class="fas fa-shield-alt"></i> <strong id="stat-success">100%</strong> Safety</div>
+                </div>
             </div>
         </div>
-        
-        <!-- Mobile Nav -->
-        <div class="hidden md:hidden bg-slate-800/95 backdrop-blur-xl border-t border-white/10" id="mobile-nav">
-            <div class="flex flex-col p-4 gap-2">
-                <a href="#home" class="text-slate-300 hover:text-amber-400 py-2 transition-colors" onclick="toggleMobileNav()">Home</a>
-                <a href="#about" class="text-slate-300 hover:text-amber-400 py-2 transition-colors" onclick="toggleMobileNav()">About</a>
-                <a href="#experience" class="text-slate-300 hover:text-amber-400 py-2 transition-colors" onclick="toggleMobileNav()">Experience</a>
-                <a href="#skills" class="text-slate-300 hover:text-amber-400 py-2 transition-colors" onclick="toggleMobileNav()">Skills</a>
-                <a href="#certifications" class="text-slate-300 hover:text-amber-400 py-2 transition-colors" onclick="toggleMobileNav()">Certifications</a>
-                <a href="#achievements" class="text-slate-300 hover:text-amber-400 py-2 transition-colors" onclick="toggleMobileNav()">Achievements</a>
-                <a href="#education" class="text-slate-300 hover:text-amber-400 py-2 transition-colors" onclick="toggleMobileNav()">Education</a>
-                <a href="#documents" class="text-slate-300 hover:text-amber-400 py-2 transition-colors" onclick="toggleMobileNav()">Documents</a>
-                <a href="#contact" class="text-slate-300 hover:text-amber-400 py-2 transition-colors" onclick="toggleMobileNav()">Contact</a>
+
+        <!-- Profile Section -->
+        <section id="about" class="resume-section">
+            <div class="resume-section-header">
+                <div class="section-icon"><i class="fas fa-user"></i></div>
+                <h2>Professional Profile</h2>
             </div>
-        </div>
-    </header>
-
-    <div class="h-16"></div>
-
-    <!-- Banner Section -->
-    <div id="banner-container" class="relative h-64 md:h-80 w-full overflow-hidden bg-slate-900">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 500" preserveAspectRatio="xMidYMid slice" class="w-full h-full">
-  <defs>
-    <linearGradient id="sky" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" style="stop-color:#0f172a;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#1e293b;stop-opacity:1" />
-    </linearGradient>
-    <linearGradient id="trackGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%" style="stop-color:#94a3b8;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#cbd5e1;stop-opacity:1" />
-    </linearGradient>
-  </defs>
-  
-  <!-- Sky background -->
-  <rect fill="url(#sky)" width="1920" height="500"/>
-  
-  <!-- Stars -->
-  <circle cx="200" cy="80" r="1.5" fill="white" opacity="0.6"/>
-  <circle cx="500" cy="120" r="1" fill="white" opacity="0.4"/>
-  <circle cx="800" cy="60" r="1.5" fill="white" opacity="0.5"/>
-  <circle cx="1100" cy="100" r="1" fill="white" opacity="0.3"/>
-  <circle cx="1400" cy="70" r="1.5" fill="white" opacity="0.6"/>
-  <circle cx="1700" cy="90" r="1" fill="white" opacity="0.4"/>
-  <circle cx="300" cy="150" r="1" fill="white" opacity="0.3"/>
-  <circle cx="1600" cy="140" r="1" fill="white" opacity="0.5"/>
-  
-  <!-- Platform -->
-  <rect x="0" y="320" width="1920" height="180" fill="#1e293b" opacity="0.8"/>
-  <rect x="0" y="320" width="1920" height="4" fill="#f59e0b"/>
-  
-  <!-- Platform Signage -->
-  <rect x="100" y="280" width="300" height="40" rx="5" fill="#0f172a" opacity="0.9"/>
-  <text x="250" y="305" font-family="Arial, sans-serif" font-size="20" font-weight="bold" fill="#f59e0b" text-anchor="middle">METRO</text>
-  
-  <rect x="1520" y="280" width="300" height="40" rx="5" fill="#0f172a" opacity="0.9"/>
-  <text x="1670" y="305" font-family="Arial, sans-serif" font-size="18" fill="#e2e8f0" text-anchor="middle">TRAIN OPERATOR</text>
-  
-  <!-- Tracks -->
-  <line x1="0" y1="360" x2="1920" y2="360" stroke="url(#trackGrad)" stroke-width="3"/>
-  <line x1="0" y1="400" x2="1920" y2="400" stroke="url(#trackGrad)" stroke-width="3"/>
-  <line x1="0" y1="440" x2="1920" y2="440" stroke="url(#trackGrad)" stroke-width="3"/>
-  
-  <!-- Track Sleepers -->
-  <g opacity="0.4">
-    <rect x="100" y="365" width="60" height="30" fill="#64748b"/>
-    <rect x="300" y="365" width="60" height="30" fill="#64748b"/>
-    <rect x="500" y="365" width="60" height="30" fill="#64748b"/>
-    <rect x="700" y="365" width="60" height="30" fill="#64748b"/>
-    <rect x="900" y="365" width="60" height="30" fill="#64748b"/>
-    <rect x="1100" y="365" width="60" height="30" fill="#64748b"/>
-    <rect x="1300" y="365" width="60" height="30" fill="#64748b"/>
-    <rect x="1500" y="365" width="60" height="30" fill="#64748b"/>
-    <rect x="1700" y="365" width="60" height="30" fill="#64748b"/>
-  </g>
-  
-  <!-- Metro Train -->
-  <g transform="translate(600, 300)">
-    <!-- Train Body -->
-    <rect x="0" y="0" width="400" height="60" rx="5" fill="#1e293b" stroke="#f59e0b" stroke-width="2"/>
-    
-    <!-- Windows -->
-    <rect x="20" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
-    <rect x="60" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
-    <rect x="100" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
-    <rect x="140" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
-    <rect x="180" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
-    <rect x="220" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
-    <rect x="260" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
-    <rect x="300" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
-    <rect x="340" y="10" width="30" height="25" rx="3" fill="#0f172a"/>
-    
-    <!-- Door -->
-    <rect x="140" y="10" width="30" height="40" fill="none" stroke="#f59e0b" stroke-width="1" opacity="0.5"/>
-    
-    <!-- Headlight -->
-    <circle cx="395" cy="30" r="6" fill="#fef3c7"/>
-    <circle cx="395" cy="30" r="3" fill="#f59e0b"/>
-    
-    <!-- Metro Logo -->
-    <text x="200" y="50" font-family="Arial, sans-serif" font-size="14" font-weight="bold" fill="#f59e0b" text-anchor="middle">METRO</text>
-    
-    <!-- Wheels -->
-    <circle cx="50" cy="65" r="8" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
-    <circle cx="50" cy="65" r="3" fill="#64748b"/>
-    <circle cx="150" cy="65" r="8" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
-    <circle cx="150" cy="65" r="3" fill="#64748b"/>
-    <circle cx="250" cy="65" r="8" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
-    <circle cx="250" cy="65" r="3" fill="#64748b"/>
-    <circle cx="350" cy="65" r="8" fill="#334155" stroke="#94a3b8" stroke-width="2"/>
-    <circle cx="350" cy="65" r="3" fill="#64748b"/>
-  </g>
-  
-  <!-- Second Train (background) -->
-  <g transform="translate(200, 340)" opacity="0.3">
-    <rect x="0" y="0" width="350" height="50" rx="5" fill="#1e293b" stroke="#f59e0b" stroke-width="1"/>
-    <rect x="20" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
-    <rect x="55" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
-    <rect x="90" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
-    <rect x="125" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
-    <rect x="160" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
-    <rect x="195" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
-    <rect x="230" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
-    <rect x="265" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
-    <rect x="300" y="8" width="25" height="20" rx="2" fill="#0f172a"/>
-    <circle cx="30" cy="55" r="6" fill="#334155"/>
-    <circle cx="120" cy="55" r="6" fill="#334155"/>
-    <circle cx="210" cy="55" r="6" fill="#334155"/>
-    <circle cx="300" cy="55" r="6" fill="#334155"/>
-  </g>
-  
-  <!-- Platform Lights -->
-  <circle cx="250" cy="280" r="8" fill="#fef3c7" opacity="0.8">
-    <animate attributeName="opacity" values="0.8;0.4;0.8" dur="2s" repeatCount="indefinite"/>
-  </circle>
-  <circle cx="1670" cy="280" r="8" fill="#fef3c7" opacity="0.8">
-    <animate attributeName="opacity" values="0.8;0.4;0.8" dur="2s" repeatCount="indefinite"/>
-  </circle>
-  
-  <!-- Motion Blur Lines (speed effect) -->
-  <line x1="1000" y1="330" x2="1100" y2="330" stroke="#f59e0b" stroke-width="1" opacity="0.2"/>
-  <line x1="1050" y1="335" x2="1150" y2="335" stroke="#f59e0b" stroke-width="1" opacity="0.15"/>
-  <line x1="1100" y1="340" x2="1200" y2="340" stroke="#f59e0b" stroke-width="1" opacity="0.1"/>
-</svg>
-        <div class="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-transparent to-transparent"></div>
-    </div>
-
-    <!-- Hero Section -->
-    <section id="home" class="relative px-6 pb-12 -mt-20">
-        <div class="max-w-4xl mx-auto text-center">
-            <div class="relative inline-block mb-4 group">
-                <div class="absolute inset-0 bg-gradient-to-r from-amber-500/30 to-blue-500/30 rounded-2xl blur-2xl opacity-60 group-hover:opacity-80 transition-opacity duration-500"></div>
-                <img id="profile-img" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Crect fill='%230f172a' width='100' height='100'/%3E%3Ctext x='50' y='55' text-anchor='middle' fill='white' font-size='40'%3E%3C/text%3E%3C/svg%3E" alt="Profile" class="relative w-56 h-56 md:w-48 md:h-48 rounded-2xl border-4 border-white/20 shadow-2xl object-cover">
-            </div>
-            
-            <h1 id="full-name" class="text-4xl md:text-5xl font-extrabold mb-3 text-white mt-2">
-                Your Name
-            </h1>
-            
-            <p id="professional-title" class="text-xl text-amber-400 font-semibold mb-6 tracking-wide">
-                Metro Train Operator
+            <p id="about-me" class="profile-summary">
+                Dedicated railway operations professional with a proven track record in duty roster management, crew control, and operational resource optimization. Committed to maintaining the highest safety and efficiency standards for the global rail industry. MBA candidate bridging technical railway expertise with corporate leadership and financial acumen.
             </p>
-            
-            <!-- Stat Badges -->
-            <div class="flex flex-wrap justify-center gap-3 mb-8">
-                <div class="bg-slate-800/50 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 flex items-center gap-2 hover:border-amber-400/50 transition-all">
-                    <i class="fas fa-clock text-amber-400"></i>
-                    <span id="stat-years" class="font-bold text-white">10+</span>
-                    <span class="text-sm text-slate-400">Years</span>
+            <div class="profile-tags">
+                <span class="profile-tag">GoA4 / UTO</span>
+                <span class="profile-tag">CBTC Signaling</span>
+                <span class="profile-tag">OCC Operations</span>
+                <span class="profile-tag">MBA (Finance &amp; HR)</span>
+                <span class="profile-tag">CIRO Affiliate</span>
+            </div>
+            <div class="feature-grid">
+                <div class="feature-card">
+                    <div class="feature-card-icon"><i class="fas fa-train"></i></div>
+                    <h3 id="feature1-title">GoA4 &amp; CBTC Expert</h3>
+                    <p id="feature1-desc">Specialist in Unattended Train Operation and Communications-Based Train Control signaling systems for high-density metro lines.</p>
                 </div>
-                <div class="bg-slate-800/50 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 flex items-center gap-2 hover:border-amber-400/50 transition-all">
-                    <i class="fas fa-route text-amber-400"></i>
-                    <span id="stat-projects" class="font-bold text-white">50+</span>
-                    <span class="text-sm text-slate-400">Routes</span>
+                <div class="feature-card">
+                    <div class="feature-card-icon"><i class="fas fa-shield-alt"></i></div>
+                    <h3 id="feature2-title">Safety &amp; Compliance</h3>
+                    <p id="feature2-desc">100% safety record with expertise in emergency coordination, degraded mode operations, and system fault recovery protocols.</p>
                 </div>
-                <div class="bg-slate-800/50 backdrop-blur-md px-4 py-2 rounded-full border border-white/10 flex items-center gap-2 hover:border-amber-400/50 transition-all">
-                    <i class="fas fa-shield-alt text-amber-400"></i>
-                    <span id="stat-success" class="font-bold text-white">100%</span>
-                    <span class="text-sm text-slate-400">Safety</span>
+                <div class="feature-card">
+                    <div class="feature-card-icon"><i class="fas fa-code"></i></div>
+                    <h3 id="feature3-title">Digital Innovation</h3>
+                    <p id="feature3-desc">Built custom full-stack tools using Google Apps Script and JS to automate crew scheduling, reducing manual processing time by over 60%.</p>
                 </div>
             </div>
-            
-            <p id="introduction" class="text-lg text-slate-300 max-w-2xl mx-auto mb-6 leading-relaxed px-4">
-                Your introduction goes here...
-            </p>
-            
-            <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                <a href="#documents" class="px-8 py-4 bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-slate-900 transition-all rounded-xl font-bold shadow-lg shadow-amber-500/25 flex items-center justify-center gap-2 hover:scale-105">
-                    <i class="fas fa-folder-open"></i> View Documents
-                </a>
-                <a href="#contact" class="px-8 py-4 bg-slate-800/50 backdrop-blur-md hover:bg-slate-700/50 text-white border border-white/20 hover:border-amber-400/50 transition-all rounded-xl font-medium flex items-center justify-center gap-2 shadow-md hover:scale-105">
-                    <i class="fas fa-envelope"></i> Contact Me
-                </a>
-            </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- About Section -->
-    <section id="about" class="py-16 px-6">
-        <div class="max-w-5xl mx-auto">
-            <div class="grid md:grid-cols-2 gap-10 items-center">
-                <div>
-                    <span class="text-amber-400 font-medium tracking-wider uppercase text-sm">About Me</span>
-                    <h2 class="text-3xl font-bold mt-2 mb-5 text-white">Professional Excellence</h2>
-                    <p id="about-me" class="text-slate-300 text-lg leading-relaxed mb-6">
-                        Your bio goes here...
-                    </p>
-                </div>
-                
-                <div class="grid gap-4">
-                    <div class="bg-slate-800/50 backdrop-blur-md p-5 rounded-2xl border border-white/10 hover:border-amber-400/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all group">
-                        <div class="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center mb-3 group-hover:bg-amber-500/30 transition-colors">
-                            <i class="fas fa-shield-alt text-amber-400"></i>
-                        </div>
-                        <h3 id="feature1-title" class="font-bold text-lg mb-1 text-white">Safety First</h3>
-                        <p id="feature1-desc" class="text-slate-400 text-sm">Your description here...</p>
-                    </div>
-                    
-                    <div class="bg-slate-800/50 backdrop-blur-md p-5 rounded-2xl border border-white/10 hover:border-amber-400/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all group">
-                        <div class="w-10 h-10 bg-amber-500/20 rounded-xl flex items-center justify-center mb-3 group-hover:bg-amber-500/30 transition-colors">
-                            <i class="fas fa-clock text-amber-400"></i>
-                        </div>
-                        <h3 id="feature2-title" class="font-bold text-lg mb-1 text-white">Punctuality</h3>
-                        <p id="feature2-desc" class="text-slate-400 text-sm">Your description here...</p>
-                    </div>
-                    
-                    <div class="bg-slate-800/50 backdrop-blur-md p-5 rounded-2xl border border-white/10 hover:border-amber-400/30 hover:shadow-lg hover:shadow-amber-500/10 transition-all group">
-                        <div class="w-10 h-10 bg-amber-400/20 rounded-xl flex items-center justify-center mb-3 group-hover:bg-amber-500/30 transition-colors">
-                            <i class="fas fa-user-tie text-amber-400"></i>
-                        </div>
-                        <h3 id="feature3-title" class="font-bold text-lg mb-1 text-white">Professionalism</h3>
-                        <p id="feature3-desc" class="text-slate-400 text-sm">Your description here...</p>
-                    </div>
-                </div>
+        <!-- Core Competencies -->
+        <section id="competencies" class="resume-section">
+            <div class="resume-section-header">
+                <div class="section-icon"><i class="fas fa-star"></i></div>
+                <h2>Core Competencies</h2>
+                <span class="section-subtitle">Key skills developed over 8+ years</span>
             </div>
-        </div>
-    </section>
+            <div id="competencies-grid" class="competency-grid"></div>
+        </section>
 
-    <!-- Work Experience Section -->
-    <section id="experience" class="py-16 px-6">
-        <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-12">
-                <span class="text-amber-400 font-medium tracking-wider uppercase text-sm">Career History</span>
-                <h2 class="text-3xl font-bold mt-2 text-white">Work Experience</h2>
-                <p class="text-slate-400 mt-3 max-w-xl mx-auto">My professional journey as a metro transit operator</p>
+        <!-- Experience -->
+        <section id="experience" class="resume-section">
+            <div class="resume-section-header">
+                <div class="section-icon"><i class="fas fa-briefcase"></i></div>
+                <h2>Professional Experience</h2>
+                <span class="section-subtitle">8+ years of progressive responsibility</span>
             </div>
-            
             <div class="timeline-container" id="experience-timeline">
-                <p class="text-center text-slate-400 py-8">No work experience added yet.</p>
+                <div class="timeline-line"></div>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Skills Section -->
-    <section id="skills" class="py-16 px-6">
-        <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-12">
-                <span class="text-amber-400 font-medium tracking-wider uppercase text-sm">Expertise</span>
-                <h2 class="text-3xl font-bold mt-2 text-white">Skills & Competencies</h2>
-                <p class="text-slate-400 mt-3 max-w-xl mx-auto">Technical and soft skills developed over years of service</p>
+        <!-- Skills -->
+        <section id="skills" class="resume-section">
+            <div class="resume-section-header">
+                <div class="section-icon"><i class="fas fa-chart-bar"></i></div>
+                <h2>Skills &amp; Competencies</h2>
+                <span class="section-subtitle">Technical and soft skills</span>
             </div>
-            
-            <div class="flex flex-wrap gap-2 mb-8 justify-center" id="skill-tabs">
-                <button class="skill-tab active px-4 py-2 rounded-full text-sm font-medium transition-all" data-category="all" onclick="filterSkills('all')">All Skills</button>
-                <button class="skill-tab px-4 py-2 rounded-full text-sm font-medium transition-all" data-category="Technical" onclick="filterSkills('Technical')">Technical</button>
-                <button class="skill-tab px-4 py-2 rounded-full text-sm font-medium transition-all" data-category="Safety" onclick="filterSkills('Safety')">Safety</button>
-                <button class="skill-tab px-4 py-2 rounded-full text-sm font-medium transition-all" data-category="Soft Skills" onclick="filterSkills('Soft Skills')">Soft Skills</button>
+            <div class="skill-tabs" id="skill-tabs">
+                <button class="skill-tab active" data-category="all" onclick="filterSkills('all')">All</button>
+                <button class="skill-tab" data-category="Operations" onclick="filterSkills('Operations')">Operations</button>
+                <button class="skill-tab" data-category="Safety" onclick="filterSkills('Safety')">Safety</button>
+                <button class="skill-tab" data-category="Finance" onclick="filterSkills('Finance')">Finance</button>
+                <button class="skill-tab" data-category="Management" onclick="filterSkills('Management')">Management</button>
             </div>
-            
-            <div id="skills-container">
-                <p class="text-center text-slate-400 py-8">No skills added yet.</p>
-            </div>
-        </div>
-    </section>
+            <div id="skills-container" class="skills-container"></div>
+        </section>
 
-    <!-- Certifications Section -->
-    <section id="certifications" class="py-16 px-6">
-        <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-12">
-                <span class="text-amber-400 font-medium tracking-wider uppercase text-sm">Credentials</span>
-                <h2 class="text-3xl font-bold mt-2 text-white">Certifications</h2>
-                <p class="text-slate-400 mt-3 max-w-xl mx-auto">Official certifications and training completions</p>
+        <!-- Certifications -->
+        <section id="certifications" class="resume-section">
+            <div class="resume-section-header">
+                <div class="section-icon"><i class="fas fa-certificate"></i></div>
+                <h2>Certifications</h2>
+                <span class="section-subtitle">Professional credentials</span>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="certifications-grid">
-                <p class="text-center text-slate-400 py-8 col-span-full">No certifications added yet.</p>
-            </div>
-        </div>
-    </section>
+            <div class="cert-grid" id="certifications-grid"></div>
+        </section>
 
-    <!-- Achievements Section -->
-    <section id="achievements" class="py-16 px-6">
-        <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-12">
-                <span class="text-amber-400 font-medium tracking-wider uppercase text-sm">Recognition</span>
-                <h2 class="text-3xl font-bold mt-2 text-white">Achievements</h2>
-                <p class="text-slate-400 mt-3 max-w-xl mx-auto">Awards and milestones from my career</p>
+        <!-- Education -->
+        <section id="education" class="resume-section">
+            <div class="resume-section-header">
+                <div class="section-icon"><i class="fas fa-graduation-cap"></i></div>
+                <h2>Education</h2>
+                <span class="section-subtitle">Academic background</span>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="achievements-grid">
-                <p class="text-center text-slate-400 py-8 col-span-full">No achievements added yet.</p>
-            </div>
-        </div>
-    </section>
+            <div class="edu-grid" id="education-grid"></div>
+        </section>
 
-    <!-- Education Section -->
-    <section id="education" class="py-16 px-6">
-        <div class="max-w-5xl mx-auto">
-            <div class="text-center mb-12">
-                <span class="text-amber-400 font-medium tracking-wider uppercase text-sm">Learning</span>
-                <h2 class="text-3xl font-bold mt-2 text-white">Education & Training</h2>
-                <p class="text-slate-400 mt-3 max-w-xl mx-auto">Formal education and professional development</p>
+        <!-- Technical Innovation -->
+        <section id="innovation" class="resume-section">
+            <div class="resume-section-header">
+                <div class="section-icon"><i class="fas fa-lightbulb"></i></div>
+                <h2>Technical Innovation</h2>
+                <span class="section-subtitle">Digital tools built for railway operations</span>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5" id="education-grid">
-                <p class="text-center text-slate-400 py-8 col-span-full">No education entries added yet.</p>
-            </div>
-        </div>
-    </section>
+            <div id="innovation-container"></div>
+        </section>
 
-    <!-- Documents Section -->
-    <section id="documents" class="py-16 px-6">
-        <div class="max-w-6xl mx-auto">
-            <div class="text-center mb-10">
-                <span class="text-amber-400 font-medium tracking-wider uppercase text-sm">Portfolio</span>
-                <h2 class="text-3xl font-bold mt-2 text-white">Documents & Certifications</h2>
-                <p class="text-slate-400 mt-3 max-w-xl mx-auto">Click on any document to view or download.</p>
+        <!-- Professional Memberships -->
+        <section id="memberships" class="resume-section">
+            <div class="resume-section-header">
+                <div class="section-icon"><i class="fas fa-id-card"></i></div>
+                <h2>Professional Memberships</h2>
+                <span class="section-subtitle">Industry affiliations</span>
             </div>
-            
-            <div id="docs-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            </div>
-        </div>
-    </section>
+            <div id="memberships-container" class="membership-grid"></div>
+        </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="py-16 px-6">
-        <div class="max-w-4xl mx-auto text-center">
-            <span class="text-amber-400 font-medium tracking-wider uppercase text-sm">Get In Touch</span>
-            <h2 class="text-3xl font-bold mt-2 mb-6 text-white">Let's Connect</h2>
-            <p id="contact-info" class="text-slate-300 text-lg mb-10">
-                Your contact info goes here...
+        <!-- Achievements -->
+        <section id="achievements" class="resume-section">
+            <div class="resume-section-header">
+                <div class="section-icon"><i class="fas fa-trophy"></i></div>
+                <h2>Achievements</h2>
+                <span class="section-subtitle">Recognition and milestones</span>
+            </div>
+            <div class="achievement-grid" id="achievements-grid"></div>
+        </section>
+
+        <!-- Documents -->
+        <section id="documents" class="resume-section">
+            <div class="resume-section-header">
+                <div class="section-icon"><i class="fas fa-folder-open"></i></div>
+                <h2>Documents &amp; Certifications</h2>
+                <span class="section-subtitle">Click to view</span>
+            </div>
+            <div id="docs-grid" class="docs-grid"></div>
+        </section>
+
+        <!-- Contact -->
+        <section id="contact" class="contact-section">
+            <h2>Get In Touch</h2>
+            <p class="contact-info" id="contact-info">
+                New Delhi, India &nbsp;|&nbsp; 8010787840 &nbsp;|&nbsp; mohit2210kumar@gmail.com
             </p>
-            
-            <div class="flex justify-center gap-5">
-                <a href="#" class="w-12 h-12 bg-slate-800/50 backdrop-blur-md hover:bg-amber-500 border border-white/20 hover:border-amber-400 rounded-xl flex items-center justify-center text-lg text-slate-300 hover:text-slate-900 transition-all hover:scale-110">
-                    <i class="fab fa-linkedin"></i>
-                </a>
-                <a href="#" class="w-12 h-12 bg-slate-800/50 backdrop-blur-md hover:bg-amber-500 border border-white/20 hover:border-amber-400 rounded-xl flex items-center justify-center text-lg text-slate-300 hover:text-slate-900 transition-all hover:scale-110">
-                    <i class="fab fa-github"></i>
-                </a>
-                <a href="#" class="w-12 h-12 bg-slate-800/50 backdrop-blur-md hover:bg-amber-500 border border-white/20 hover:border-amber-400 rounded-xl flex items-center justify-center text-lg text-slate-300 hover:text-slate-900 transition-all hover:scale-110">
-                    <i class="fas fa-envelope"></i>
-                </a>
-                <a href="#" class="w-12 h-12 bg-slate-800/50 backdrop-blur-md hover:bg-amber-500 border border-white/20 hover:border-amber-400 rounded-xl flex items-center justify-center text-lg text-slate-300 hover:text-slate-900 transition-all hover:scale-110">
-                    <i class="fas fa-phone"></i>
-                </a>
+            <div class="contact-links">
+                <a href="https://github.com/darkmattermetro" target="_blank" title="GitHub"><i class="fab fa-github"></i></a>
+                <a href="mailto:mohit2210kumar@gmail.com" title="Email"><i class="fas fa-envelope"></i></a>
+                <a href="tel:+918010787840" title="Phone"><i class="fas fa-phone"></i></a>
+                <a href="https://darkmattermetro.github.io/my-resume/" target="_blank" title="Portfolio"><i class="fas fa-globe"></i></a>
             </div>
-        </div>
-    </section>
+        </section>
 
-    <!-- Footer -->
-    <footer class="py-6 px-6 bg-slate-800/50 backdrop-blur-md border-t border-white/10">
-        <div class="max-w-6xl mx-auto flex flex-col md:flex-row justify-between items-center gap-3">
-            <div class="flex items-center gap-2">
-                <i class="fas fa-subway text-amber-400"></i>
-                <span id="footer-name" class="font-medium text-white">My Portfolio</span>
-            </div>
-            <p class="text-slate-400 text-sm">© 2024 All Rights Reserved</p>
+        <!-- Footer -->
+        <div class="resume-footer">
+            <span id="footer-name">Mohit Kumar's Portfolio</span> &nbsp;—&nbsp; Australian Standard Resume
         </div>
-    </footer>
+
+    </div>
 
     <!-- File Viewer Modal -->
-    <div id="viewer-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4 bg-slate-900/90 backdrop-blur-md">
+    <div id="viewer-modal" class="fixed inset-0 z-50 hidden flex items-center justify-center p-4">
         <div class="relative w-full max-w-5xl h-full max-h-[90vh] bg-white rounded-2xl overflow-hidden shadow-2xl flex flex-col">
             <div class="p-4 border-b border-slate-200 flex justify-between items-center">
                 <span id="modal-title" class="font-bold text-lg text-slate-800">Document Viewer</span>
@@ -441,62 +229,5 @@
     </div>
 
     <script src="viewer.js"></script>
-    <script>
-        // Mobile nav toggle
-        function toggleMobileNav() {
-            const mobileNav = document.getElementById('mobile-nav');
-            const hamburger = document.getElementById('hamburger');
-            const h1 = document.getElementById('hamburger-1');
-            const h2 = document.getElementById('hamburger-2');
-            const h3 = document.getElementById('hamburger-3');
-            
-            mobileNav.classList.toggle('active');
-            hamburger.classList.toggle('active');
-            if (h1) {
-                h1.classList.toggle('rotate-45');
-                h1.classList.toggle('translate-y-2');
-            }
-            if (h2) h2.classList.toggle('opacity-0');
-            if (h3) {
-                h3.classList.toggle('-rotate-45');
-                h3.classList.toggle('-translate-y-2');
-            }
-        }
-        
-        // Close mobile nav on scroll
-        window.addEventListener('scroll', () => {
-            const mobileNav = document.getElementById('mobile-nav');
-            const hamburger = document.getElementById('hamburger');
-            if (mobileNav.classList.contains('active')) {
-                toggleMobileNav();
-            }
-        });
-        
-        // Update footer name from Supabase
-        setTimeout(() => {
-            if (window.supabaseClient) {
-                window.supabaseClient.from('profile').select('full_name').order('id', { ascending: false }).limit(1).then(result => {
-                    if (result.data && result.data[0] && result.data[0].full_name) {
-                        document.getElementById('footer-name').innerText = result.data[0].full_name + "'s Portfolio";
-                    }
-                });
-            }
-        }, 1000);
-        
-        // Sparkle Particles
-        function createSparkles() {
-            const container = document.getElementById('sparkle-container');
-            for (let i = 0; i < 20; i++) {
-                const sparkle = document.createElement('div');
-                sparkle.className = 'absolute w-1 h-1 bg-white rounded-full animate-pulse';
-                sparkle.style.left = Math.random() * 100 + '%';
-                sparkle.style.top = Math.random() * 100 + '%';
-                sparkle.style.animationDelay = Math.random() * 4 + 's';
-                sparkle.style.opacity = Math.random() * 0.5 + 0.3;
-                container.appendChild(sparkle);
-            }
-        }
-        createSparkles();
-    </script>
 </body>
 </html>
