@@ -317,7 +317,7 @@ body {
 }
 .resume-section-header .section-subtitle {
     font-size: 13px;
-    color: #888;
+    color: #5a6472;
     font-weight: 400;
     margin-left: auto;
 }
@@ -464,7 +464,7 @@ body {
     font-size: 14px;
 }
 .timeline-card .timeline-date {
-    color: #888;
+    color: #5a6472;
     font-size: 13px;
     margin-bottom: 10px;
 }
@@ -540,7 +540,7 @@ body {
     margin-bottom: 6px;
 }
 .cert-card .cert-date {
-    color: #888;
+    color: #5a6472;
     font-size: 12px;
     margin-bottom: 8px;
 }
@@ -623,7 +623,7 @@ body {
     margin-bottom: 2px;
 }
 .edu-card .edu-year {
-    color: #888;
+    color: #5a6472;
     font-size: 13px;
 }
 
@@ -753,7 +753,7 @@ body {
     padding: 16px 40px;
     text-align: center;
     font-size: 13px;
-    color: #888;
+    color: #5a6472;
     border-top: 1px solid #e8ecf1;
     background: #f8f9fb;
     letter-spacing: 1.5px;
