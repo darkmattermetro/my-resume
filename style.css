@@ -207,13 +207,16 @@ body {
     background-clip: text;
     animation: shimmer 4s linear infinite;
     margin-bottom: 4px;
-    letter-spacing: -0.5px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
 }
 .resume-hero-title {
-    font-size: 16px;
+    font-size: 15px;
     font-weight: 600;
     color: #1a5276;
     margin-bottom: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
 }
 .resume-hero-contact {
     display: flex;
@@ -228,6 +231,14 @@ body {
     align-items: center;
     gap: 6px;
 }
+.resume-hero-contact a {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    color: inherit;
+    text-decoration: none;
+}
+.resume-hero-contact a:hover { color: #0a2540; }
 .resume-hero-contact i { color: #0a2540; width: 16px; }
 
 /* ===== Hero Stats ===== */
@@ -301,7 +312,8 @@ body {
     font-size: 20px;
     font-weight: 700;
     color: #0a2540;
-    letter-spacing: -0.3px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
 }
 .resume-section-header .section-subtitle {
     font-size: 13px;
@@ -341,72 +353,6 @@ body {
     box-shadow: 0 4px 12px rgba(26, 82, 118, 0.2);
 }
 
-/* ===== Feature Cards ===== */
-.feature-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 16px;
-    margin-top: 20px;
-}
-.feature-card {
-    background: #f8f9fb;
-    border: 1px solid #e8ecf1;
-    border-radius: 12px;
-    padding: 22px;
-    border-left: 4px solid #0a2540;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-.feature-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle, rgba(26, 82, 118, 0.04) 0%, transparent 70%);
-    border-radius: 50%;
-    transition: all 0.5s ease;
-}
-.feature-card:hover {
-    border-color: #0a2540;
-    box-shadow: 0 8px 24px rgba(26, 82, 118, 0.15);
-    transform: translateY(-4px);
-}
-.feature-card:hover::before {
-    transform: scale(3);
-    opacity: 0.5;
-}
-.feature-card-icon {
-    width: 44px;
-    height: 44px;
-    background: linear-gradient(135deg, #eef4fb, #d5e0ed);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #0a2540;
-    font-size: 20px;
-    margin-bottom: 12px;
-    transition: all 0.3s ease;
-}
-.feature-card:hover .feature-card-icon {
-    background: linear-gradient(135deg, #0a2540, #1a5276);
-    color: white;
-    transform: scale(1.1) rotate(-5deg);
-}
-.feature-card h3 {
-    font-size: 16px;
-    font-weight: 700;
-    color: #0a2540;
-    margin-bottom: 6px;
-}
-.feature-card p {
-    font-size: 13px;
-    color: #4a4a6a;
-    line-height: 1.5;
-}
 
 /* ===== Competency Grid ===== */
 .competency-grid {
@@ -549,71 +495,6 @@ body {
     animation: pulse-glow 2s infinite;
 }
 
-/* ===== Skills ===== */
-.skill-tabs {
-    display: flex;
-    gap: 6px;
-    margin-bottom: 20px;
-    flex-wrap: wrap;
-}
-.skill-tab {
-    padding: 8px 20px;
-    border-radius: 8px;
-    font-size: 13px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: all 0.3s;
-    border: 1px solid #d5dbe5;
-    background: #ffffff;
-    color: #4a4a6a;
-}
-.skill-tab.active, .skill-tab:hover {
-    background: linear-gradient(135deg, #0a2540, #1a5276);
-    color: white;
-    border-color: #0a2540;
-    box-shadow: 0 4px 12px rgba(26, 82, 118, 0.2);
-    transform: translateY(-2px);
-}
-.skills-container { max-width: 700px; }
-.skill-item {
-    margin-bottom: 14px;
-    opacity: 0;
-    transform: translateX(-20px);
-    transition: all 0.5s ease;
-}
-.skill-item.visible { opacity: 1; transform: translateX(0); }
-.skill-header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 5px;
-}
-.skill-name { font-weight: 500; color: #1a1a2e; font-size: 14px; }
-.skill-category-badge {
-    display: inline-block;
-    padding: 2px 10px;
-    background: linear-gradient(135deg, #eef4fb, #d5e0ed);
-    color: #0a2540;
-    font-size: 11px;
-    font-weight: 600;
-    border-radius: 4px;
-    border: 1px solid #c8d4e0;
-}
-.skill-bar-bg {
-    height: 8px;
-    background: #e8ecf1;
-    border-radius: 4px;
-    overflow: hidden;
-}
-.skill-bar-fill {
-    height: 100%;
-    background: linear-gradient(90deg, #0a2540, #1a5276, #2c6b9e, #3498db);
-    background-size: 200% auto;
-    border-radius: 4px;
-    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
-    width: 0;
-    animation: shimmer 3s linear infinite;
-}
 
 /* ===== Certifications ===== */
 .cert-grid {
@@ -787,182 +668,28 @@ body {
     color: #2c3e50;
     line-height: 1.7;
 }
-
-/* ===== Memberships ===== */
-.membership-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 16px;
+.innovation-card p + p {
+    margin-top: 6px;
 }
-.membership-card {
-    display: flex;
-    gap: 16px;
-    background: #f8f9fb;
-    border: 1px solid #e8ecf1;
-    border-radius: 12px;
-    padding: 22px;
-    transition: all 0.3s ease;
-}
-.membership-card:hover {
-    border-color: #0a2540;
-    box-shadow: 0 8px 24px rgba(26, 82, 118, 0.1);
-    transform: translateY(-4px);
-}
-.membership-icon {
-    width: 48px;
-    height: 48px;
-    min-width: 48px;
-    background: linear-gradient(135deg, #eef4fb, #d5e0ed);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #0a2540;
-    font-size: 20px;
-    transition: all 0.3s ease;
-}
-.membership-card:hover .membership-icon {
+.innovation-link {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 8px 16px;
     background: linear-gradient(135deg, #0a2540, #1a5276);
     color: white;
-    transform: scale(1.1) rotate(-5deg);
-}
-.membership-card h3 {
-    font-size: 15px;
-    font-weight: 700;
-    color: #0a2540;
-    margin-bottom: 2px;
-}
-.membership-card .membership-org {
     font-size: 13px;
-    color: #1a5276;
     font-weight: 500;
-    margin-bottom: 4px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.3s ease;
 }
-.membership-card .membership-desc {
-    font-size: 13px;
-    color: #4a4a6a;
-    line-height: 1.5;
+.innovation-link:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(26, 82, 118, 0.3);
 }
 
-/* ===== Achievements ===== */
-.achievement-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 16px;
-}
-.achievement-card {
-    background: #f8f9fb;
-    border: 1px solid #e8ecf1;
-    border-radius: 12px;
-    padding: 22px;
-    border-left: 4px solid #0a2540;
-    transition: all 0.3s ease;
-}
-.achievement-card:hover {
-    border-color: #0a2540;
-    box-shadow: 0 8px 24px rgba(26, 82, 118, 0.12);
-    transform: translateY(-4px);
-}
-.achievement-icon {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, #eef4fb, #d5e0ed);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #0a2540;
-    font-size: 20px;
-    margin-bottom: 12px;
-    transition: all 0.3s ease;
-}
-.achievement-card:hover .achievement-icon {
-    background: linear-gradient(135deg, #0a2540, #1a5276);
-    color: white;
-    animation: float 2s ease-in-out infinite;
-}
-.achievement-card h3 {
-    font-size: 15px;
-    font-weight: 700;
-    color: #0a2540;
-    margin-bottom: 6px;
-}
-.achievement-card p {
-    font-size: 13px;
-    color: #4a4a6a;
-    line-height: 1.5;
-    margin-bottom: 8px;
-}
-.achievement-card .achievement-date {
-    font-size: 12px;
-    color: #888;
-}
 
-/* ===== Documents ===== */
-.docs-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 16px;
-}
-.doc-card {
-    background: #f8f9fb;
-    border: 1px solid #e8ecf1;
-    border-radius: 12px;
-    padding: 22px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-}
-.doc-card:hover {
-    border-color: #0a2540;
-    box-shadow: 0 8px 24px rgba(26, 82, 118, 0.15);
-    transform: translateY(-6px);
-}
-.doc-card::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 3px;
-    background: linear-gradient(90deg, #0a2540, #1a5276, #2c6b9e, #3498db);
-    background-size: 200% auto;
-    transform: scaleX(0);
-    transition: transform 0.4s ease;
-}
-.doc-card:hover::before {
-    transform: scaleX(1);
-    animation: shimmer 3s linear infinite;
-}
-.doc-card .doc-icon {
-    width: 48px;
-    height: 48px;
-    background: linear-gradient(135deg, #eef4fb, #d5e0ed);
-    border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #0a2540;
-    font-size: 20px;
-    margin-bottom: 12px;
-    transition: all 0.3s ease;
-}
-.doc-card:hover .doc-icon {
-    background: linear-gradient(135deg, #0a2540, #1a5276);
-    color: white;
-    transform: scale(1.1);
-}
-.doc-card h3 {
-    font-size: 15px;
-    font-weight: 600;
-    color: #1a1a2e;
-    margin-bottom: 4px;
-}
-.doc-card p {
-    font-size: 12px;
-    color: #888;
-}
+
 
 /* ===== Contact ===== */
 .contact-section {
@@ -986,6 +713,14 @@ body {
     font-weight: 400;
     margin-bottom: 22px;
     opacity: 0.95;
+}
+.contact-info a {
+    color: white;
+    text-decoration: underline;
+}
+.contact-info + .contact-info {
+    margin-top: -12px;
+    margin-bottom: 22px;
 }
 .contact-links {
     display: flex;
@@ -1021,15 +756,10 @@ body {
     color: #888;
     border-top: 1px solid #e8ecf1;
     background: #f8f9fb;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
 }
 
-/* ===== Modal ===== */
-#viewer-modal {
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-    background: rgba(0, 0, 0, 0.6);
-    backdrop-filter: blur(8px);
-}
-#viewer-modal.hidden { opacity: 0; visibility: hidden; }
 
 /* ===== Responsive ===== */
 @media (max-width: 768px) {
@@ -1040,9 +770,7 @@ body {
     .resume-hero-contact { justify-content: center; }
     .resume-hero-stats { justify-content: center; flex-wrap: wrap; }
     .resume-section { padding: 24px 20px; }
-    .feature-grid,
-    .competency-grid,
-    .membership-grid { grid-template-columns: 1fr; }
+    .competency-grid { grid-template-columns: 1fr; }
     .contact-section { padding: 24px 20px; }
     .resume-footer { padding: 12px 20px; }
     .timeline-container { padding-left: 28px; }
@@ -1058,9 +786,8 @@ body {
     .resume-nav { display: none; }
     .resume-page { margin: 0; box-shadow: none; border-radius: 0; }
     body { background: white; }
-    .timeline-card:hover, .feature-card:hover, .competency-group:hover,
-    .cert-card:hover, .edu-card:hover, .innovation-card:hover,
-    .membership-card:hover, .achievement-card:hover { transform: none !important; box-shadow: none !important; }
-    .resume-hero::before, .feature-card::before, .edu-card::after { display: none; }
-    .skill-bar-fill, .resume-header-bar { animation: none !important; }
+    .timeline-card:hover, .competency-group:hover,
+    .cert-card:hover, .edu-card:hover, .innovation-card:hover { transform: none !important; box-shadow: none !important; }
+    .resume-hero::before, .edu-card::after { display: none; }
+    .resume-header-bar { animation: none !important; }
 }

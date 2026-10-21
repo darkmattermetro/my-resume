@@ -1,13 +1,17 @@
 {
   "name": "webbased-resume",
   "version": "1.0.0",
-  "main": "dev-server.js",
+  "private": true,
+  "description": "Static web resume for Mohit Kumar. Content is sourced from Mohit_Kumar_Resume_Formatted.docx.",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "python -m http.server 8000"
   },
-  "keywords": [],
+  "keywords": [
+    "resume",
+    "html",
+    "css",
+    "javascript"
+  ],
   "author": "",
-  "license": "ISC",
-  "description": ""
+  "license": "ISC"
 }
