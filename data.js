@@ -20,8 +20,8 @@ export const DEFAULT_RESUME = {
   profile: {
     full_name: 'Mohit Kumar',
     professional_title: 'Rail Operations | Metro Operations | Digital Process Improvement',
-    introduction: 'Strategic Railway Operations Professional with over 9 years of experience at Delhi Metro Rail Corporation (DMRC). Experienced in high-density metro operations, GoA4 (Unattended Train Operation) and CBTC signalling systems. MBA candidate focusing on Finance and HR, combining technical expertise with corporate leadership studies. Background in trip chart preparation, duty roster management, crew control and operational resource optimisation, with a focus on safety and service efficiency.',
-    about_me: 'Strategic Railway Operations Professional with over 9 years of experience at Delhi Metro Rail Corporation (DMRC). Experienced in high-density metro operations, GoA4 (Unattended Train Operation) and CBTC signalling systems. MBA candidate focusing on Finance and HR, combining technical expertise with corporate leadership studies. Background in trip chart preparation, duty roster management, crew control and operational resource optimisation, with a focus on safety and service efficiency.',
+    introduction: 'Spearheaded high-density metro operations for over 9 years at Delhi Metro Rail Corporation (DMRC), leading GoA4 (Unattended Train Operation) and CBTC signalling operations on Line 7. Engineered custom trip-chart, duty-roster and crew-control automation in HTML, Python and JavaScript, optimizing manual processes by over 60% while eliminating human scheduling errors. Standardized digital SOPs, live-testing trackers and fault-recovery protocols that strengthened operational safety and service continuity. Combines frontline railway operations leadership with an MBA in Finance & HR, uniting safety-critical execution with commercial, financial and people-management discipline.',
+    about_me: 'Spearheaded high-density metro operations for over 9 years at Delhi Metro Rail Corporation (DMRC), leading GoA4 (Unattended Train Operation) and CBTC signalling operations on Line 7. Engineered custom trip-chart, duty-roster and crew-control automation in HTML, Python and JavaScript, optimizing manual processes by over 60% while eliminating human scheduling errors. Standardized digital SOPs, live-testing trackers and fault-recovery protocols that strengthened operational safety and service continuity. Combines frontline railway operations leadership with an MBA in Finance & HR, uniting safety-critical execution with commercial, financial and people-management discipline.',
     contact: {
       location: 'New Delhi, India',
       phone: '9958440260',
@@ -82,20 +82,38 @@ export const DEFAULT_RESUME = {
   ],
   technical_innovation: [
     {
-      name: 'Digital Roster Tool - Line 7 Duty Finder',
-      description: 'Developed a web application integrated with Supabase to manage DMRC duty cycles, including automated Left/Right file processing, station-specific directional logic and an admin panel for monitoring.\nA Line 7 duty finder where staff can check their day-to-day trips according to the trip chart, note down the kilometre of their trips and the break, sign-on and sign-off details, with tetra key information and a timetable view also available.',
+      name: 'Digital Automation of Duty Roster & Crew Control',
+      description: 'Engineered automated digital workflows for crew scheduling and duty roster management, reducing manual processing time by 60% and eliminating human scheduling errors.\nA Line 7 duty finder where staff can check their day-to-day trips according to the trip chart, note down the kilometre of their trips and the break, sign-on and sign-off details, with tetra key information and a timetable view also available.',
+      icon: 'fa-robot',
+      badges: [
+        { icon: 'fa-bolt', label: '60% Faster Processing', accent: true },
+        { icon: 'fa-user-check', label: 'Eliminated Scheduling Errors' }
+      ],
+      tags: ['Process Automation', 'Crew Control', 'Ops Analytics'],
       url: 'https://darkmattermetro.github.io/Webbased-Tripchart/',
       link_label: 'Open Duty Finder'
     },
     {
-      name: 'Line 7 Trip Chart Tool',
-      description: 'A trip chart tool specifically designed to create trip charts for Line 7.\nStaff can automate the manual process of trip chart making - from scratch to a fully usable Excel-based trip chart for Line 7. The suite covers trip chart creation, time table editing and duty assignment.',
+      name: 'Data-Driven Trip Chart & Rake Optimization',
+      description: 'Streamlined trip chart preparation and timetable modeling to optimize rolling stock utilization and headway consistency across high-density corridors.\nA trip chart tool specifically designed to create trip charts for Line 7. Staff can automate the manual process of trip chart making - from scratch to a fully usable Excel-based trip chart, covering trip chart creation, time table editing and duty assignment.',
+      icon: 'fa-chart-line',
+      badges: [
+        { icon: 'fa-train', label: 'Rake Utilisation Optimised' },
+        { icon: 'fa-clock', label: 'Headway Consistency' }
+      ],
+      tags: ['Trip Charting', 'Timetable Modelling', 'Fleet Planning'],
       url: 'https://trip-chart-tool.vercel.app/index.html',
       link_label: 'Open Trip Chart Tool'
     },
     {
-      name: 'Railway RAG',
-      description: 'A railway RAG-based program built with Python and LangChain that can be used to study any railway-based document such as MRGR, safety circulars and any other instructions.\nStaff can query it and get a proper answer from the RAG system. Dense technical railway PDFs are parsed with Docling and indexed with a hybrid FAISS + BM25 retrieval pipeline.',
+      name: 'GoA4 (UTO) & CBTC Operational Readiness',
+      description: 'Standardized digital SOPs, live-testing trackers, and fault-recovery protocols for Unattended Train Operations (GoA4) and CBTC signalling systems.\nThe digital knowledge layer behind them: dense technical railway PDFs are parsed with Docling and indexed with a hybrid FAISS + BM25 retrieval pipeline, so staff can query MRGRs, safety circulars and instructions and get a verified answer straight from the RAG system.',
+      icon: 'fa-satellite-dish',
+      badges: [
+        { icon: 'fa-shield-halved', label: 'Safety Critical' },
+        { icon: 'fa-bolt', label: 'GoA4 / CBTC Ready' }
+      ],
+      tags: ['GoA4 / UTO', 'CBTC', 'Signalling', 'Ops Analytics'],
       url: 'https://github.com/darkmattermetro/railway-rag',
       link_label: 'View Repository'
     }

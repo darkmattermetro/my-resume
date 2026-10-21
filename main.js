@@ -9,6 +9,10 @@ import * as utils from './utils.js';
  */
 document.addEventListener('DOMContentLoaded', () => {
   try {
+    // Theme (light / dark) - applied before paint by the inline script in
+    // index.html, this wires up the toggle button.
+    utils.initTheme();
+
     ui.applyProfileToDOM(DEFAULT_RESUME.profile);
     ui.renderCompetencies(DEFAULT_RESUME.competencies);
     ui.renderExperience(DEFAULT_RESUME.experience);
@@ -18,6 +22,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Scroll reveal animations
     utils.initScrollReveal();
+
+    // Hero statistics count up when the page loads
+    utils.initCounters(DEFAULT_RESUME.profile);
+
+    // Active section highlight in the navigation
+    utils.initScrollSpy();
+
+    // Download / print action
+    utils.initPrintButton();
 
     console.log('Resume rendered successfully');
   } catch (error) {

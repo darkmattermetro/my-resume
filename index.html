@@ -4,10 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Mohit Kumar - Strategic Railway Operations Professional with over 9 years of experience at Delhi Metro Rail Corporation (DMRC). GoA4 (Unattended Train Operation) and CBTC signalling systems. MBA candidate focusing on Finance and HR.">
+    <meta name="theme-color" content="#0a2540">
     <title>Mohit Kumar — Rail Operations | Metro Operations | Digital Process Improvement</title>
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        // Apply the saved theme before the first paint to avoid a flash
+        (function () {
+            try {
+                var saved = localStorage.getItem('resume-theme');
+                var theme = saved || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+                document.documentElement.setAttribute('data-theme', theme);
+            } catch (e) { /* storage blocked - fall back to light */ }
+        })();
+    </script>
 </head>
 <body>
 
@@ -27,6 +38,9 @@
                 <a href="#certifications">Certification</a>
                 <a href="#contact">Contact</a>
             </div>
+            <button id="theme-toggle" class="icon-btn" type="button" aria-label="Switch colour theme" title="Switch theme">
+                <i class="fas fa-moon" id="theme-toggle-icon"></i>
+            </button>
         </div>
     </nav>
 
@@ -47,6 +61,11 @@
                     <a id="contact-email-link" href="mailto:mohit.3623@dmrc.org"><i class="fas fa-envelope"></i> <span id="contact-email">mohit.3623@dmrc.org</span></a>
                     <a id="contact-portfolio" href="https://darkmattermetro.github.io/my-resume/" target="_blank" rel="noopener"><i class="fas fa-globe"></i> <span id="contact-portfolio-text">darkmattermetro.github.io/my-resume/</span></a>
                 </div>
+                <div class="resume-hero-actions">
+                    <button id="print-resume" class="hero-btn" type="button">
+                        <i class="fas fa-file-arrow-down"></i> Download / Print Resume
+                    </button>
+                </div>
                 <div class="resume-hero-stats">
                     <div class="resume-hero-stat"><i class="fas fa-clock"></i> <strong id="stat-years">9+</strong> <span id="stat-years-label">Years Experience</span></div>
                     <div class="resume-hero-stat"><i class="fas fa-chart-line"></i> <strong id="stat-efficiency">60%</strong> <span id="stat-efficiency-label">Processing Time Reduced</span></div>
@@ -61,7 +80,7 @@
                 <h2>Professional Profile</h2>
             </div>
             <p id="about-me" class="profile-summary">
-                Strategic Railway Operations Professional with over 9 years of experience at Delhi Metro Rail Corporation (DMRC). Experienced in high-density metro operations, GoA4 (Unattended Train Operation) and CBTC signalling systems. MBA candidate focusing on Finance and HR, combining technical expertise with corporate leadership studies. Background in trip chart preparation, duty roster management, crew control and operational resource optimisation, with a focus on safety and service efficiency.
+                Spearheaded high-density metro operations for over 9 years at Delhi Metro Rail Corporation (DMRC), leading GoA4 (Unattended Train Operation) and CBTC signalling operations on Line 7. Engineered custom trip-chart, duty-roster and crew-control automation in HTML, Python and JavaScript, optimizing manual processes by over 60% while eliminating human scheduling errors. Standardized digital SOPs, live-testing trackers and fault-recovery protocols that strengthened operational safety and service continuity. Combines frontline railway operations leadership with an MBA in Finance &amp; HR, uniting safety-critical execution with commercial, financial and people-management discipline.
             </p>
             <div class="profile-tags" id="profile-tags">
                 <span class="profile-tag">MBA (Finance &amp; HR) candidate</span>

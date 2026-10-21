@@ -245,6 +245,9 @@ export function renderCompetencies(data) {
 
 /**
  * Render the technical projects / innovation cards.
+ * Each card can carry:
+ *   - KPI impact pills (badges)        e.g. "60% Faster Processing"
+ *   - tech / domain tags               e.g. "GoA4", "CBTC", "Process Automation"
  * @param {Array} data
  * @returns {void}
  */
@@ -255,26 +258,42 @@ export function renderTechnicalInnovation(data) {
   const projects = data || [];
 
   if (projects.length === 0) {
-    container.innerHTML = '<p style="text-align:center;color:#888;padding:32px 0;">No projects listed yet.</p>';
+    container.innerHTML = '<p style="text-align:center;color:var(--text-3);padding:32px 0;">No projects listed yet.</p>';
     return;
   }
 
-  container.innerHTML = projects.map((inn, i) => {
-    const paragraphs = (inn.description || '').split('\n').map(p => p.trim()).filter(Boolean);
+  container.innerHTML = `
+    <div class="innovation-grid">
+      ${projects.map((inn, i) => {
+        const paragraphs = (inn.description || '').split('\n').map(p => p.trim()).filter(Boolean);
 
-    return `
-      <div class="innovation-card reveal reveal-delay-${Math.min(i + 1, 4)}">
-          <div class="innovation-icon">
-              <i class="fas fa-code"></i>
+        const badges = (inn.badges || []).map(badge => `
+            <span class="innovation-badge${badge.accent ? ' badge-accent' : ''}">
+                <i class="fas ${escapeHtml(badge.icon || 'fa-circle')}"></i> ${escapeHtml(badge.label)}
+            </span>
+        `).join('');
+
+        const tags = (inn.tags || []).map(tag => `
+            <span class="innovation-tag">${escapeHtml(tag)}</span>
+        `).join('');
+
+        return `
+          <div class="innovation-card reveal reveal-delay-${Math.min(i + 1, 4)}">
+              <div class="innovation-icon">
+                  <i class="fas ${escapeHtml(inn.icon || 'fa-code')}"></i>
+              </div>
+              <div class="innovation-body">
+                  <h3>${escapeHtml(inn.name)}</h3>
+                  ${badges ? `<div class="innovation-badges">${badges}</div>` : ''}
+                  ${paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join('')}
+                  ${tags ? `<div class="innovation-tags">${tags}</div>` : ''}
+                  ${inn.url ? `<a class="innovation-link" href="${escapeHtml(inn.url)}" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> ${escapeHtml(inn.link_label || 'View Project')}</a>` : ''}
+              </div>
           </div>
-          <div>
-              <h3>${escapeHtml(inn.name)}</h3>
-              ${paragraphs.map(p => `<p>${escapeHtml(p)}</p>`).join('')}
-              ${inn.url ? `<a class="innovation-link" href="${escapeHtml(inn.url)}" target="_blank" rel="noopener"><i class="fas fa-external-link-alt"></i> ${escapeHtml(inn.link_label || 'View Project')}</a>` : ''}
-          </div>
-      </div>
+        `;
+      }).join('')}
+    </div>
   `;
-  }).join('');
 
   reobserveReveals();
 }
