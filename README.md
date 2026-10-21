@@ -21,6 +21,8 @@ data.js         The resume content — DEFAULT_RESUME
 ui.js           Renderers that turn the data into markup
 utils.js        Helpers: theme, scroll reveal, counters, scroll-spy, formatting
 main.js         Entry point: renders the content and boots the interactions
+robots.txt      Allows search engines to index the site
+.github/workflows/deploy.yml   Publishes the site to GitHub Pages on every push to main
 ```
 
 ## Features
@@ -110,6 +112,8 @@ The `[data-theme="dark"]` block only overrides those tokens, so a new component 
 The site is plain static files, so it can be hosted anywhere. The repository is already connected to GitHub Pages (`https://darkmattermetro.github.io/my-resume/`).
 
 Note: **GitHub Pages only serves public repositories on the free plan.** If the repository stays private the Pages URL returns a 404 for visitors — make the repository public, or point the portfolio link in `data.js` to a public URL.
+
+Deployment runs through `.github/workflows/deploy.yml`: every push to `main` publishes the seven site files (`index.html`, `style.css`, `data.js`, `ui.js`, `main.js`, `utils.js`, `robots.txt`) as a Pages artifact. The repository's **Settings → Pages → Source** must be set to **GitHub Actions**. Other files (the `.docx`, `README.md`, `package.json`) are intentionally excluded from the published site.
 
 To publish a change:
 
