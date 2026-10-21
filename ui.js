@@ -75,8 +75,6 @@ export function applyProfileToDOM(d) {
   // Hero stats
   setText('stat-years', d.stat_years);
   setTextIfPresent('stat-years-label', d.stat_years_label);
-  setText('stat-efficiency', d.stat_efficiency);
-  setTextIfPresent('stat-efficiency-label', d.stat_efficiency_label);
 
   // Profile tags
   const tagsEl = document.getElementById('profile-tags');

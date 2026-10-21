@@ -27,7 +27,7 @@ main.js         Entry point: renders the content and boots the interactions
 
 - **Light / dark theme** — the toggle sits in the navigation. The choice is stored in `localStorage` and applied before the first paint (inline script in `index.html`), and it follows the OS preference until the visitor picks one.
 - **Download / Print Resume** — hero button that opens the print dialog (which also offers *Save as PDF*). The print stylesheet always uses the light palette, forces every scroll-reveal section to be visible and keeps cards from splitting across pages.
-- **Animated counters** — the hero statistics (`9+`, `60%`) count up when the page loads. `prefers-reduced-motion` is respected.
+- **Animated counters** — the hero statistic (`9+`) counts up when the page loads. `prefers-reduced-motion` is respected.
 - **Active scroll-spy** — the navigation link of the section you are reading is highlighted.
 - **Responsive navigation** — on small screens the links become a horizontal, scrollable pill bar instead of disappearing.
 - **Scroll reveal animations**, timeline, competency grid, KPI pills and tech tags on the innovation cards.

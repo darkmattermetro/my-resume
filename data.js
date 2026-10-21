@@ -19,7 +19,7 @@ export const RESUME_SOURCE_FILE = 'Mohit_Kumar_Resume_Formatted.docx';
 export const DEFAULT_RESUME = {
   profile: {
     full_name: 'Mohit Kumar',
-    professional_title: 'Rail Operations | Metro Operations | Digital Process Improvement',
+    professional_title: 'Delhi Metro Rail Operations',
     introduction: 'Spearheaded high-density metro operations for over 9 years at Delhi Metro Rail Corporation (DMRC), leading GoA4 (Unattended Train Operation) and CBTC signalling operations on Line 7. Engineered custom trip-chart, duty-roster and crew-control automation in HTML, Python and JavaScript, optimizing manual processes by over 60% while eliminating human scheduling errors. Standardized digital SOPs, live-testing trackers and fault-recovery protocols that strengthened operational safety and service continuity. Combines frontline railway operations leadership with an MBA in Finance & HR, uniting safety-critical execution with commercial, financial and people-management discipline.',
     about_me: 'Spearheaded high-density metro operations for over 9 years at Delhi Metro Rail Corporation (DMRC), leading GoA4 (Unattended Train Operation) and CBTC signalling operations on Line 7. Engineered custom trip-chart, duty-roster and crew-control automation in HTML, Python and JavaScript, optimizing manual processes by over 60% while eliminating human scheduling errors. Standardized digital SOPs, live-testing trackers and fault-recovery protocols that strengthened operational safety and service continuity. Combines frontline railway operations leadership with an MBA in Finance & HR, uniting safety-critical execution with commercial, financial and people-management discipline.',
     contact: {
@@ -31,8 +31,6 @@ export const DEFAULT_RESUME = {
     contact_info: 'New Delhi, India | 9958440260 | mohit.3623@dmrc.org',
     stat_years: '9+',
     stat_years_label: 'Years Experience',
-    stat_efficiency: '60%',
-    stat_efficiency_label: 'Processing Time Reduced',
     tags: [
       'MBA (Finance & HR) candidate',
       'B.Tech'

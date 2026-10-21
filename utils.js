@@ -151,7 +151,6 @@ export function animateCounter(el, value, duration = 1400) {
 export function initCounters(profile) {
     if (!profile) return;
     animateCounter(document.getElementById('stat-years'), profile.stat_years);
-    animateCounter(document.getElementById('stat-efficiency'), profile.stat_efficiency);
 }
 
 /* ===== Scroll-spy navigation ===== */
